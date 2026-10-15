@@ -213,12 +213,36 @@
     .nd3-offroad-help b{color:#dbff7c}
     #nd3-offroad-status{position:fixed;bottom:18px;left:18px;z-index:3010;font:800 10px system-ui;color:#d6f0fd;background:#102739c2;border:1px solid #49738a;border-radius:9px;padding:9px 12px;max-width:64vw;pointer-events:none}
     @media(max-width:760px){.nd3-back-link{padding:9px 10px;top:9px;left:9px;font-size:10px}.nd3-offroad-help{top:65px;left:12px;transform:none;max-width:calc(100vw - 24px);font-size:9px}.nd3-offroad-credit{bottom:5px;right:5px;max-width:63vw;font-size:8px}#nd3-offroad-status{bottom:5px;left:5px;font-size:8px}}
+    /* Genuine touch controls on iPad/mobile, converted to the original keyboard input state. */
+  .nd3-touch-controls{display:none;pointer-events:none;position:fixed;z-index:2600;inset:auto 0 30px;justify-content:space-between;align-items:end;padding:0 16px;gap:14px;user-select:none;-webkit-user-select:none;touch-action:none}
+  .nd3-touch-controls .nd3-control-zone{display:grid;grid-template-columns:repeat(3,65px);gap:5px;pointer-events:auto}
+  .nd3-touch-controls button{border:1px solid #9ad5d6ab;background:#142c41e6;color:#e7faff;width:65px;height:60px;display:grid;place-items:center;border-radius:13px;box-shadow:0 6px 21px #000a,inset 0 1px #ffffff32;font:1000 21px system-ui;touch-action:none;-webkit-tap-highlight-color:transparent}
+  .nd3-touch-controls button.active{background:#d6ff87;color:#0d212d;border-color:#e8ffb1;transform:translateY(2px)}
+  .nd3-touch-controls .nd3-drive-zone{display:flex;flex-direction:column;gap:7px;pointer-events:auto}
+  .nd3-touch-controls .nd3-drive-zone button{width:98px;height:67px;font-size:12px;font-weight:1000;letter-spacing:1.1px}
+  .nd3-touch-controls .nd3-drive-zone .nd3-gas{background:#d0ff80;color:#0a232d;border-color:#efffb5}
+  .nd3-touch-controls .nd3-upgrades{width:98px!important;height:41px!important;color:#dfff9a;border-color:#dfff9a7d;font-size:10px!important}
+  @media(pointer:coarse),(max-width:760px){.nd3-touch-controls{display:flex}.nd3-offroad-credit{bottom:4px;right:5px;font-size:7px;max-width:36vw;opacity:.65;z-index:2300}#nd3-offroad-status{top:120px;bottom:auto;max-width:80vw}}
+  @media(max-width:390px){.nd3-touch-controls{padding:0 6px;bottom:12px}.nd3-touch-controls .nd3-control-zone{grid-template-columns:repeat(3,51px)}.nd3-touch-controls button{width:51px;height:52px}.nd3-touch-controls .nd3-drive-zone button{width:75px;height:58px}.nd3-touch-controls .nd3-upgrades{width:75px!important}}
   </style>
 </head>
 <body>
 <a class="nd3-back-link" href="index.html#communityGames"><em>ND</em> ← BACK TO ARCADE</a>
 <div class="nd3-offroad-help" aria-label="Game instructions"><b>3D EXPLORATION</b> · DRIVE WITH WASD / ARROWS · COLLECT COINS · PRESS U FOR UPGRADES</div>
 <div id="nd3-offroad-status" role="status" aria-live="polite">LOADING THE 3D WORLD…</div>
+<div class="nd3-touch-controls" aria-label="On-screen driving controls">
+ <div class="nd3-control-zone">
+  <div></div><button type="button" data-nd3-drive="KeyW" aria-label="Drive forward">▲</button><div></div>
+  <button type="button" data-nd3-drive="KeyA" aria-label="Steer left">◀</button>
+  <button type="button" data-nd3-drive="KeyS" aria-label="Reverse">▼</button>
+  <button type="button" data-nd3-drive="KeyD" aria-label="Steer right">▶</button>
+ </div>
+ <div class="nd3-drive-zone">
+  <button class="nd3-gas" type="button" data-nd3-drive="KeyW" aria-label="Accelerate">ACCELERATE</button>
+  <button type="button" data-nd3-drive="KeyS" aria-label="Slow down or reverse">BRAKE</button>
+  <button class="nd3-upgrades" type="button" data-nd3-tap="KeyU" aria-label="Open vehicle upgrades">UPGRADES</button>
+ </div>
+</div>
 <div class="nd3-offroad-credit">Original 3D driving engine © 2026 <a href="https://github.com/rsamwilson2323-cloud/rpg-car-game" target="_blank" rel="noopener noreferrer">Sam Wilson</a> · <a href="https://github.com/rsamwilson2323-cloud/rpg-car-game/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT license</a></div>
   <div id="loader" style="
     position: fixed; inset: 0; z-index: 9999;
@@ -2916,6 +2940,19 @@ addEventListener('resize', () => {
 })
   </script>
 <script>
+// Neon District touch adapter: safely map touch controls to the original game's keyboard listeners.
+(()=>{
+ const active=new Map();
+ const emit=(type,code)=>dispatchEvent(new KeyboardEvent(type,{bubbles:true,code,key:code.replace(/^Key/,'')}));
+ const release=b=>{const code=active.get(b);if(!code)return;active.delete(b);b.classList.remove('active');emit('keyup',code)};
+ document.querySelectorAll('[data-nd3-drive]').forEach(b=>{
+  b.addEventListener('pointerdown',e=>{e.preventDefault();if(active.has(b))return;active.set(b,b.dataset.nd3Drive);b.classList.add('active');b.setPointerCapture(e.pointerId);emit('keydown',b.dataset.nd3Drive)});
+  ['pointerup','pointercancel','lostpointercapture'].forEach(type=>b.addEventListener(type,()=>release(b)));
+ });
+ document.querySelectorAll('[data-nd3-tap]').forEach(b=>b.addEventListener('click',()=>{emit('keydown',b.dataset.nd3Tap);emit('keyup',b.dataset.nd3Tap)}));
+ addEventListener('blur',()=>[...active.keys()].forEach(release));
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)[...active.keys()].forEach(release)});
+})();
 // Neon District adaptation safety: show a useful recovery option if optional WebGPU/CDN modules never load.
 setTimeout(()=>{
  if(window.__ndOffroadReady)return;
