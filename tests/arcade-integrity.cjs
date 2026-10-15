@@ -23,7 +23,7 @@ function checkSyntax(code,mod,label){
     checked++;
   }catch(err){problems.push(label+': '+err.message)}
 }
-expect(entries.length===37,'Expected 37 games in catalog; found '+entries.length);
+expect(entries.length===38,'Expected 38 games in catalog; found '+entries.length);
 expect(new Set(entries.map(x=>x.id)).size===entries.length,'Duplicate game catalog ID');
 expect(new Set(entries.map(x=>x.file)).size===entries.length,'Duplicate game catalog path');
 for(const e of entries)expect(fs.existsSync(path.join(root,e.file)),'Missing game page '+e.name+': '+e.file);
@@ -43,6 +43,11 @@ for(const html of pages){
   }
   for(const [n,script] of [...src.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].entries()){
     if(!script[2].trim())continue;
+    if(/\btype=["']importmap["']/i.test(script[1])) {
+      try{const data=JSON.parse(script[2]);expect(data&&typeof data.imports==='object',html+' invalid module importmap')}
+      catch(e){problems.push(html+' bad importmap: '+e.message)}
+      continue;
+    }
     checkSyntax(script[2],/\btype=["']module["']/i.test(script[1]),html+' inline script '+n);
   }
 }
@@ -51,10 +56,10 @@ for(const js of files.filter(x=>x.endsWith('.js'))){
   checkSyntax(read(js),js.startsWith('open-platformer-'),js);
 }
 // Check exact imported MIT code and data references (no missing level files).
-for(const game of ['open-2048','open-platformer']){
+for(const game of ['open-2048','open-platformer','open-offroad']){
  expect(fs.existsSync(path.join(root,game+'.html')),'Missing '+game+' open source game');
 }
-for(const license of ['third-party-2048-license.txt','third-party-platformer-license.txt']){
+for(const license of ['third-party-2048-license.txt','third-party-platformer-license.txt','third-party-offroad-license.txt']){
  expect(read(license).includes('MIT'),'Missing required MIT license: '+license);
 }
 for(const file of ['open-platformer-level1.json','open-platformer-level2.json']){

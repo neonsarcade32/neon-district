@@ -22,8 +22,8 @@ async function horizontalOverflow(p){return p.evaluate(()=>document.documentElem
  try{
   const {p,errors,status}=await pageTo(browser,'index.html');
   check('Homepage loads',status===200);
-  check('All 37 game cards appear',await p.locator('.gameCard').count()===games.length);
-  check('All 37 have custom vector artwork',await p.locator('.gameCard .nd3-illustration').count()===games.length);
+  check('All 38 game cards appear',await p.locator('.gameCard').count()===games.length);
+  check('All 38 have custom vector artwork',await p.locator('.gameCard .nd3-illustration').count()===games.length);
   check('Game cards use accessible links',await p.locator('.gameCard .gameLink').count()===games.length);
   check('Hero has real vector artwork',await p.locator('#nd3HeroArt svg').count()===1);
   check('Featured cards have game art',await p.locator('.miniFeature svg').count()===3);
@@ -50,14 +50,14 @@ async function horizontalOverflow(p){return p.evaluate(()=>document.documentElem
   await mobile.p.screenshot({path:path.join(output,'homepage-mobile.png'),fullPage:true});
   await mobile.p.close();
   for(const g of games){
-    const full=['city','bowling'].includes(g.id),imported=['pixelhop','open2048'].includes(g.id);
+    const full=['city','bowling'].includes(g.id),imported=['pixelhop','open2048','offroad'].includes(g.id);
     const {p,errors,status}=await pageTo(browser,g.file,{width:1080,height:800});
     check(g.name+' opens',status===200);
     if(full)check(g.name+' flagship visual skin',await p.locator('link[href*="nd3-flagships.css"]').count()===1);
     else if(imported){
-      check(g.name+' imported game skin',await p.locator('link[href*="'+(g.id==='pixelhop'?'open-platformer-theme':'open-2048-theme')+'.css"]').count()===1);
+      check(g.name+' imported game skin',g.id==='offroad'?await p.locator('#nd3-offroad-chrome').count()===1:await p.locator('link[href*="'+(g.id==='pixelhop'?'open-platformer-theme':'open-2048-theme')+'.css"]').count()===1);
       check(g.name+' author attribution',await p.locator('a[href*="github.com"]').count()>0);
-      check(g.name+' actual playfield',await p.locator(g.id==='pixelhop'?'#gameCanvas':'.game-container .tile-container').count()===1);
+      check(g.name+' actual playfield',g.id==='offroad'?await p.locator('#settings-toggle').count()===1:await p.locator(g.id==='pixelhop'?'#gameCanvas':'.game-container .tile-container').count()===1);
     }else {
       check(g.name+' unified 3.0 presentation',await p.locator('html.nd3-game-ui').count()===1);
       check(g.name+' new visual CSS variables',await p.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--nd3-accent').trim().length>0));
@@ -69,7 +69,7 @@ async function horizontalOverflow(p){return p.evaluate(()=>document.documentElem
     }
     await p.close()
   }
-  const mobileTitles=['snake','pong','reaction','tap','hockey','breakaway','tetris','space','bowling','city','freethrow','goalkeeper','laser','rooftop','pixelhop','open2048'];
+  const mobileTitles=['snake','pong','reaction','tap','hockey','breakaway','tetris','space','bowling','city','freethrow','goalkeeper','laser','rooftop','pixelhop','open2048','offroad'];
   for(const id of mobileTitles){
     const g=games.find(g=>g.id===id);
     const {p,errors,status}=await pageTo(browser,g.file,{width:390,height:844});

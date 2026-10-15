@@ -24,3 +24,16 @@
 @media(max-width:800px){.nd3-community{padding:22px 17px!important}.nd3-community-head{gap:8px}.nd3-community-counter{display:none}.nd3-community-grid{gap:9px}.nd3-community-card{min-height:230px}.nd3-community-info{max-width:100%;padding:20px 13px 47px}.nd3-community-cta{bottom:12px;right:13px;padding:7px 9px}}
 @media(max-width:540px){.nd3-community-grid{grid-template-columns:1fr}.nd3-community-card{min-height:215px}.nd3-community-info{max-width:85%;padding:16px 14px 44px}.nd3-community-info strong{font-size:24px}.nd3-community-head h2{font-size:28px}.nd3-community-head small{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.nd3-community-card,.nd3-community-art .nd3-illustration{transition:none!important}}
+
+/* Big-game focus: do not feature the two small prototype games on the homepage. */
+.nd3-home .nd3-community-grid.nd3-featured-single{grid-template-columns:minmax(0,1fr)}
+.nd3-home .nd3-offroad-feature{min-height:clamp(280px,41vw,420px)!important;border:1px solid #8fc2b2!important;background:#0d2f36;box-shadow:0 24px 70px #0007,0 0 42px #77cba915}
+.nd3-home .nd3-offroad-feature .nd3-community-art{inset:0!important}
+.nd3-home .nd3-offroad-feature .nd3-community-art svg{width:100%;height:100%;object-fit:cover}
+.nd3-home .nd3-offroad-feature:before{background:linear-gradient(90deg,#071823dd,#07182371 40%,transparent 78%),linear-gradient(0deg,#081a25d9,transparent 48%)!important;z-index:1}
+.nd3-home .nd3-offroad-feature .nd3-community-info{position:relative;z-index:2;padding:35px 32px 32px;max-width:63%;gap:12px}
+.nd3-home .nd3-offroad-feature .nd3-community-info strong{font-size:clamp(27px,5.3vw,54px)!important;line-height:.95!important;text-shadow:0 8px 27px #000a;letter-spacing:-2px}
+.nd3-home .nd3-offroad-feature .nd3-community-info small{font-size:10px!important;line-height:1.5;letter-spacing:.9px;color:#e0f4eb}
+.nd3-home .nd3-offroad-feature .nd3-community-tag{background:#193f40ef;border-color:#b7fba0;color:#dcff89}
+.nd3-home .nd3-offroad-feature .nd3-community-cta{bottom:31px;right:26px;background:#dfff76;padding:16px 20px;font-size:12px;border-radius:11px;box-shadow:0 8px 27px #dcff6b36}
+@media(max-width:700px){.nd3-home .nd3-offroad-feature{min-height:315px!important}.nd3-home .nd3-offroad-feature:before{background:linear-gradient(0deg,#081a25f0,#081a2599 47%,transparent 95%)!important}.nd3-home .nd3-offroad-feature .nd3-community-info{max-width:96%;padding:45px 15px 64px}.nd3-home .nd3-offroad-feature .nd3-community-info strong{font-size:clamp(25px,8vw,41px)!important;letter-spacing:-1px}.nd3-home .nd3-offroad-feature .nd3-community-cta{bottom:13px;right:12px;padding:11px 13px;font-size:10px}}

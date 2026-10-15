@@ -35,7 +35,7 @@ const games=[...index.matchAll(/\bid:'([^']+)',name:'([^']+)',file:'([^']+)'/g)]
       finally{await page.close()}
     }
     // Mobile viewport coverage for keyboard, canvas and touch-focused games.
-    for(const g of ['snake.html','pong.html','reaction.html','tap.html','bowling.html','open-platformer.html','open-2048.html']){
+    for(const g of ['snake.html','pong.html','reaction.html','tap.html','bowling.html','open-platformer.html','open-2048.html','open-offroad.html']){
       const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
       try{
         const resp=await page.goto(base+'/'+g,{waitUntil:'domcontentloaded',timeout:25000});

@@ -33,6 +33,36 @@ function stadium(fg,light){return path('M 0 248 Q 300 145 560 248 L 560 330 L 0 
 function scene(id,c){
  const [base,mid,a,b]=c;
  switch(id){
+ case 'offroad':{
+  const sky=rr(0,0,560,300,'#103c55')+circ(420,64,51,'#ffe4a8','opacity=".84"')+
+    path('M0 190 60 95 120 158 203 66 298 170 401 82 465 137 560 69 560 260 0 260Z','#214d5c')+
+    path('M0 206 85 155 137 193 267 114 351 199 466 145 560 173 560 300 0 300Z','#316868')+
+    path('M0 237 Q117 160 243 207 Q351 145 560 207 V300 H0Z','#507e55')+
+    path('M0 257 126 193 222 227 370 162 560 218 V300 H0Z','#3d7555');
+  const trail=path('M160 300 Q200 259 294 236 Q309 230 346 235 L432 300 Z','#b3a27d')+
+    path('M195 300 Q224 260 286 249','none','stroke="#d3bf9a" stroke-width="3" opacity=".55"')+
+    path('M432 300 Q381 261 342 252','none','stroke="#d3bf9a" stroke-width="3" opacity=".55"');
+  const trees=range(6,i=>{const x=30+i*91,y=188+(i%3)*21,scale=i%2?.8:1.1;
+   return '<g transform="translate('+x+' '+y+') scale('+scale+')">'+
+    rr(-3,-22,6,42,'#6d593e',2)+
+    poly('-20,-18 0,-65 20,-18','#0d5543')+poly('-18,-35 0,-77 18,-35','#15805d')+
+    poly('-16,-50 0,-90 16,-50','#21aa7a')+'</g>'});
+  const car='<g transform="translate(281 157)">'+
+    path('M-91 57 -67 7 -30 -5 45 -5 80 8 98 56 96 92 -98 92Z','#102334','stroke="#9ff5ee" stroke-opacity=".85" stroke-width="4"')+
+    path('M-68 19 -28 3 39 3 75 20 61 46 -63 46Z','#71e9f4')+
+    path('M-60 24 -21 11 31 11 53 24','#d8ffff','stroke="#e1ffff" stroke-width="3" opacity=".35"')+
+    path('M-88 59 -97 78 100 78 93 58 45 54 -55 54Z','#efffe0')+
+    path('M-78 74 -62 69 -33 69 -39 85 -78 86Z','#d5ff69')+
+    path('M33 69 70 70 78 84 39 84Z','#d5ff69')+
+    path('M-51 88 56 88 64 95 -59 95Z','#385063')+
+    rr(-101,43,15,54,'#0d1422',5)+rr(85,43,15,54,'#0d1422',5)+
+    rr(-89,89,40,23,'#121824',7)+rr(51,89,40,23,'#121824',7)+
+    path('M-57 43 Q-15 37 56 44','none','stroke="#8cffad" stroke-width="5"')+
+    text(-74,116,'EXPLORE',15,'#eafff2','letter-spacing="3" opacity=".85"')+'</g>';
+  return sky+trail+trees+car+text(28,46,'OPEN WORLD',31,'#f5ffff','letter-spacing="1" opacity=".97"')+
+    text(28,67,'3D EXPEDITION',13,'#d5ff84','letter-spacing="3"');
+ }
+
  case 'pixelhop':{
   let blocks=range(10,i=>rr(i*59,244+(i%3===0?-40:0),60,100,'#17384c',3,'stroke="#69d8ff" stroke-opacity=".4" stroke-width="2"'))+
    range(6,i=>rr(41+i*90,175+((i*7)%5)*12,66,14,'#5273aa',2,'stroke="#aacbff" stroke-opacity=".5"'))+

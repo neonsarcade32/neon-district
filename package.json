@@ -15,7 +15,8 @@
     "test:visual3": "node tests/visual-3.cjs",
     "test:bowlingPhysics": "node tests/bowling-physics.cjs",
     "test:bowlingGameplay": "node tests/bowling-3-browser.cjs",
-    "test:openSource": "node tests/open-source-games.cjs"
+    "test:openSource": "node tests/open-source-games.cjs",
+    "test:offroad": "node tests/offroad-3d-browser.cjs"
   },
   "engines": {
     "node": ">=20"
