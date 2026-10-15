@@ -23,6 +23,17 @@
 @media(max-width:1050px){.gameGrid{grid-template-columns:repeat(3,1fr)}.hero{grid-template-columns:1fr}.sideFeatures{grid-template-columns:repeat(3,1fr);grid-template-rows:none}.feature{min-height:380px}.stats{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:740px){.nav{height:62px;padding:0 14px}.brand{font-size:15px}.navBtn.hideMobile{display:none}.wrap{padding:16px 14px 60px}.hero{gap:11px}.feature{min-height:360px;border-radius:22px}.featureContent{padding:24px}.feature h1{font-size:48px;letter-spacing:-2.8px}.skyline{width:74%;right:-9%;opacity:.65}.featureCars{right:5%;font-size:42px}.sideFeatures{grid-template-columns:repeat(3,1fr);gap:8px}.miniFeature{min-height:145px;padding:15px;border-radius:18px}.miniArt{font-size:38px;right:10px;top:16px}.miniFeature h3{font-size:17px}.miniFeature p{display:none}.quickbar{grid-template-columns:1fr}.randomBtn{width:100%}.gameGrid{grid-template-columns:repeat(2,1fr);gap:10px}.gameCard{min-height:245px}.preview{height:115px}.previewIcon{font-size:46px}.fav{top:126px}.gameCard h3{font-size:14px}.cardBody{padding:12px}.gameCard p{font-size:10px}.row{grid-auto-columns:78vw}.stats{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:470px){.sideFeatures{grid-template-columns:1fr}.feature{min-height:350px}.feature h1{font-size:43px}.featureContent{padding:20px}.feature p{font-size:12px}.gameGrid{grid-template-columns:1fr}.gameCard{min-height:270px}.preview{height:145px}.fav{top:156px}.stats{grid-template-columns:1fr 1fr}.footer{flex-direction:column;gap:7px}}
+
+.passportRibbon{display:flex;gap:18px;justify-content:space-between;align-items:center;border:1px solid #415277;border-radius:22px;background:linear-gradient(120deg,#102942,#1c1942 55%,#141b2a);padding:23px 26px;margin:13px 0 25px;box-shadow:inset 0 1px #ffffff16,0 14px 45px #0002}
+.passportRibbon small{display:block;color:#8de8f9;font-size:9px;font-weight:1000;letter-spacing:1.4px}
+.passportRibbon h2{font-size:24px;letter-spacing:-.7px;margin:8px 0}
+.passportRibbon h2 span{margin-left:8px;color:#f8d88a;font-size:11px;letter-spacing:1px}
+.passportRibbon p{color:#9fb2cc;font-size:11px;max-width:510px;line-height:1.5;margin:0}
+.passportRight{min-width:245px;width:33%}.passportRight>strong{display:block;text-align:right;font-size:12px;letter-spacing:1px;color:#d5edff}
+.passportProgress{height:12px;background:#202d43;border-radius:50px;overflow:hidden;margin:13px 0}
+.passportProgress i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#4ad8ff,#66e5af,#f7db7d);transition:width .4s}
+.passportRight button{width:100%;padding:11px 12px;border:1px solid #5ecdfb;border-radius:11px;background:#17435a;color:#e0f8ff;font-size:10px;font-weight:1000;cursor:pointer}
+@media(max-width:680px){.passportRibbon{flex-direction:column;align-items:stretch;padding:16px}.passportRight{width:100%}.passportRibbon h2{font-size:21px}}
 </style>
 </head>
 <body>
@@ -40,8 +51,9 @@
 </div>
 </section>
 
-<div class="stats"><div class="stat"><span>GAMES</span><strong id="gameCount">30</strong></div><div class="stat"><span>FAVORITES</span><strong id="favCount">0</strong></div><div class="stat"><span>RECENTLY PLAYED</span><strong id="playedCount">0</strong></div><div class="stat"><span>ARCADE STATUS</span><strong style="font-size:17px;color:#62e5a3">ONLINE</strong></div></div>
+<div class="stats"><div class="stat"><span>GAMES</span><strong id="gameCount">35</strong></div><div class="stat"><span>FAVORITES</span><strong id="favCount">0</strong></div><div class="stat"><span>RECENTLY PLAYED</span><strong id="playedCount">0</strong></div><div class="stat"><span>EXPLORATION PASSPORT</span><strong id="passportCount" style="color:#8addff">0/35</strong></div></div>
 
+<section class="passportRibbon" aria-labelledby="passportTitle"><div><small>NEON DISTRICT 3.0 · YOUR ARCADE JOURNEY</small><h2 id="passportTitle">🏅 Arcade Passport <span id="passportTier">ROOKIE</span></h2><p>Explore games across the whole arcade. Your high scores and existing saves stay exactly where they are.</p></div><div class="passportRight"><strong id="passportInfo">0 / 35 EXPLORED</strong><div class="passportProgress"><i id="passportBar"></i></div><button id="passportExplore">DISCOVER A NEW GAME →</button></div></section>
 <div class="quickbar"><div class="searchBox"><span class="searchIcon">⌕</span><input id="search" type="search" placeholder="Search all games..." autocomplete="off"></div><button class="randomBtn" id="randomBtn">↻ SURPRISE ME</button></div>
 <div class="tabs" id="tabs"><button class="tab active" data-cat="All">ALL GAMES</button><button class="tab" data-cat="Sports">SPORTS</button><button class="tab" data-cat="Racing">RACING</button><button class="tab" data-cat="Arcade">ARCADE</button><button class="tab" data-cat="Chill">CHILL</button><button class="tab" data-cat="Favorites">★ FAVORITES</button></div>
 
@@ -91,12 +103,36 @@ const games=[
 {id:'laser',name:'Laser Defender',file:'laser-defender.html',cat:'Arcade',tag:'Action',icon:'🔫',c1:'#4e1b40',c2:'#190e1d',desc:'Defend your lane against incoming threats and laser fire.',search:'laser defender arcade action'},
 {id:'rooftop',name:'Rooftop Run',file:'rooftop-run.html',cat:'Arcade',tag:'Parkour',icon:'🏃',c1:'#303353',c2:'#100e21',desc:'Dash between rooftops and keep your run alive.',search:'rooftop run platform parkour arcade'}
 ];
+
+const nd3PassportKey='nd3_arcade_passport';
+function getPassport(){try{const x=JSON.parse(localStorage.getItem(nd3PassportKey)||'null');return x&&Array.isArray(x.visited)?[...new Set(x.visited.filter(y=>typeof y==='string'))]:[]}catch(e){return []}}
+function markPassport(file){
+ const f=(file||'').split('?')[0].split('#')[0].split('/').pop();
+ if(!f||!games.some(g=>g.file.split('?')[0]===f))return;
+ const visited=getPassport();if(!visited.includes(f)){visited.push(f);try{localStorage.setItem(nd3PassportKey,JSON.stringify({visited}))}catch(e){}}
+ renderPassport()
+}
+function renderPassport(){
+ const visited=getPassport(),count=visited.filter(x=>games.some(g=>g.file.split('?')[0]===x)).length;
+ const tier=count>=35?'CITY LEGEND':count>=20?'ARCADE VETERAN':count>=10?'GAME HUNTER':count>=5?'EXPLORER':'ROOKIE';
+ document.getElementById('passportCount').textContent=count+'/35';
+ document.getElementById('passportTier').textContent=tier;
+ document.getElementById('passportInfo').textContent=count+' / 35 EXPLORED';
+ document.getElementById('passportBar').style.width=(count/35*100)+'%'
+}
+document.getElementById('passportExplore').onclick=()=>{
+ const played=new Set(getPassport());let unplayed=games.filter(g=>!played.has(g.file.split('?')[0]));
+ if(!unplayed.length)unplayed=games;
+ const g=unplayed[Math.floor(Math.random()*unplayed.length)];
+ saveRecent(g.name,g.file);location.href=g.file
+};
+
 const grid=document.getElementById('gameGrid'),search=document.getElementById('search'),empty=document.getElementById('empty'),result=document.getElementById('resultCount');
 let activeCat='All';
 function getRecent(){try{return JSON.parse(localStorage.getItem('charlie_recent')||'[]')}catch(e){return[]}}
 function getFavs(){try{return JSON.parse(localStorage.getItem('charlie_favorites')||'[]')}catch(e){return[]}}
 function setFavs(v){localStorage.setItem('charlie_favorites',JSON.stringify(v))}
-function saveRecent(name,href){let r=getRecent().filter(x=>x.href!==href);r.unshift({name:name,href:href});localStorage.setItem('charlie_recent',JSON.stringify(r.slice(0,6)))}
+function saveRecent(name,href){markPassport(href);let r=getRecent().filter(x=>x.href!==href);r.unshift({name:name,href:href});localStorage.setItem('charlie_recent',JSON.stringify(r.slice(0,6)))}
 function isFav(id){return getFavs().includes(id)}
 function toggleFav(id){let f=getFavs();f=f.includes(id)?f.filter(x=>x!==id):[id].concat(f);setFavs(f);renderAll()}
 function cardHtml(g){return '<a class="gameCard" href="'+g.file+'" data-id="'+g.id+'" data-launch="'+g.name+'" data-cat="'+g.cat+'"><div class="preview" style="--c1:'+g.c1+';--c2:'+g.c2+'"><span class="previewLabel">'+g.tag.toUpperCase()+'</span><span class="previewLines"></span><span class="previewIcon">'+g.icon+'</span></div><button class="fav '+(isFav(g.id)?'on':'')+'" type="button" aria-label="Favorite '+g.name+'" data-fav="'+g.id+'">'+(isFav(g.id)?'★':'☆')+'</button><div class="cardBody"><h3>'+g.name+'</h3><p>'+g.desc+'</p><div class="cardFoot"><span>'+g.cat.toUpperCase()+'</span><span class="playPill">PLAY →</span></div></div></a>'}
@@ -112,7 +148,7 @@ search.addEventListener('input',renderGrid);
 document.getElementById('randomBtn').onclick=()=>{const list=matching();if(!list.length)return;const g=list[Math.floor(Math.random()*list.length)];saveRecent(g.name,g.file);location.href=g.file};
 document.getElementById('favoritesJump').onclick=()=>{activeCat='Favorites';document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.cat==='Favorites'));renderGrid();document.getElementById('discover').scrollIntoView({behavior:'smooth'})};
 document.getElementById('gameCount').textContent=games.length;
-renderAll();
+renderAll();renderPassport();
 </script>
 </body>
 </html>
