@@ -1,4 +1,40 @@
-(()=>{'use strict';const CONTROL_KEYS=['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','d','w','s',' ','Spacebar'];function releaseControls(){for(const key of CONTROL_KEYS){const code=key===' '?'Space':key.startsWith('Arrow')?key:'';const ev=new KeyboardEvent('keyup',{key,code,bubbles:true});document.dispatchEvent(ev);window.dispatchEvent(ev)}}function pauseSupported(){if(document.hidden){const b=document.getElementById('pause');if(b&&!b.disabled&&b.offsetParent!==null&&!/resume/i.test(b.textContent||'')){try{b.click()}catch(e){}}}}function ready(){document.documentElement.classList.add('nd-polish-ready');document.body?.setAttribute('data-nd-quality','3');const title=(document.querySelector('h1')?.textContent||document.title||'Neon District game').trim();document.querySelectorAll('button').forEach(b=>{if(!b.getAttribute('aria-label')&&(b.textContent||'').trim())b.setAttribute('aria-label',(b.textContent||'').trim())});document.querySelectorAll('canvas').forEach(cv=>{cv.setAttribute('role','img');if(!cv.getAttribute('aria-label'))cv.setAttribute('aria-label',title+' game area');cv.addEventListener('contextmenu',e=>e.preventDefault())})}window.addEventListener('blur',releaseControls);window.addEventListener('pagehide',releaseControls);document.addEventListener('visibilitychange',()=>{releaseControls();pauseSupported()});window.addEventListener('pointercancel',releaseControls,true);window.addEventListener('error',()=>{if(document.querySelector('.nd-error-toast'))return;const el=document.createElement('div');el.className='nd-error-toast';el.textContent='Game error detected — reload this game if controls stop responding.';document.body?.appendChild(el);setTimeout(()=>el.remove(),3200)});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready,{once:true});else ready()
+(()=>{'use strict';const CONTROL_KEYS=['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','d','w','s',' ','Spacebar'];function releaseControls(){for(const key of CONTROL_KEYS){const code=key===' '?'Space':key.startsWith('Arrow')?key:'';const ev=new KeyboardEvent('keyup',{key,code,bubbles:true});document.dispatchEvent(ev);window.dispatchEvent(ev)}}function pauseSupported(){if(document.hidden){const b=document.getElementById('pause');if(b&&!b.disabled&&b.offsetParent!==null&&!/resume/i.test(b.textContent||'')){try{b.click()}catch(e){}}}}function ready(){document.documentElement.classList.add('nd-polish-ready');document.body?.setAttribute('data-nd-quality','3');const title=(document.querySelector('h1')?.textContent||document.title||'Neon District game').trim();document.querySelectorAll('a[href="index.html"]').forEach(a=>{if(/arcade 2\.0/i.test(a.textContent||''))a.textContent='← NEON DISTRICT 3.0'});const head=document.querySelector('.head')||document.querySelector('main h1');if(head&&!document.querySelector('.nd3-commandbar')){const bar=document.createElement('div');bar.className='nd3-commandbar';const brand=document.createElement('span');brand.textContent='NEON DISTRICT · 3.0';bar.appendChild(brand);if(document.fullscreenEnabled){const full=document.createElement('button');full.type='button';full.className='nd3-fullscreen';full.textContent='⛶ FULLSCREEN';full.setAttribute('aria-label','Toggle fullscreen for the game');full.onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await(document.querySelector('.stage')||document.querySelector('canvas')||document.documentElement).requestFullscreen()}catch(e){full.textContent='FULLSCREEN UNAVAILABLE'}};document.addEventListener('fullscreenchange',()=>{full.textContent=document.fullscreenElement?'⇲ EXIT FULLSCREEN':'⛶ FULLSCREEN'});bar.appendChild(full)}head.insertAdjacentElement('afterend',bar);
+ const passportKey='nd3_arcade_passport',thisGame=location.pathname.split('/').pop();
+ let passport={visited:[]};
+ try{
+  const saved=JSON.parse(localStorage.getItem(passportKey)||'null');
+  if(saved&&Array.isArray(saved.visited))passport={visited:[...new Set(saved.visited.filter(x=>typeof x==='string'))]};
+  if(thisGame&&thisGame.endsWith('.html')&&!passport.visited.includes(thisGame)){
+   passport.visited.push(thisGame);
+   localStorage.setItem(passportKey,JSON.stringify(passport))
+  }
+ }catch(_){}
+ const count=passport.visited.length;
+ const pass=document.createElement('button');pass.type='button';pass.className='nd3-passport';pass.textContent='🏅 PASSPORT '+count+'/35';pass.setAttribute('aria-label','View Neon District exploration passport');
+ bar.appendChild(pass);
+ const panel=document.createElement('div');panel.className='nd3-passport-panel';panel.hidden=true;
+ const score=Math.min(35,count),tier=score>=35?'CITY LEGEND':score>=20?'ARCADE VETERAN':score>=10?'GAME HUNTER':score>=5?'EXPLORER':'ROOKIE';
+ panel.innerHTML='<div class="nd3-passport-card"><h2>🏅 ARCADE PASSPORT</h2><p>'+score+' of 35 games explored on this device.</p><div class="nd3-passport-track"><i style="width:'+Math.round(score/35*100)+'%"></i></div><strong>'+tier+'</strong><p>Play more titles to explore the whole arcade. Your existing game saves and high scores are not changed.</p><button class="nd3-passport-close" type="button">CLOSE</button></div>';
+ document.body.appendChild(panel);
+ const showPass=()=>{panel.hidden=false;panel.querySelector('.nd3-passport-close')?.focus()};
+ pass.onclick=showPass;
+ panel.querySelector('.nd3-passport-close').onclick=()=>{panel.hidden=true;pass.focus()};
+ panel.addEventListener('click',e=>{if(e.target===panel)panel.hidden=true});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){panel.hidden=true;pass.focus()}});
+ const helpText=document.querySelector('.help')?.textContent?.trim();
+ if(helpText){
+  const help=document.createElement('button');help.type='button';help.className='nd3-help';help.textContent='? CONTROLS';help.setAttribute('aria-label','View game controls');
+  help.title=helpText;
+  help.onclick=()=>{const existing=document.querySelector('.nd3-control-tip');if(existing){existing.remove();return}const tip=document.createElement('div');tip.className='nd3-control-tip';tip.setAttribute('role','status');tip.textContent=helpText;document.body.appendChild(tip);setTimeout(()=>tip.remove(),6500)};
+  bar.appendChild(help)
+ }
+ const targetCanvas=document.querySelector('canvas');
+ if(targetCanvas){
+  const shot=document.createElement('button');shot.type='button';shot.className='nd3-snapshot';shot.textContent='📸 SNAPSHOT';shot.setAttribute('aria-label','Save a screenshot of the game canvas');
+  shot.onclick=()=>{try{const a=document.createElement('a');a.download='neon-district-'+thisGame.replace('.html','')+'-screenshot.png';a.href=targetCanvas.toDataURL('image/png');a.click()}catch(e){shot.textContent='CAPTURE UNAVAILABLE';setTimeout(()=>shot.textContent='📸 SNAPSHOT',2000)}};
+  bar.appendChild(shot)
+ }
+}document.querySelectorAll('button').forEach(b=>{if(!b.getAttribute('aria-label')&&(b.textContent||'').trim())b.setAttribute('aria-label',(b.textContent||'').trim())});document.querySelectorAll('canvas').forEach(cv=>{cv.setAttribute('role','img');if(!cv.getAttribute('aria-label'))cv.setAttribute('aria-label',title+' game area');cv.addEventListener('contextmenu',e=>e.preventDefault())})}window.addEventListener('blur',releaseControls);window.addEventListener('pagehide',releaseControls);document.addEventListener('visibilitychange',()=>{releaseControls();pauseSupported()});window.addEventListener('pointercancel',releaseControls,true);window.addEventListener('error',()=>{if(document.querySelector('.nd-error-toast'))return;const el=document.createElement('div');el.className='nd-error-toast';el.textContent='Game error detected — reload this game if controls stop responding.';document.body?.appendChild(el);setTimeout(()=>el.remove(),3200)});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready,{once:true});else ready()
 function stage(){return document.querySelector('.stage')||document.querySelector('canvas')?.parentElement||document.body}
 function pop(el){if(!el)return;el.classList.remove('nd-pop');void el.offsetWidth;el.classList.add('nd-pop');setTimeout(()=>el.classList.remove('nd-pop'),280)}
 function shake(){const el=stage();if(!el)return;el.classList.remove('nd-shake');void el.offsetWidth;el.classList.add('nd-shake');setTimeout(()=>el.classList.remove('nd-shake'),300)}

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#07090f">
-<title>Neon District 3.1</title>
+<title>Neon District 3.0</title>
 <style>
 :root{--bg:#07090f;--panel:#0f1420;--panel2:#151c2b;--line:#273247;--text:#f7f9ff;--muted:#8c98ad;--cyan:#52dcff;--green:#59e8a4;--violet:#8f72ff;--gold:#ffd15c}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(circle at 15% -10%,#23184d 0,transparent 33%),radial-gradient(circle at 88% 4%,#0d3850 0,transparent 30%),linear-gradient(#07090f,#090d15 70%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,a{font:inherit}button{cursor:pointer}a{color:inherit}
@@ -23,10 +23,21 @@
 @media(max-width:1050px){.gameGrid{grid-template-columns:repeat(3,1fr)}.hero{grid-template-columns:1fr}.sideFeatures{grid-template-columns:repeat(3,1fr);grid-template-rows:none}.feature{min-height:380px}.stats{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:740px){.nav{height:62px;padding:0 14px}.brand{font-size:15px}.navBtn.hideMobile{display:none}.wrap{padding:16px 14px 60px}.hero{gap:11px}.feature{min-height:360px;border-radius:22px}.featureContent{padding:24px}.feature h1{font-size:48px;letter-spacing:-2.8px}.skyline{width:74%;right:-9%;opacity:.65}.featureCars{right:5%;font-size:42px}.sideFeatures{grid-template-columns:repeat(3,1fr);gap:8px}.miniFeature{min-height:145px;padding:15px;border-radius:18px}.miniArt{font-size:38px;right:10px;top:16px}.miniFeature h3{font-size:17px}.miniFeature p{display:none}.quickbar{grid-template-columns:1fr}.randomBtn{width:100%}.gameGrid{grid-template-columns:repeat(2,1fr);gap:10px}.gameCard{min-height:245px}.preview{height:115px}.previewIcon{font-size:46px}.fav{top:126px}.gameCard h3{font-size:14px}.cardBody{padding:12px}.gameCard p{font-size:10px}.row{grid-auto-columns:78vw}.stats{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:470px){.sideFeatures{grid-template-columns:1fr}.feature{min-height:350px}.feature h1{font-size:43px}.featureContent{padding:20px}.feature p{font-size:12px}.gameGrid{grid-template-columns:1fr}.gameCard{min-height:270px}.preview{height:145px}.fav{top:156px}.stats{grid-template-columns:1fr 1fr}.footer{flex-direction:column;gap:7px}}
+
+.passportRibbon{display:flex;gap:18px;justify-content:space-between;align-items:center;border:1px solid #415277;border-radius:22px;background:linear-gradient(120deg,#102942,#1c1942 55%,#141b2a);padding:23px 26px;margin:13px 0 25px;box-shadow:inset 0 1px #ffffff16,0 14px 45px #0002}
+.passportRibbon small{display:block;color:#8de8f9;font-size:9px;font-weight:1000;letter-spacing:1.4px}
+.passportRibbon h2{font-size:24px;letter-spacing:-.7px;margin:8px 0}
+.passportRibbon h2 span{margin-left:8px;color:#f8d88a;font-size:11px;letter-spacing:1px}
+.passportRibbon p{color:#9fb2cc;font-size:11px;max-width:510px;line-height:1.5;margin:0}
+.passportRight{min-width:245px;width:33%}.passportRight>strong{display:block;text-align:right;font-size:12px;letter-spacing:1px;color:#d5edff}
+.passportProgress{height:12px;background:#202d43;border-radius:50px;overflow:hidden;margin:13px 0}
+.passportProgress i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#4ad8ff,#66e5af,#f7db7d);transition:width .4s}
+.passportRight button{width:100%;padding:11px 12px;border:1px solid #5ecdfb;border-radius:11px;background:#17435a;color:#e0f8ff;font-size:10px;font-weight:1000;cursor:pointer}
+@media(max-width:680px){.passportRibbon{flex-direction:column;align-items:stretch;padding:16px}.passportRight{width:100%}.passportRibbon h2{font-size:21px}}
 </style>
 </head>
 <body>
-<header class="topbar"><nav class="nav"><a class="brand" href="index.html"><span class="brandmark">N</span><span>Neon District<small>ARCADE 3.1 LIVE</small></span></a><div class="navActions"><button class="navBtn" id="favoritesJump">★ Favorites</button><a class="navBtn hideMobile" href="search.html?v=external">⌕ Web Search</a><a class="navBtn hideMobile" href="https://github.com/neonsarcade32/neon-district">GitHub</a></div></nav></header>
+<header class="topbar"><nav class="nav"><a class="brand" href="index.html"><span class="brandmark">N</span><span>Neon District<small>ARCADE 3.0 · EXPANSION</small></span></a><div class="navActions"><button class="navBtn" id="favoritesJump">★ Favorites</button><a class="navBtn hideMobile" href="search.html?v=external">⌕ Web Search</a><a class="navBtn hideMobile" href="https://github.com/neonsarcade32/neon-district">GitHub</a></div></nav></header>
 <main class="wrap">
 <section class="hero">
 <a class="feature" href="arcade-city.html?v=3.3" data-launch="Arcade City 3D">
@@ -40,17 +51,18 @@
 </div>
 </section>
 
-<div class="stats"><div class="stat"><span>GAMES</span><strong id="gameCount">30</strong></div><div class="stat"><span>FAVORITES</span><strong id="favCount">0</strong></div><div class="stat"><span>RECENTLY PLAYED</span><strong id="playedCount">0</strong></div><div class="stat"><span>ARCADE STATUS</span><strong style="font-size:17px;color:#62e5a3">ONLINE</strong></div></div>
+<div class="stats"><div class="stat"><span>GAMES</span><strong id="gameCount">35</strong></div><div class="stat"><span>FAVORITES</span><strong id="favCount">0</strong></div><div class="stat"><span>RECENTLY PLAYED</span><strong id="playedCount">0</strong></div><div class="stat"><span>EXPLORATION PASSPORT</span><strong id="passportCount" style="color:#8addff">0/35</strong></div></div>
 
+<section class="passportRibbon" aria-labelledby="passportTitle"><div><small>NEON DISTRICT 3.0 · YOUR ARCADE JOURNEY</small><h2 id="passportTitle">🏅 Arcade Passport <span id="passportTier">ROOKIE</span></h2><p>Explore games across the whole arcade. Your high scores and existing saves stay exactly where they are.</p></div><div class="passportRight"><strong id="passportInfo">0 / 35 EXPLORED</strong><div class="passportProgress"><i id="passportBar"></i></div><button id="passportExplore">DISCOVER A NEW GAME →</button></div></section>
 <div class="quickbar"><div class="searchBox"><span class="searchIcon">⌕</span><input id="search" type="search" placeholder="Search all games..." autocomplete="off"></div><button class="randomBtn" id="randomBtn">↻ SURPRISE ME</button></div>
 <div class="tabs" id="tabs"><button class="tab active" data-cat="All">ALL GAMES</button><button class="tab" data-cat="Sports">SPORTS</button><button class="tab" data-cat="Racing">RACING</button><button class="tab" data-cat="Arcade">ARCADE</button><button class="tab" data-cat="Chill">CHILL</button><button class="tab" data-cat="Favorites">★ FAVORITES</button></div>
 
 <section class="section hidden" id="favoriteSection"><div class="sectionHead"><div class="sectionTitle"><h2>★ Favorites</h2><p>Your saved games on this device.</p></div></div><div class="row" id="favoriteRow"></div></section>
 <section class="section hidden" id="recentSection"><div class="sectionHead"><div class="sectionTitle"><h2>Continue playing</h2><p>Jump back into your most recent games.</p></div></div><div class="smallRow" id="recentRow"></div></section>
 
-<section class="section" id="discover"><div class="sectionHead"><div class="sectionTitle"><h2 id="sectionTitle">All games</h2><p id="sectionSub">30 games across sports, racing, arcade, and chill.</p></div><span class="sectionMeta" id="resultCount">30 GAMES</span></div><div class="gameGrid" id="gameGrid"></div><div class="empty hidden" id="empty">No games match that search or category.</div></section>
+<section class="section" id="discover"><div class="sectionHead"><div class="sectionTitle"><h2 id="sectionTitle">All games</h2><p id="sectionSub">35 games across sports, racing, arcade, and chill.</p></div><span class="sectionMeta" id="resultCount">35 GAMES</span></div><div class="gameGrid" id="gameGrid"></div><div class="empty hidden" id="empty">No games match that search or category.</div></section>
 
-<footer class="footer"><span>Neon District · Arcade 3.1</span><span>Old saves stay on your device.</span></footer>
+<footer class="footer"><span>Neon District · Arcade 3.0</span><span>Old saves stay on your device.</span></footer>
 </main>
 <script>
 const games=[
@@ -70,7 +82,7 @@ const games=[
 {id:'basketball',name:'Basketball Shootout',file:'basketball.html',cat:'Sports',tag:'Hoops',icon:'🏀',c1:'#4b2b12',c2:'#160e08',desc:'Hit the green release and build a hot streak.',search:'basketball shootout hoops sports'},
 {id:'qb',name:'QB Challenge',file:'qb.html',cat:'Sports',tag:'Featured',icon:'🏈',c1:'#163d27',c2:'#0a1510',desc:'Move in the pocket, lead receivers, avoid defenders.',search:'qb challenge football quarterback sports'},
 {id:'derby',name:'Home Run Derby',file:'derby.html',cat:'Sports',tag:'Featured',icon:'⚾',c1:'#4b241b',c2:'#150d0a',desc:'Track the pitch, time your swing, launch home runs.',search:'home run derby baseball sports'},
-{id:'city',name:'Arcade City 3D',file:'arcade-city.html?v=3.3',cat:'Racing',tag:'3.1 Featured',icon:'🏙️',c1:'#13394b',c2:'#0b121a',desc:'Huge open world with seamless walk-in houses and shops, buyable homes, on-foot exploration, races, police, customization, and multiplayer.',search:'arcade city 3d 3.0 driving walking character buildings open world racing multiplayer cars'},
+{id:'city',name:'Arcade City 3D',file:'arcade-city.html?v=3.3',cat:'Racing',tag:'World Featured',icon:'🏙️',c1:'#13394b',c2:'#0b121a',desc:'Huge open world with seamless walk-in houses and shops, buyable homes, on-foot exploration, races, police, customization, and multiplayer.',search:'arcade city 3d 3.0 driving walking character buildings open world racing multiplayer cars'},
 {id:'idle',name:'Idle Empire',file:'idle.html',cat:'Chill',tag:'Idle',icon:'💼',c1:'#273052',c2:'#10131e',desc:'Build businesses, automate income, prestige, grow.',search:'idle empire business tycoon chill'},
 {id:'tap',name:'Tap Challenge',file:'tap.html',cat:'Arcade',tag:'Speed',icon:'👆',c1:'#4a1d43',c2:'#160d16',desc:'Tap fast, build your score, beat your best.',search:'tap challenge clicking speed'},
 {id:'fieldgoal',name:'Field Goal Frenzy',file:'field-goal.html',cat:'Sports',tag:'Skill',icon:'🏈',c1:'#17492d',c2:'#0c1710',desc:'Read the wind, time your aim, and drill ten kicks.',search:'field goal football kick sports skill'},
@@ -83,19 +95,49 @@ const games=[
 {id:'bowling',name:'Neon Bowling 3D',file:'bowling.html?v=3d2',cat:'Sports',tag:'Featured',icon:'🎳',c1:'#153548',c2:'#09131c',desc:'Full 3D bowling with real frames, hook, aim, moving power, strikes, and spares.',search:'bowling 3d sports strike spare hook featured'},
 {id:'beattiles',name:'Beat Tiles',file:'beat-tiles.html?v=3',cat:'Arcade',tag:'Rhythm',icon:'🎵',c1:'#3a2055',c2:'#120c1b',desc:'Hit four rhythm lanes with real timing grades, combos, and accuracy.',search:'beat tiles rhythm timing arcade music'},
 {id:'claw',name:'Claw Machine',file:'claw-machine.html?v=3',cat:'Chill',tag:'Skill',icon:'🕹️',c1:'#153a4f',c2:'#09131b',desc:'Control the crane, grab prizes, and deliver them to the chute.',search:'claw machine arcade prize skill chill'},
-{id:'colordash',name:'Color Dash',file:'color-dash.html?v=3',cat:'Arcade',tag:'Reaction',icon:'🎨',c1:'#3e2052',c2:'#120c18',desc:'Switch among four colors as neon gates rush toward the line.',search:'color dash arcade reaction match'}
+{id:'colordash',name:'Color Dash',file:'color-dash.html?v=3',cat:'Arcade',tag:'Reaction',icon:'🎨',c1:'#3e2052',c2:'#120c18',desc:'Switch among four colors as neon gates rush toward the line.',search:'color dash arcade reaction match'},
+
+{id:'freethrow',name:'Free Throw Challenge',file:'free-throw.html',cat:'Sports',tag:'Hoops',icon:'🏀',c1:'#4c2b13',c2:'#140f0b',desc:'Chase perfect releases and build your basketball streak.',search:'free throw basketball sports timing'},
+{id:'goalkeeper',name:'Goalkeeper Challenge',file:'goalkeeper.html',cat:'Sports',tag:'Soccer',icon:'🥅',c1:'#164333',c2:'#0a1812',desc:'Read the shot, move your keeper, and make the save.',search:'goalkeeper soccer save sports'},
+{id:'highway',name:'Highway Escape',file:'highway.html',cat:'Racing',tag:'Driving',icon:'🚘',c1:'#273b58',c2:'#0b1422',desc:'Dodge traffic at speed and survive the highway.',search:'highway car driving racing traffic'},
+{id:'laser',name:'Laser Defender',file:'laser-defender.html',cat:'Arcade',tag:'Action',icon:'🔫',c1:'#4e1b40',c2:'#190e1d',desc:'Defend your lane against incoming threats and laser fire.',search:'laser defender arcade action'},
+{id:'rooftop',name:'Rooftop Run',file:'rooftop-run.html',cat:'Arcade',tag:'Parkour',icon:'🏃',c1:'#303353',c2:'#100e21',desc:'Dash between rooftops and keep your run alive.',search:'rooftop run platform parkour arcade'}
 ];
+
+const nd3PassportKey='nd3_arcade_passport';
+function getPassport(){try{const x=JSON.parse(localStorage.getItem(nd3PassportKey)||'null');return x&&Array.isArray(x.visited)?[...new Set(x.visited.filter(y=>typeof y==='string'))]:[]}catch(e){return []}}
+function markPassport(file){
+ const f=(file||'').split('?')[0].split('#')[0].split('/').pop();
+ if(!f||!games.some(g=>g.file.split('?')[0]===f))return;
+ const visited=getPassport();if(!visited.includes(f)){visited.push(f);try{localStorage.setItem(nd3PassportKey,JSON.stringify({visited}))}catch(e){}}
+ renderPassport()
+}
+function renderPassport(){
+ const visited=getPassport(),count=visited.filter(x=>games.some(g=>g.file.split('?')[0]===x)).length;
+ const tier=count>=35?'CITY LEGEND':count>=20?'ARCADE VETERAN':count>=10?'GAME HUNTER':count>=5?'EXPLORER':'ROOKIE';
+ document.getElementById('passportCount').textContent=count+'/35';
+ document.getElementById('passportTier').textContent=tier;
+ document.getElementById('passportInfo').textContent=count+' / 35 EXPLORED';
+ document.getElementById('passportBar').style.width=(count/35*100)+'%'
+}
+document.getElementById('passportExplore').onclick=()=>{
+ const played=new Set(getPassport());let unplayed=games.filter(g=>!played.has(g.file.split('?')[0]));
+ if(!unplayed.length)unplayed=games;
+ const g=unplayed[Math.floor(Math.random()*unplayed.length)];
+ saveRecent(g.name,g.file);location.href=g.file
+};
+
 const grid=document.getElementById('gameGrid'),search=document.getElementById('search'),empty=document.getElementById('empty'),result=document.getElementById('resultCount');
 let activeCat='All';
 function getRecent(){try{return JSON.parse(localStorage.getItem('charlie_recent')||'[]')}catch(e){return[]}}
 function getFavs(){try{return JSON.parse(localStorage.getItem('charlie_favorites')||'[]')}catch(e){return[]}}
 function setFavs(v){localStorage.setItem('charlie_favorites',JSON.stringify(v))}
-function saveRecent(name,href){let r=getRecent().filter(x=>x.href!==href);r.unshift({name:name,href:href});localStorage.setItem('charlie_recent',JSON.stringify(r.slice(0,6)))}
+function saveRecent(name,href){markPassport(href);let r=getRecent().filter(x=>x.href!==href);r.unshift({name:name,href:href});localStorage.setItem('charlie_recent',JSON.stringify(r.slice(0,6)))}
 function isFav(id){return getFavs().includes(id)}
 function toggleFav(id){let f=getFavs();f=f.includes(id)?f.filter(x=>x!==id):[id].concat(f);setFavs(f);renderAll()}
 function cardHtml(g){return '<a class="gameCard" href="'+g.file+'" data-id="'+g.id+'" data-launch="'+g.name+'" data-cat="'+g.cat+'"><div class="preview" style="--c1:'+g.c1+';--c2:'+g.c2+'"><span class="previewLabel">'+g.tag.toUpperCase()+'</span><span class="previewLines"></span><span class="previewIcon">'+g.icon+'</span></div><button class="fav '+(isFav(g.id)?'on':'')+'" type="button" aria-label="Favorite '+g.name+'" data-fav="'+g.id+'">'+(isFav(g.id)?'★':'☆')+'</button><div class="cardBody"><h3>'+g.name+'</h3><p>'+g.desc+'</p><div class="cardFoot"><span>'+g.cat.toUpperCase()+'</span><span class="playPill">PLAY →</span></div></div></a>'}
 function matching(){const q=search.value.trim().toLowerCase(),favs=getFavs();return games.filter(g=>(activeCat==='All'||g.cat===activeCat||(activeCat==='Favorites'&&favs.includes(g.id)))&&(!q||(g.name+' '+g.search+' '+g.cat).toLowerCase().includes(q)))}
-function renderGrid(){const list=matching();grid.innerHTML=list.map(cardHtml).join('');result.textContent=list.length+' '+(list.length===1?'GAME':'GAMES');empty.classList.toggle('hidden',!!list.length);document.getElementById('sectionTitle').textContent=activeCat==='All'?'All games':activeCat;document.getElementById('sectionSub').textContent=activeCat==='Favorites'?'Games you starred on this device.':activeCat==='All'?'30 games across sports, racing, arcade, and chill.':'Browse '+activeCat.toLowerCase()+' games.';bindCards()}
+function renderGrid(){const list=matching();grid.innerHTML=list.map(cardHtml).join('');result.textContent=list.length+' '+(list.length===1?'GAME':'GAMES');empty.classList.toggle('hidden',!!list.length);document.getElementById('sectionTitle').textContent=activeCat==='All'?'All games':activeCat;document.getElementById('sectionSub').textContent=activeCat==='Favorites'?'Games you starred on this device.':activeCat==='All'?'35 games across sports, racing, arcade, and chill.':'Browse '+activeCat.toLowerCase()+' games.';bindCards()}
 function renderFavorites(){const favs=getFavs(),list=favs.map(id=>games.find(g=>g.id===id)).filter(Boolean),section=document.getElementById('favoriteSection'),row=document.getElementById('favoriteRow');section.classList.toggle('hidden',!list.length);row.innerHTML=list.map(cardHtml).join('');document.getElementById('favCount').textContent=list.length;bindCards()}
 function renderRecent(){const r=getRecent(),section=document.getElementById('recentSection'),box=document.getElementById('recentRow');section.classList.toggle('hidden',!r.length);document.getElementById('playedCount').textContent=r.length;box.innerHTML=r.map(x=>{const g=games.find(y=>y.file===x.href||y.name===x.name);return '<a class="chip" href="'+x.href+'" data-launch="'+x.name+'"><span>'+(g?g.icon:'▶')+'</span>'+x.name+'</a>'}).join('');bindLaunches()}
 function bindLaunches(){document.querySelectorAll('[data-launch]').forEach(el=>{if(el.dataset.bound)return;el.dataset.bound='1';el.addEventListener('click',()=>saveRecent(el.dataset.launch,el.getAttribute('href')))})}
@@ -106,7 +148,7 @@ search.addEventListener('input',renderGrid);
 document.getElementById('randomBtn').onclick=()=>{const list=matching();if(!list.length)return;const g=list[Math.floor(Math.random()*list.length)];saveRecent(g.name,g.file);location.href=g.file};
 document.getElementById('favoritesJump').onclick=()=>{activeCat='Favorites';document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.cat==='Favorites'));renderGrid();document.getElementById('discover').scrollIntoView({behavior:'smooth'})};
 document.getElementById('gameCount').textContent=games.length;
-renderAll();
+renderAll();renderPassport();
 </script>
 </body>
 </html>

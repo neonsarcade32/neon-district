@@ -12,3 +12,32 @@ html{scroll-behavior:smooth}body{padding-left:max(env(safe-area-inset-left),0px)
 @keyframes ndPop{0%{transform:scale(1)}45%{transform:scale(1.16)}100%{transform:scale(1)}}
 @keyframes ndShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
 @keyframes ndFlash{from{opacity:.13}to{opacity:0}}
+
+/* Neon District 3.0 shared game toolbar */
+.nd3-commandbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:10px 0 13px;padding:9px 13px;border:1px solid #47617d55;border-radius:13px;background:linear-gradient(95deg,#0d2030bb,#19122ebb);box-shadow:inset 0 1px #ffffff12,0 8px 28px #0002}
+.nd3-commandbar span{color:#8edffa;font:900 10px/1.35 system-ui,sans-serif;letter-spacing:1.25px}
+.nd3-commandbar button{border:1px solid #4b7690;border-radius:9px;background:#132e44;color:#dff7ff;padding:9px 13px;font:900 10px system-ui;letter-spacing:.5px;min-height:38px}
+.nd3-commandbar button:hover{border-color:#78e9ff;background:#194765}
+.nd3-commandbar button:focus-visible{outline:3px solid #87e9ff;outline-offset:3px}
+.nd-polish-ready .hud .box,.nd-polish-ready .hud .stat{box-shadow:inset 0 1px #ffffff0b,0 7px 24px #00000015}
+@media(max-width:480px){.nd3-commandbar{padding:8px 10px}.nd3-commandbar span{font-size:8px;letter-spacing:.8px}.nd3-commandbar button{padding:8px 9px;font-size:9px}}
+
+/* Neon District 3.0 universal game chrome, accessibility and passport */
+.nd3-commandbar{flex-wrap:wrap;justify-content:flex-end;gap:7px}
+.nd3-commandbar>span{margin-right:auto;min-width:max-content;flex:1}
+.nd3-commandbar button{white-space:nowrap}
+.nd3-commandbar .nd3-passport{border-color:#8866b5;background:#221a40;color:#e4d4ff}
+.nd3-commandbar .nd3-passport:hover{background:#39255f}
+.nd3-commandbar .nd3-help{border-color:#7b6994;background:#22192c;color:#e6d5f4}
+.nd3-commandbar .nd3-snapshot{border-color:#277b6a;background:#11352f;color:#b7ffe7}
+.nd3-control-tip{position:fixed;bottom:max(16px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);max-width:min(480px,calc(100vw - 24px));padding:15px 17px;border:1px solid #55869e;border-radius:15px;background:#101d2deF;color:#e0f8ff;box-shadow:0 25px 75px #000a;font:750 12px/1.5 system-ui;z-index:99990;pointer-events:none}
+.nd3-passport-panel{position:fixed;z-index:99985;inset:0;display:grid;place-items:center;padding:17px;background:#060711dd;backdrop-filter:blur(11px);font-family:system-ui}
+.nd3-passport-panel[hidden]{display:none!important}
+.nd3-passport-card{width:min(440px,100%);padding:26px;border-radius:24px;border:1px solid #59649d;background:linear-gradient(135deg,#142940,#19152c);box-shadow:0 30px 110px #000c;color:#f3fcff}
+.nd3-passport-card h2{font:1000 23px system-ui;letter-spacing:-1px;margin:0}
+.nd3-passport-card p{font:550 13px/1.6 system-ui;color:#aebfd4}
+.nd3-passport-card strong{font:950 15px system-ui;color:#e7d28e;letter-spacing:.8px}
+.nd3-passport-track{height:11px;border-radius:12px;background:#27364d;overflow:hidden;margin:22px 0}
+.nd3-passport-track i{display:block;height:100%;background:linear-gradient(90deg,#51d7f9,#76ebbf,#f2d07e);border-radius:inherit}
+.nd3-passport-close{width:100%;background:#294968;border:1px solid #5796bf;border-radius:12px;color:#ecfbff;padding:13px;font:950 12px system-ui;cursor:pointer}
+@media(max-width:540px){.nd3-commandbar>span{width:100%;flex:none;text-align:center}.nd3-commandbar button{flex:1;padding:8px!important;font-size:8px!important;min-height:41px}.nd3-control-tip{font-size:11px}}

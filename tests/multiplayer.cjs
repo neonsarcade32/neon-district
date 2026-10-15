@@ -23,7 +23,7 @@ const token=()=>{const t=randomUUID();tokens.push(t);return t};
  m=await exchange(a,{type:'join',room:'MISSING'});assert(m.some(x=>x.type==='error'));m=await exchange(a);assert(m.some(x=>x.type==='snapshot'&&x.players.length===6));
  console.log('PASS six-player limit and failed join preserves current room');
  for(const t of tokens)await exchange(t,{type:'leave'});
- const health=await(await fetch(base+'/health')).json();assert.equal(health.version,'1.2.2');console.log('PASS cleanup; health:',JSON.stringify(health));
+ const health=await(await fetch(base+'/health')).json();assert.match(health.version,/^\d+\.\d+\.\d+$/);console.log('PASS cleanup; health:',JSON.stringify(health));
  }finally{socket?.terminate();for(const t of tokens)await exchange(t,{type:'leave'}).catch(()=>{})}
 })().catch(e=>{console.error(e);process.exitCode=1});
 

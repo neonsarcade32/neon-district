@@ -6,7 +6,11 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test:multiplayer": "node tests/multiplayer.cjs"
+    "test:multiplayer": "node tests/multiplayer.cjs",
+    "test:arcade": "node tests/arcade-integrity.cjs",
+    "test:browser": "node tests/arcade-browser.cjs",
+    "test:gameplay": "node tests/arcade-gameplay.cjs",
+    "test:bowling": "node tests/bowling-rules.cjs"
   },
   "engines": {
     "node": ">=20"
@@ -14,6 +18,8 @@
   "dependencies": {
     "express": "^4.21.2",
     "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.1"
   }
 }
-
