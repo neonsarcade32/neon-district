@@ -80,9 +80,19 @@ app.get('/mp/jsonp', (req, res) => {
   if (peer.roomCode) messages.push({ type: 'snapshot', players: roomPlayers(peer.roomCode) });
   reply({ messages });
 });
-// Serve only public game assets, never server source or dependencies.
+// Serve browser game scripts as well as pages; never serve server.js or dependencies.
+const PUBLIC_GAME_SCRIPTS = new Set([
+  'arcade-polish.js', 'beat-tiles.js', 'bowling-2.js',
+  'circuit-hacker.js', 'claw-machine.js', 'color-dash-2.js',
+  'game-pack-2.js', 'highway-2.js', 'laser-defender.js',
+  'mini-pack.js', 'new-games.js', 'penalty-2.js', 'rooftop-run.js'
+]);
 app.use((req, res, next) => {
-  if (req.path !== '/' && !/^\/[^/]+\.(html|css|png|jpg|svg|ico)$/.test(req.path) && req.path !== '/new-games.js') return res.sendStatus(404);
+  const asset = req.path.slice(1);
+  const isPageOrStyle = /^\/[^/]+\.(html|css|png|jpg|svg|ico)$/.test(req.path);
+  if (req.path !== '/' && !isPageOrStyle && !PUBLIC_GAME_SCRIPTS.has(asset)) {
+    return res.sendStatus(404);
+  }
   next();
 });
 app.use(express.static(__dirname, { dotfiles: 'ignore', index: 'index.html', maxAge: 0, setHeaders: res => res.setHeader('Cache-Control', 'no-cache') }));
