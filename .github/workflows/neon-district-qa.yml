@@ -2,7 +2,7 @@ name: Neon District 3.0 game QA
 
 on:
   push:
-    branches: [main, neon-district-3.0-upgrade, neon-district-3-visual-rebuild]
+    branches: [main, neon-district-3.0-upgrade, neon-district-3-visual-rebuild, bowling-3-1-real-physics]
   pull_request:
     branches: [main]
 
@@ -26,6 +26,8 @@ jobs:
         run: npm run test:arcade
       - name: 3D Bowling scoring rules
         run: npm run test:bowling
+      - name: Bowling 3.1 honest physics, gutter and rack unit tests
+        run: npm run test:bowlingPhysics
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Start arcade test server
@@ -44,6 +46,8 @@ jobs:
         run: npm run test:browser
       - name: Real gameplay checks — upgraded modes and flagship UI
         run: npm run test:gameplay
+      - name: Bowling 3.1 real browser strikes, pinsetter and tenth-frame rules
+        run: npm run test:bowlingGameplay
       - name: Visual regression — all 35 games at desktop and mobile widths
         run: npm run test:visual
       - name: Upload visual gallery screenshots
