@@ -447,6 +447,11 @@ if(['127.0.0.1','localhost'].includes(location.hostname)&&new URLSearchParams(lo
    if(phase!=='setup')return false;
    playerX=clamp(x,-2.35,2.35);aim=clamp(a,-1,1);hook=clamp(h,-1,1);
    $('hook').value=hook*100;ball.position.x=playerX;updateAimGuide();updateUI();return true
+  },
+  jumpToTenth:()=>{
+   if(!running||mode!=='classic'||phase!=='setup')return false;
+   frameIndex=9;for(let i=0;i<9;i++)frames[i].rolls=[0,0];
+   frames[9].rolls=[];pinAlive=Array(10).fill(true);centerLine();resetPinObjects(true);setupBall();renderScoreboard();return true
   }
  }
 }
