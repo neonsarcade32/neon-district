@@ -201,6 +201,43 @@ const dayColor=new THREE.Color(0x86a7c5),nightColor=new THREE.Color(0x0a1022),sk
 
 const ground=new THREE.Mesh(new THREE.PlaneGeometry(4050,4050),new THREE.MeshStandardMaterial({color:0x39543d,roughness:1}));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
 const city=new THREE.Group();scene.add(city);
+
+/* Neon District 3.0: in-world illuminated district markers.
+   Purely decorative, no collision geometry or gameplay interference. */
+const nd3BeaconTexCanvas=document.createElement('canvas');nd3BeaconTexCanvas.width=1024;nd3BeaconTexCanvas.height=320;
+const nd3BeaconTexCtx=nd3BeaconTexCanvas.getContext('2d');
+let nd3Glow=nd3BeaconTexCtx.createLinearGradient(0,0,1024,320);
+nd3Glow.addColorStop(0,'rgba(8,40,63,.92)');nd3Glow.addColorStop(1,'rgba(13,29,47,.94)');
+nd3BeaconTexCtx.fillStyle=nd3Glow;nd3BeaconTexCtx.fillRect(0,0,1024,320);
+nd3BeaconTexCtx.strokeStyle='#9ff4ff';nd3BeaconTexCtx.lineWidth=9;nd3BeaconTexCtx.strokeRect(17,17,990,286);
+nd3BeaconTexCtx.fillStyle='#d9ff72';nd3BeaconTexCtx.font='1000 123px system-ui';nd3BeaconTexCtx.fillText('NEON',57,164);
+nd3BeaconTexCtx.fillStyle='#e9fbff';nd3BeaconTexCtx.fillText('DISTRICT 3.0',405,164);
+nd3BeaconTexCtx.font='900 38px system-ui';nd3BeaconTexCtx.fillStyle='#a9d0df';nd3BeaconTexCtx.fillText('THE CITY IS YOUR PLAYGROUND',60,243);
+nd3BeaconTexCtx.fillStyle='#d9ff72';nd3BeaconTexCtx.fillRect(57,272,905,8);
+const nd3BeaconTexture=new THREE.CanvasTexture(nd3BeaconTexCanvas);nd3BeaconTexture.colorSpace=THREE.SRGBColorSpace;
+const nd3HoloBeacons=[];
+const nd3GlowMat=new THREE.MeshBasicMaterial({color:0x76dfff,transparent:true,opacity:.65,toneMapped:false,depthWrite:false});
+const nd3PillarMat=new THREE.MeshBasicMaterial({color:0xd7ff6b,transparent:true,opacity:.67,toneMapped:false,depthWrite:false});
+for(const [xx,zz] of [[-112,42],[426,315],[-491,-410],[740,975]]){
+ const group=new THREE.Group();
+ const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:nd3BeaconTexture,transparent:true,opacity:.9,depthWrite:false,toneMapped:false}));
+ sprite.scale.set(34,10.6,1);sprite.position.set(0,18,0);group.add(sprite);
+ const beam=new THREE.Mesh(new THREE.CylinderGeometry(.35,.65,17,8,1,true),nd3GlowMat.clone());beam.position.set(0,8.5,0);group.add(beam);
+ for(const h of [2.5,13.5]){
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(3.6,.16,6,26),nd3PillarMat.clone());ring.rotation.x=Math.PI/2;ring.position.y=h;group.add(ring)
+ }
+ group.position.set(xx,0,zz);scene.add(group);nd3HoloBeacons.push({group,sprite,beam,seed:(xx+zz)*.01})
+}
+function nd3UpdateBeacons(time){
+ for(const b of nd3HoloBeacons){
+  const pulse=Math.sin(time*.0009+b.seed);
+  b.sprite.position.y=18+pulse*.52;
+  b.sprite.material.opacity=.82+pulse*.08;
+  b.beam.material.opacity=.18+pulse*.11;
+  b.group.children.slice(2).forEach((ring,i)=>ring.rotation.z=time*.0002*(i?-1:1))
+ }
+}
+
 const interiorGroup=new THREE.Group();scene.add(interiorGroup);interiorGroup.visible=false;
 let currentInterior=null,interiorReturn=null;
 const ENTERABLE_TYPES=new Set(['garage','dealer','dealer2','repair','gas','wash','parking','meet','lobby','house']);
@@ -1502,7 +1539,7 @@ function drawMini(){const ap=activePos(),ah=activeHeading(),ctx=$('minimap').get
 ctx.font='1000 8px system-ui';ctx.textAlign='center';ctx.fillStyle='#65e7ff';ctx.fillText('DRAG',w/2-450*sc,h/2+1350*sc);ctx.fillStyle='#ffd15c';ctx.fillText('DRIFT',w/2+1250*sc,h/2+1350*sc);
 for(const p of police){ctx.fillStyle='#ff6677';ctx.beginPath();ctx.arc(w/2+p.mesh.position.x*sc,h/2+p.mesh.position.z*sc,3.5,0,Math.PI*2);ctx.fill()}for(const r of rivals){if(r.finished)continue;ctx.fillStyle='#ffbf4d';ctx.beginPath();ctx.arc(w/2+r.mesh.position.x*sc,h/2+r.mesh.position.z*sc,3.5,0,Math.PI*2);ctx.fill()}for(const rp of remotePlayers.values()){ctx.fillStyle='#67e6ff';ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.beginPath();ctx.arc(w/2+rp.mesh.position.x*sc,h/2+rp.mesh.position.z*sc,4.2,0,Math.PI*2);ctx.fill();ctx.stroke()}if(gpsTarget&&!activeRace){const gx=gpsTarget.x===undefined?ap.x:gpsTarget.x,gz=gpsTarget.z===undefined?ap.z:gpsTarget.z;ctx.strokeStyle='#64e8ff';ctx.lineWidth=2;ctx.setLineDash([6,5]);ctx.beginPath();ctx.moveTo(w/2+ap.x*sc,h/2+ap.z*sc);ctx.lineTo(w/2+gx*sc,h/2+ap.z*sc);ctx.lineTo(w/2+gx*sc,h/2+gz*sc);ctx.stroke();ctx.setLineDash([])}ctx.save();ctx.translate(w/2+ap.x*sc,h/2+ap.z*sc);ctx.rotate(-ah);ctx.fillStyle='#fff';ctx.beginPath();ctx.moveTo(0,-7);ctx.lineTo(5,6);ctx.lineTo(-5,6);ctx.closePath();ctx.fill();ctx.restore()}
 function updateDayNight(dt){worldClock=(worldClock+dt/210)%1;const sunWave=Math.sin(worldClock*Math.PI*2-Math.PI/2),day=clamp((sunWave+.28)/.75,0,1),night=1-day,weatherDim=weatherState==='RAIN'?.68:weatherState==='OVERCAST'?.82:1;skyColor.copy(nightColor).lerp(dayColor,day);scene.background.copy(skyColor);scene.fog.color.copy(skyColor);sun.intensity=(.12+day*2.05)*weatherDim;hemi.intensity=(.35+day*1.2)*weatherDim;renderer.toneMappingExposure=(.72+day*.38)*(weatherState==='RAIN'?.88:weatherState==='OVERCAST'?.94:1);scene.fog.far=weatherState==='RAIN'?1250:weatherState==='OVERCAST'?2000:2600;sun.position.set(Math.cos(worldClock*Math.PI*2)*170,Math.max(14,Math.sin(worldClock*Math.PI*2)*170),85);streetLights.forEach(l=>l.material.emissiveIntensity=.35+night*5.4);streetLightSources.forEach(l=>l.intensity=night*28);buildingGlassMat.emissiveIntensity=.10+night*.95;neonMaterials.forEach((m,i)=>m.emissiveIntensity=.35+night*(2.2+(i%3)*.35));animatedSigns.forEach((m,i)=>m.emissiveIntensity=.35+night*1.5+Math.sin(performance.now()/450+i)*.22);player.mesh.traverse(o=>{if(o.isSpotLight&&o.userData.headlight)o.intensity=night*(PERF_MOBILE?55:82)});const totalMin=Math.floor(worldClock*24*60),hh=Math.floor(totalMin/60)%24,mm=totalMin%60,clockText=String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0');if(clockText!==lastClockText){$('clock').textContent=clockText;lastClockText=clockText}}
-let visualAccum=0;function loop(now){requestAnimationFrame(loop);const dt=Math.min(.04,(now-last)/1000);last=now;visualAccum+=dt;uiTimer+=dt;mapTimer+=dt;missionTimer+=dt;lightTimer+=dt;resize();updateAdaptivePerformance(dt);if(running){updateRaceState();updatePlayer(dt);updateCharacter(dt);updateJump(dt);updateSmoke(dt);nd3Tick(dt);if(!currentInterior){updateTraffic(dt);updateScenicTraffic(dt);updatePedestrians(dt);updateRivals(dt);updatePolice(dt);updateMultiplayer(dt)}updateEvents(dt);updateWalkInBuildings();updateCamera(dt);if(missionTimer>.12){updateMission();missionTimer=0}if(uiTimer>.1){renderHUD();updateGPSLabel();updateEngineAudio();uiTimer=0}if(mapTimer>.12){drawMini();mapTimer=0}}else updateSmoke(dt);updateWeather(dt);if(lightTimer>.08){updateDayNight(lightTimer);lightTimer=0}if(visualAccum>.05){markers.forEach(m=>m.mesh.rotation.y+=visualAccum*.65);visualAccum=0}renderer.render(scene,camera)}requestAnimationFrame(loop);
+let visualAccum=0;function loop(now){requestAnimationFrame(loop);const dt=Math.min(.04,(now-last)/1000);last=now;visualAccum+=dt;uiTimer+=dt;mapTimer+=dt;missionTimer+=dt;lightTimer+=dt;resize();updateAdaptivePerformance(dt);if(running){updateRaceState();updatePlayer(dt);updateCharacter(dt);updateJump(dt);updateSmoke(dt);nd3Tick(dt);if(!currentInterior){updateTraffic(dt);updateScenicTraffic(dt);updatePedestrians(dt);updateRivals(dt);updatePolice(dt);updateMultiplayer(dt)}updateEvents(dt);updateWalkInBuildings();updateCamera(dt);if(missionTimer>.12){updateMission();missionTimer=0}if(uiTimer>.1){renderHUD();updateGPSLabel();updateEngineAudio();uiTimer=0}if(mapTimer>.12){drawMini();mapTimer=0}}else updateSmoke(dt);updateWeather(dt);if(lightTimer>.08){updateDayNight(lightTimer);lightTimer=0}if(visualAccum>.05){markers.forEach(m=>m.mesh.rotation.y+=visualAccum*.65);visualAccum=0}nd3UpdateBeacons(now);renderer.render(scene,camera)}requestAnimationFrame(loop);
 
 function renderGarage(){
  const cg=$('customGrid'),cu=currentCustom(),d=currentDamage(),repairCost=Math.max(250,Math.ceil(d*42));cg.innerHTML='';
