@@ -1,0 +1,45 @@
+name: Neon District 3.0 game QA
+
+on:
+  push:
+    branches: [main, neon-district-3.0-upgrade]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  all-games:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Static checks — every game, source file and asset
+        run: npm run test:arcade
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Start arcade test server
+        run: |
+          node server.js > /tmp/neon-district-server.log 2>&1 &
+          echo $! > /tmp/neon-district-server.pid
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:8080/health > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/neon-district-server.log
+          exit 1
+      - name: Multiplayer regression tests
+        run: npm run test:multiplayer
+      - name: Browser smoke test — 35 games, desktop and mobile
+        run: npm run test:browser
+      - name: Server output when checks fail
+        if: failure()
+        run: cat /tmp/neon-district-server.log || true
