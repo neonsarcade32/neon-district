@@ -39,7 +39,8 @@ async function horizontalOverflow(p){return p.evaluate(()=>document.documentElem
   check('Snake launch link resolves',await link.getAttribute('href')==='snake.html');
   await p.locator('.gameCard[data-id="snake"] .fav').click();
   check('Favoriting does not navigate',new URL(p.url()).pathname.endsWith('/index.html'));
-  check('Favorite button works',await p.locator('.gameCard[data-id="snake"] .fav.on').count()===1);
+  check('Favorite button works',await p.locator('#gameGrid .gameCard[data-id="snake"] .fav.on').count()===1);
+  check('Favorites row updates',await p.locator('#favoriteRow .gameCard[data-id="snake"] .fav.on').count()===1);
   await p.close();
 
   const mobile=await pageTo(browser,'index.html',{width:390,height:844});
