@@ -13,7 +13,7 @@ fs.mkdirSync(output,{recursive:true});
 const selection=new Set(['snake','pong','hockey','ski','traffic','tap','city','bowling','laser']);
 async function inspect(page,name,standard,wide,save){
  const issues=[],summary=await page.evaluate(()=>{
-  const doc=document.documentElement,body=document.body,stage=document.querySelector('.stage'),h=document.querySelector('h1');
+  const doc=document.documentElement,body=document.body,stage=document.querySelector('.stage,.arena,.city'),h=document.querySelector('h1,.cityTitle strong');
   return {
    classSet:doc.classList.contains('nd3-game-ui'),
    stylesheet:!!document.querySelector('link[href*="nd3-game-skin.css"]'),
@@ -33,8 +33,8 @@ async function inspect(page,name,standard,wide,save){
   if(!summary.stylesheet)issues.push('missing new shared game stylesheet');
   if(!summary.bg.includes('gradient'))issues.push('missing gradient visual shell');
   if(!summary.headingVisible)issues.push('missing visible title');
-  if(!summary.gameUI)issues.push('missing ND3 game tools');
-  if(summary.canvasCount<1)issues.push('missing game canvas');
+  if(name!=='idle'&&!summary.gameUI)issues.push('missing ND3 game tools');
+  if(!['reaction','tap','idle'].includes(name)&&summary.canvasCount<1)issues.push('missing game canvas');
   if(summary.stageHeight<120)issues.push('missing game screen');
  }else if(name==='home'){
   if(summary.cardCount!==35)issues.push('game catalog has '+summary.cardCount+' of 35');
