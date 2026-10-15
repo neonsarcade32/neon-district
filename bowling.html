@@ -316,7 +316,7 @@ function queueRackReset(full=true){
 
 function recordRoll(pinCount){
  // Score actual fallen pins only. Never award pins via aim quality or strike budgets.
- pinCount=clamp(Math.round(pinCount),0,pinAlive.filter(Boolean).length);
+ pinCount=clamp(Math.round(pinCount),0,physicalPins.filter(p=>p.active).length);
  if(mode==='challenge'){
   const idx=frameIndex;
   challengeStreak=pinCount===10?challengeStreak+1:0;
