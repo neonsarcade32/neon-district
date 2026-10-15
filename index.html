@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#07090f">
-<title>Neon District 3.1</title>
+<title>Neon District 3.0</title>
 <style>
 :root{--bg:#07090f;--panel:#0f1420;--panel2:#151c2b;--line:#273247;--text:#f7f9ff;--muted:#8c98ad;--cyan:#52dcff;--green:#59e8a4;--violet:#8f72ff;--gold:#ffd15c}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(circle at 15% -10%,#23184d 0,transparent 33%),radial-gradient(circle at 88% 4%,#0d3850 0,transparent 30%),linear-gradient(#07090f,#090d15 70%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,a{font:inherit}button{cursor:pointer}a{color:inherit}
@@ -26,7 +26,7 @@
 </style>
 </head>
 <body>
-<header class="topbar"><nav class="nav"><a class="brand" href="index.html"><span class="brandmark">N</span><span>Neon District<small>ARCADE 3.1 LIVE</small></span></a><div class="navActions"><button class="navBtn" id="favoritesJump">★ Favorites</button><a class="navBtn hideMobile" href="search.html?v=external">⌕ Web Search</a><a class="navBtn hideMobile" href="https://github.com/neonsarcade32/neon-district">GitHub</a></div></nav></header>
+<header class="topbar"><nav class="nav"><a class="brand" href="index.html"><span class="brandmark">N</span><span>Neon District<small>ARCADE 3.0 · EXPANSION</small></span></a><div class="navActions"><button class="navBtn" id="favoritesJump">★ Favorites</button><a class="navBtn hideMobile" href="search.html?v=external">⌕ Web Search</a><a class="navBtn hideMobile" href="https://github.com/neonsarcade32/neon-district">GitHub</a></div></nav></header>
 <main class="wrap">
 <section class="hero">
 <a class="feature" href="arcade-city.html?v=3.3" data-launch="Arcade City 3D">
@@ -48,9 +48,9 @@
 <section class="section hidden" id="favoriteSection"><div class="sectionHead"><div class="sectionTitle"><h2>★ Favorites</h2><p>Your saved games on this device.</p></div></div><div class="row" id="favoriteRow"></div></section>
 <section class="section hidden" id="recentSection"><div class="sectionHead"><div class="sectionTitle"><h2>Continue playing</h2><p>Jump back into your most recent games.</p></div></div><div class="smallRow" id="recentRow"></div></section>
 
-<section class="section" id="discover"><div class="sectionHead"><div class="sectionTitle"><h2 id="sectionTitle">All games</h2><p id="sectionSub">30 games across sports, racing, arcade, and chill.</p></div><span class="sectionMeta" id="resultCount">30 GAMES</span></div><div class="gameGrid" id="gameGrid"></div><div class="empty hidden" id="empty">No games match that search or category.</div></section>
+<section class="section" id="discover"><div class="sectionHead"><div class="sectionTitle"><h2 id="sectionTitle">All games</h2><p id="sectionSub">35 games across sports, racing, arcade, and chill.</p></div><span class="sectionMeta" id="resultCount">35 GAMES</span></div><div class="gameGrid" id="gameGrid"></div><div class="empty hidden" id="empty">No games match that search or category.</div></section>
 
-<footer class="footer"><span>Neon District · Arcade 3.1</span><span>Old saves stay on your device.</span></footer>
+<footer class="footer"><span>Neon District · Arcade 3.0</span><span>Old saves stay on your device.</span></footer>
 </main>
 <script>
 const games=[
@@ -70,7 +70,7 @@ const games=[
 {id:'basketball',name:'Basketball Shootout',file:'basketball.html',cat:'Sports',tag:'Hoops',icon:'🏀',c1:'#4b2b12',c2:'#160e08',desc:'Hit the green release and build a hot streak.',search:'basketball shootout hoops sports'},
 {id:'qb',name:'QB Challenge',file:'qb.html',cat:'Sports',tag:'Featured',icon:'🏈',c1:'#163d27',c2:'#0a1510',desc:'Move in the pocket, lead receivers, avoid defenders.',search:'qb challenge football quarterback sports'},
 {id:'derby',name:'Home Run Derby',file:'derby.html',cat:'Sports',tag:'Featured',icon:'⚾',c1:'#4b241b',c2:'#150d0a',desc:'Track the pitch, time your swing, launch home runs.',search:'home run derby baseball sports'},
-{id:'city',name:'Arcade City 3D',file:'arcade-city.html?v=3.3',cat:'Racing',tag:'3.1 Featured',icon:'🏙️',c1:'#13394b',c2:'#0b121a',desc:'Huge open world with seamless walk-in houses and shops, buyable homes, on-foot exploration, races, police, customization, and multiplayer.',search:'arcade city 3d 3.0 driving walking character buildings open world racing multiplayer cars'},
+{id:'city',name:'Arcade City 3D',file:'arcade-city.html?v=3.3',cat:'Racing',tag:'World Featured',icon:'🏙️',c1:'#13394b',c2:'#0b121a',desc:'Huge open world with seamless walk-in houses and shops, buyable homes, on-foot exploration, races, police, customization, and multiplayer.',search:'arcade city 3d 3.0 driving walking character buildings open world racing multiplayer cars'},
 {id:'idle',name:'Idle Empire',file:'idle.html',cat:'Chill',tag:'Idle',icon:'💼',c1:'#273052',c2:'#10131e',desc:'Build businesses, automate income, prestige, grow.',search:'idle empire business tycoon chill'},
 {id:'tap',name:'Tap Challenge',file:'tap.html',cat:'Arcade',tag:'Speed',icon:'👆',c1:'#4a1d43',c2:'#160d16',desc:'Tap fast, build your score, beat your best.',search:'tap challenge clicking speed'},
 {id:'fieldgoal',name:'Field Goal Frenzy',file:'field-goal.html',cat:'Sports',tag:'Skill',icon:'🏈',c1:'#17492d',c2:'#0c1710',desc:'Read the wind, time your aim, and drill ten kicks.',search:'field goal football kick sports skill'},
@@ -83,7 +83,13 @@ const games=[
 {id:'bowling',name:'Neon Bowling 3D',file:'bowling.html?v=3d2',cat:'Sports',tag:'Featured',icon:'🎳',c1:'#153548',c2:'#09131c',desc:'Full 3D bowling with real frames, hook, aim, moving power, strikes, and spares.',search:'bowling 3d sports strike spare hook featured'},
 {id:'beattiles',name:'Beat Tiles',file:'beat-tiles.html?v=3',cat:'Arcade',tag:'Rhythm',icon:'🎵',c1:'#3a2055',c2:'#120c1b',desc:'Hit four rhythm lanes with real timing grades, combos, and accuracy.',search:'beat tiles rhythm timing arcade music'},
 {id:'claw',name:'Claw Machine',file:'claw-machine.html?v=3',cat:'Chill',tag:'Skill',icon:'🕹️',c1:'#153a4f',c2:'#09131b',desc:'Control the crane, grab prizes, and deliver them to the chute.',search:'claw machine arcade prize skill chill'},
-{id:'colordash',name:'Color Dash',file:'color-dash.html?v=3',cat:'Arcade',tag:'Reaction',icon:'🎨',c1:'#3e2052',c2:'#120c18',desc:'Switch among four colors as neon gates rush toward the line.',search:'color dash arcade reaction match'}
+{id:'colordash',name:'Color Dash',file:'color-dash.html?v=3',cat:'Arcade',tag:'Reaction',icon:'🎨',c1:'#3e2052',c2:'#120c18',desc:'Switch among four colors as neon gates rush toward the line.',search:'color dash arcade reaction match'},
+
+{id:'freethrow',name:'Free Throw Challenge',file:'free-throw.html',cat:'Sports',tag:'Hoops',icon:'🏀',c1:'#4c2b13',c2:'#140f0b',desc:'Chase perfect releases and build your basketball streak.',search:'free throw basketball sports timing'},
+{id:'goalkeeper',name:'Goalkeeper Challenge',file:'goalkeeper.html',cat:'Sports',tag:'Soccer',icon:'🥅',c1:'#164333',c2:'#0a1812',desc:'Read the shot, move your keeper, and make the save.',search:'goalkeeper soccer save sports'},
+{id:'highway',name:'Highway Escape',file:'highway.html',cat:'Racing',tag:'Driving',icon:'🚘',c1:'#273b58',c2:'#0b1422',desc:'Dodge traffic at speed and survive the highway.',search:'highway car driving racing traffic'},
+{id:'laser',name:'Laser Defender',file:'laser-defender.html',cat:'Arcade',tag:'Action',icon:'🔫',c1:'#4e1b40',c2:'#190e1d',desc:'Defend your lane against incoming threats and laser fire.',search:'laser defender arcade action'},
+{id:'rooftop',name:'Rooftop Run',file:'rooftop-run.html',cat:'Arcade',tag:'Parkour',icon:'🏃',c1:'#303353',c2:'#100e21',desc:'Dash between rooftops and keep your run alive.',search:'rooftop run platform parkour arcade'}
 ];
 const grid=document.getElementById('gameGrid'),search=document.getElementById('search'),empty=document.getElementById('empty'),result=document.getElementById('resultCount');
 let activeCat='All';
@@ -95,7 +101,7 @@ function isFav(id){return getFavs().includes(id)}
 function toggleFav(id){let f=getFavs();f=f.includes(id)?f.filter(x=>x!==id):[id].concat(f);setFavs(f);renderAll()}
 function cardHtml(g){return '<a class="gameCard" href="'+g.file+'" data-id="'+g.id+'" data-launch="'+g.name+'" data-cat="'+g.cat+'"><div class="preview" style="--c1:'+g.c1+';--c2:'+g.c2+'"><span class="previewLabel">'+g.tag.toUpperCase()+'</span><span class="previewLines"></span><span class="previewIcon">'+g.icon+'</span></div><button class="fav '+(isFav(g.id)?'on':'')+'" type="button" aria-label="Favorite '+g.name+'" data-fav="'+g.id+'">'+(isFav(g.id)?'★':'☆')+'</button><div class="cardBody"><h3>'+g.name+'</h3><p>'+g.desc+'</p><div class="cardFoot"><span>'+g.cat.toUpperCase()+'</span><span class="playPill">PLAY →</span></div></div></a>'}
 function matching(){const q=search.value.trim().toLowerCase(),favs=getFavs();return games.filter(g=>(activeCat==='All'||g.cat===activeCat||(activeCat==='Favorites'&&favs.includes(g.id)))&&(!q||(g.name+' '+g.search+' '+g.cat).toLowerCase().includes(q)))}
-function renderGrid(){const list=matching();grid.innerHTML=list.map(cardHtml).join('');result.textContent=list.length+' '+(list.length===1?'GAME':'GAMES');empty.classList.toggle('hidden',!!list.length);document.getElementById('sectionTitle').textContent=activeCat==='All'?'All games':activeCat;document.getElementById('sectionSub').textContent=activeCat==='Favorites'?'Games you starred on this device.':activeCat==='All'?'30 games across sports, racing, arcade, and chill.':'Browse '+activeCat.toLowerCase()+' games.';bindCards()}
+function renderGrid(){const list=matching();grid.innerHTML=list.map(cardHtml).join('');result.textContent=list.length+' '+(list.length===1?'GAME':'GAMES');empty.classList.toggle('hidden',!!list.length);document.getElementById('sectionTitle').textContent=activeCat==='All'?'All games':activeCat;document.getElementById('sectionSub').textContent=activeCat==='Favorites'?'Games you starred on this device.':activeCat==='All'?'35 games across sports, racing, arcade, and chill.':'Browse '+activeCat.toLowerCase()+' games.';bindCards()}
 function renderFavorites(){const favs=getFavs(),list=favs.map(id=>games.find(g=>g.id===id)).filter(Boolean),section=document.getElementById('favoriteSection'),row=document.getElementById('favoriteRow');section.classList.toggle('hidden',!list.length);row.innerHTML=list.map(cardHtml).join('');document.getElementById('favCount').textContent=list.length;bindCards()}
 function renderRecent(){const r=getRecent(),section=document.getElementById('recentSection'),box=document.getElementById('recentRow');section.classList.toggle('hidden',!r.length);document.getElementById('playedCount').textContent=r.length;box.innerHTML=r.map(x=>{const g=games.find(y=>y.file===x.href||y.name===x.name);return '<a class="chip" href="'+x.href+'" data-launch="'+x.name+'"><span>'+(g?g.icon:'▶')+'</span>'+x.name+'</a>'}).join('');bindLaunches()}
 function bindLaunches(){document.querySelectorAll('[data-launch]').forEach(el=>{if(el.dataset.bound)return;el.dataset.bound='1';el.addEventListener('click',()=>saveRecent(el.dataset.launch,el.getAttribute('href')))})}
