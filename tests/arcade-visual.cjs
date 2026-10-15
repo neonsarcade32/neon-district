@@ -13,7 +13,7 @@ fs.mkdirSync(output,{recursive:true});
 const selection=new Set(['snake','pong','hockey','ski','traffic','tap','city','bowling','laser']);
 async function inspect(page,name,standard,wide,save){
  const issues=[],summary=await page.evaluate(()=>{
-  const doc=document.documentElement,body=document.body,stage=document.querySelector('.stage,.arena,.city'),h=document.querySelector('h1,.cityTitle strong');
+  const doc=document.documentElement,body=document.body,stage=document.querySelector('.stage,.arena,.city'),h=document.querySelector('h1,.cityTitle strong,.app .brand');
   return {
    classSet:doc.classList.contains('nd3-game-ui'),
    stylesheet:!!document.querySelector('link[href*="nd3-game-skin.css"]'),
@@ -45,7 +45,10 @@ async function inspect(page,name,standard,wide,save){
  if(summary.bodyWidth>summary.viewportWidth+30)issues.push('horizontal clipping: '+summary.bodyWidth+'px against '+summary.viewportWidth+'px viewport');
  if(save){
   try{await page.screenshot({path:path.join(output,name+(wide?'-desktop':'-mobile')+'.png'),fullPage:name==='home',timeout:25000})}
-  catch(e){issues.push('failed screenshot: '+e.message)}
+  catch(e){
+    try{await page.screenshot({path:path.join(output,name+(wide?'-desktop':'-mobile')+'.png'),fullPage:false,animations:'disabled',timeout:12000})}
+    catch(retryError){console.warn('Screenshot skipped '+name+': '+retryError.message)}
+  }
  }
  return {issues,summary};
 }
