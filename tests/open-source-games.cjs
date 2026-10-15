@@ -47,6 +47,11 @@ const origin=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8080';
     await p.goto(origin+'/open-2048.html');
     await p.waitForFunction(()=>!!window.nd2048Game,{timeout:3500});
     assert.ok(await p.locator('[data-nd2048-dir]').first().isVisible());
+    await p.evaluate(()=>{
+     const g=window.nd2048Game;g.grid=new Grid(4);
+     g.grid.insertTile(new Tile({x:0,y:0},2));g.grid.insertTile(new Tile({x:0,y:1},4));
+     g.score=0;g.over=false;g.won=false;g.keepPlaying=false;g.actuate()
+    });
     const before=await p.evaluate(()=>JSON.stringify(window.nd2048Game.grid.serialize()));
     await p.locator('[data-nd2048-dir="1"]').click();await p.waitForTimeout(150);
     const after=await p.evaluate(()=>JSON.stringify(window.nd2048Game.grid.serialize()));
@@ -62,7 +67,7 @@ const origin=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8080';
    try{
     assert.equal((await p.goto(origin+'/open-platformer.html',{waitUntil:'domcontentloaded'})).status(),200);
     await p.waitForFunction(()=>window.ndPlatformerGame?._levelData?.length===2&&window.ndPlatformerGame._state==='playing',{timeout:10000});
-    const data=await p.evaluate(()=>({levels:window.ndPlatformerGame._levelData.map(v=>v.name),canvas:[gameCanvas.width,gameCanvas.height],state:window.ndPlatformerGame._state}));
+    const data=await p.evaluate(()=>({levels:window.ndPlatformerGame._levelData.map(v=>v.name),canvas:[document.getElementById('gameCanvas').width,document.getElementById('gameCanvas').height],state:window.ndPlatformerGame._state}));
     assert.equal(data.levels.length,2);assert.deepEqual(data.canvas,[640,400]);assert.equal(data.state,'playing');
     assert.equal(await p.locator('a[href*="stm1978/retro-platformer"]').count()>0,true);
     assert.deepEqual(missing,[]);assert.deepEqual(errs,[])
