@@ -26,6 +26,16 @@ Neon District includes independently developed browser games whose original sour
 - Procedural sprite art, original levels, gameplay, collision physics, and synthesized sound effects are all from the source repository.
 - This adaptation is independently hosted and is **not** presented as the upstream developer's official game.
 
+## 3. Offroad Expedition 3D — imported original 3D car physics/world engine
+
+- Original author: **Sam Wilson**, source https://github.com/rsamwilson2323-cloud/rpg-car-game
+- License: **MIT** © 2026 Sam Wilson; full upstream license in `third-party-offroad-license.txt`.
+- Imported original work: the 3D terrain/biome system, Rapier-powered four-wheel vehicle physics, procedurally drawn fallback car, environmental objects, collectibles and upgrade system. All original core game scripts are retained in the local `open-offroad.html` page.
+- Neon District additions: a prominent 3D game feature, original vector cover art, responsive return-to-arcade control, author credit, local startup indicator, and removed external Google Font import.
+- The upstream game uses pinned CDN imports for Three.js and Rapier, so the user needs an active internet connection when loading it. Chromium/WebGPU/WebGL support varies; users should have a modern updated browser.
+- The game does not use the same save data as the original Neon District titles.
+- **Neither Neon District nor its maintainers are affiliated with the original author.** This is a credited MIT-licensed adaptation.
+
 ## License and deployment notes
 
 The full original copyright notices and permission conditions remain in this public repository. Keep these files and visible developer credits intact when distributing copies or making further modifications. The game pages link to their actual upstream authors and original license files.
