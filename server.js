@@ -85,12 +85,14 @@ const PUBLIC_GAME_SCRIPTS = new Set([
   'arcade-polish.js', 'nd3-art.js', 'beat-tiles.js', 'bowling-2.js', 'bowling-physics.mjs',
   'circuit-hacker.js', 'claw-machine.js', 'color-dash-2.js',
   'game-pack-2.js', 'highway-2.js', 'laser-defender.js',
-  'mini-pack.js', 'new-games.js', 'penalty-2.js', 'rooftop-run.js'
+  'mini-pack.js', 'new-games.js', 'penalty-2.js', 'rooftop-run.js',
+  'open-2048-engine.js', 'open-platformer-constants.js', 'open-platformer-input.js', 'open-platformer-audio.js', 'open-platformer-sprites.js', 'open-platformer-camera.js', 'open-platformer-level.js', 'open-platformer-player.js', 'open-platformer-enemy.js', 'open-platformer-game.js', 'open-platformer-main.js'
 ]);
 app.use((req, res, next) => {
   const asset = req.path.slice(1);
   const isPageOrStyle = /^\/[^/]+\.(html|css|png|jpg|svg|ico)$/.test(req.path);
-  if (req.path !== '/' && !isPageOrStyle && !PUBLIC_GAME_SCRIPTS.has(asset)) {
+  const safeGameData = asset === 'open-platformer-level1.json' || asset === 'open-platformer-level2.json';
+  if (req.path !== '/' && !isPageOrStyle && !PUBLIC_GAME_SCRIPTS.has(asset) && !safeGameData) {
     return res.sendStatus(404);
   }
   next();
