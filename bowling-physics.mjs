@@ -28,7 +28,7 @@ function impulsePin(p,speed,nx,nz,events,source){
  // A glancing touch can wobble a pin without counting it as down.
  p.impact=Math.max(p.impact,speed);
  p.wobble=Math.max(p.wobble,Math.min(.33,speed*.045));
- p.vx+=nx*speed*.58;p.vz+=nz*speed*.58;
+ p.vx+=nx*speed*.50;p.vz+=nz*speed*.50;
  const v=Math.hypot(p.vx,p.vz);
  if(v>8.5){p.vx*=8.5/v;p.vz*=8.5/v}
  if(!p.fallen&&(speed>.82||v>1.2)){
@@ -45,10 +45,10 @@ function impulsePin(p,speed,nx,nz,events,source){
 }
 export function stepPhysics(shot,pins,dt=STEP){
  const events=[];
- if(shot.finished)return events;
+ if(shot.finished&&!pins.some(p=>p.active&&p.fallen&&Math.hypot(p.vx,p.vz)>.025))return events;
  dt=clamp(dt,0,1/30);
  shot.t+=dt;
- if(shot.z>-17.2){
+ if(!shot.finished&&shot.z>-17.2){
   const travelled=clamp((10.9-shot.z)/25.4,0,1);
   const friction=.135 + travelled*.055; // oil transitions to dry boards toward the pins
   const hookForce=shot.spin*(.85+travelled*2.8)+shot.oil*.65;
@@ -102,7 +102,7 @@ export function stepPhysics(shot,pins,dt=STEP){
  for(let i=0;i<pins.length;i++)for(let j=i+1;j<pins.length;j++){
   const a=pins[i],b=pins[j];if(!a.active||!b.active||(!a.fallen&&!b.fallen))continue;
   const dx=b.x-a.x,dz=b.z-a.z,dist=Math.hypot(dx,dz);
-  const reach=PIN_RADIUS*2.25+(a.fallen||b.fallen?.10:0);
+  const reach=.52;
   if(dist<.0001||dist>=reach)continue;
   const nx=dx/dist,nz=dz/dist;
   // Transfer momentum along the collision normal, not based on a desired score.
@@ -120,7 +120,7 @@ export function stepPhysics(shot,pins,dt=STEP){
   a.x-=nx*overlap*share;a.z-=nz*overlap*share;
   b.x+=nx*overlap*(1-share);b.z+=nz*overlap*(1-share)
  }
- if(shot.z<=-17.2||shot.t>4.2){shot.finished=true;events.push({type:'ball-finished'})}
+ if(!shot.finished&&(shot.z<=-17.2||shot.t>4.2)){shot.finished=true;events.push({type:'ball-finished'})}
  return events;
 }
 export function knockedCount(pins){return pins.reduce((n,p)=>n+(p.active&&p.fallen?1:0),0)}
