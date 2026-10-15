@@ -64,7 +64,7 @@ async function horizontalOverflow(p){return p.evaluate(()=>document.documentElem
     }
     await p.close()
   }
-  const mobileTitles=['snake','pong','reaction','tap','hockey','breakaway','tetris','space','bowling','city','free-throw','goalkeeper','laser','rooftop'];
+  const mobileTitles=['snake','pong','reaction','tap','hockey','breakaway','tetris','space','bowling','city','freethrow','goalkeeper','laser','rooftop'];
   for(const id of mobileTitles){
     const g=games.find(g=>g.id===id);
     const {p,errors,status}=await pageTo(browser,g.file,{width:390,height:844});
