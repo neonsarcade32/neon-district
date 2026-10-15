@@ -139,3 +139,26 @@ html.nd3-game-ui[data-nd3-game="idle"] .run.auto{background:#14352a!important;co
 html.nd3-game-ui[data-nd3-game="idle"] .prestige{border-color:#7a63a5!important;background:linear-gradient(135deg,#241e43,#141729)!important}
 @media(max-width:800px){html.nd3-game-ui[data-nd3-game="idle"] .hero{grid-template-columns:1fr!important}html.nd3-game-ui[data-nd3-game="idle"] .city{min-height:230px!important}}
 @media(max-width:480px){html.nd3-game-ui[data-nd3-game="idle"] .brand span{display:none!important}html.nd3-game-ui[data-nd3-game="idle"] .topin{gap:7px!important}html.nd3-game-ui[data-nd3-game="idle"] .app{padding:0 10px 45px}html.nd3-game-ui[data-nd3-game="idle"] .quickTip{gap:4px}}
+
+/* Dedicated visual treatment for DOM-rendered games and canvas engine menus. */
+html.nd3-game-ui .arena{
+ position:relative!important;isolation:isolate;
+ border:2px solid var(--nd3-accent)!important;border-radius:23px!important;
+ box-shadow:0 24px 85px #0008,0 0 35px color-mix(in srgb,var(--nd3-accent) 12%,transparent),inset 0 0 85px #0004!important;
+ background:radial-gradient(circle at 52% 48%,#2e3b51,#101c2d 65%,#081121)!important;
+ overflow:hidden!important;
+}
+html.nd3-game-ui .arena:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:repeating-linear-gradient(0deg,#ffffff06 0 1px,transparent 1px 7px),radial-gradient(circle at 50% 50%,transparent 25%,#010d194c)}
+html.nd3-game-ui .arena>div{z-index:1;position:relative}
+html.nd3-game-ui .arena.wait{background:radial-gradient(circle at center,#602b40,#1b192c 72%,#0d1020)!important;border-color:#ff869f!important}
+html.nd3-game-ui .arena.go{background:radial-gradient(circle at center,#25a66c,#104632 69%,#071a23)!important;border-color:#84ffc2!important;box-shadow:0 0 70px #40ffa73e,inset 0 0 80px #0b201950!important}
+html.nd3-game-ui .arena.false{background:radial-gradient(circle at center,#a9562d,#342219 75%,#1a1221)!important;border-color:#ffd178!important}
+html.nd3-game-ui .arena h2{font:1000 clamp(34px,7.2vw,74px)/.95 system-ui!important;letter-spacing:-2.8px!important;color:#f8fdff!important;text-shadow:0 4px 35px #0008!important}
+html.nd3-game-ui .arena p{font-size:13px!important;line-height:1.55!important;color:#d6e5f0!important}
+html.nd3-game-ui .stage .target{background:radial-gradient(circle at 33% 27%,#ffffff 4%,var(--nd3-accent2) 18%,var(--nd3-accent) 58%,#26366e)!important;box-shadow:0 0 32px color-mix(in srgb,var(--nd3-accent) 62%,transparent),0 0 0 7px color-mix(in srgb,var(--nd3-accent) 16%,transparent)!important;border:2px solid #ffffff77!important}
+html.nd3-game-ui .stage #overlay:not(.overlay){z-index:7!important;background:#06131fd8!important;backdrop-filter:blur(8px)!important;color:#f0fbff!important}
+html.nd3-game-ui .stage #overlay:not(.overlay)>h2{font:1000 clamp(25px,5vw,36px)/1 system-ui!important;color:#f1fcff!important;letter-spacing:-.8px!important}
+html.nd3-game-ui .stage #overlay:not(.overlay)>p{font:600 12px/1.5 system-ui!important;color:#b9cddd!important}
+html.nd3-game-ui .stage #overlay:not(.overlay)>button{background:linear-gradient(105deg,var(--nd3-accent),var(--nd3-accent2))!important;color:#07141c!important;border:0!important;border-radius:10px!important;font:950 12px system-ui!important;padding:13px 22px!important}
+html.nd3-game-ui .stage #overlay:not(.overlay)[hidden]{display:none!important}
+html.nd3-game-ui .gameGrid{gap:12px!important}
