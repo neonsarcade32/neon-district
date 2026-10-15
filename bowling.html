@@ -84,6 +84,49 @@ const building=new THREE.Group();scene.add(building);
 const floor=new THREE.Mesh(new THREE.PlaneGeometry(30,50),new THREE.MeshStandardMaterial({color:0x0b1119,roughness:.95}));floor.rotation.x=-Math.PI/2;floor.position.y=-.12;floor.receiveShadow=true;building.add(floor);
 const laneMat=new THREE.MeshStandardMaterial({color:0xc38a50,roughness:.35,metalness:.02});
 const lane=new THREE.Mesh(new THREE.BoxGeometry(6.3,.18,31),laneMat);lane.position.set(0,0,0);lane.receiveShadow=true;building.add(lane);
+
+/* ND3: textured bowling lane, illuminated gutters and cinematic arena signage. */
+const laneArt=document.createElement('canvas');laneArt.width=256;laneArt.height=1024;
+const la=laneArt.getContext('2d');la.fillStyle='#e5c49e';la.fillRect(0,0,256,1024);
+for(let i=0;i<9;i++){la.fillStyle=i%2?'#b9936e':'#cfa880';la.globalAlpha=.16;la.fillRect(i*29,0,28,1024)}
+la.globalAlpha=1;
+for(let x=0;x<256;x+=29){la.strokeStyle='#6b4c3466';la.lineWidth=2;la.beginPath();la.moveTo(x,0);la.lineTo(x,1024);la.stroke()}
+for(let i=0;i<36;i++){const y=i*33;la.fillStyle=i%3?'#fff7df07':'#764b2730';la.fillRect(0,y,256,2)}
+la.strokeStyle='#ffffff55';la.lineWidth=5;la.strokeRect(8,9,240,1006);
+for(let i=-2;i<=2;i++){const x=128+i*39;la.fillStyle='#4f8aa8';la.beginPath();la.moveTo(x,382);la.lineTo(x+7,399);la.lineTo(x-7,399);la.closePath();la.fill()}
+const nd3LaneTexture=new THREE.CanvasTexture(laneArt);nd3LaneTexture.colorSpace=THREE.SRGBColorSpace;nd3LaneTexture.anisotropy=8;laneMat.map=nd3LaneTexture;laneMat.needsUpdate=true;
+const stripBlue=new THREE.MeshBasicMaterial({color:0x53deff,transparent:true,opacity:.82,toneMapped:false});
+const stripGold=new THREE.MeshBasicMaterial({color:0xd9ff70,transparent:true,opacity:.7,toneMapped:false});
+for(const xx of [-3.13,3.13]){
+ const edge=new THREE.Mesh(new THREE.BoxGeometry(.048,.024,29.4),stripBlue);
+ edge.position.set(xx,.105,0);building.add(edge);
+ const glow=new THREE.Mesh(new THREE.BoxGeometry(.12,.016,29.4),stripBlue);
+ glow.position.set(xx,.094,0);glow.material=stripBlue.clone();glow.material.opacity=.18;building.add(glow)
+}
+for(const zz of [-9.75,-5.2,4.5]){
+ const arrow=new THREE.Mesh(new THREE.BoxGeometry(4.8,.012,.035),stripGold);
+ arrow.position.set(0,.111,zz);building.add(arrow)
+}
+const nd3Screen=document.createElement('canvas');nd3Screen.width=1024;nd3Screen.height=256;
+const nd3Screen2d=nd3Screen.getContext('2d'),nd3ScreenTexture=new THREE.CanvasTexture(nd3Screen);
+nd3ScreenTexture.colorSpace=THREE.SRGBColorSpace;
+const nd3Display=new THREE.Mesh(new THREE.PlaneGeometry(7.7,1.93),new THREE.MeshBasicMaterial({map:nd3ScreenTexture,toneMapped:false,transparent:false,side:THREE.DoubleSide}));
+nd3Display.position.set(0,5.22,-15.55);building.add(nd3Display);
+for(const xx of [-4.05,4.05]){const bar=new THREE.Mesh(new THREE.BoxGeometry(.08,2.2,.1),stripGold);bar.position.set(xx,5.22,-15.48);building.add(bar)}
+const bannerTop=new THREE.Mesh(new THREE.BoxGeometry(8.1,.09,.11),stripBlue);bannerTop.position.set(0,6.24,-15.48);building.add(bannerTop);
+function nd3PaintArenaBoard(){
+ const c=nd3Screen2d,w=1024,h=256;c.clearRect(0,0,w,h);c.fillStyle='#051d31';c.fillRect(0,0,w,h);
+ let gr=c.createLinearGradient(0,0,w,0);gr.addColorStop(0,'#6ee5ff');gr.addColorStop(1,'#deff70');
+ c.fillStyle=gr;c.fillRect(0,0,w,8);c.fillRect(0,h-7,w,7);
+ c.font='1000 29px system-ui';c.fillStyle='#7fdaf3';c.fillText('NEON DISTRICT',37,44);
+ c.font='1000 67px system-ui';c.fillStyle='#ffffff';c.fillText('BOWLING 3D',35,125);
+ const round=Math.min(10,frameIndex+1),total=mode==='challenge'?challengeScore:(frames.length?[...scores()].reverse().find(n=>n!==undefined)||0:0);
+ c.font='900 31px system-ui';c.fillStyle='#d9ff70';c.fillText('FRAME '+round+' / 10',39,189);
+ c.font='950 46px system-ui';c.fillStyle='#9cefff';c.fillText('SCORE '+total,615,112);
+ c.font='900 25px system-ui';c.fillStyle='#aecbdb';c.fillText(mode==='challenge'?'STRIKE RUSH':'PRO LANE · '+diff.toUpperCase(),615,168);
+ nd3ScreenTexture.needsUpdate=true
+}
+
 const gutterMat=new THREE.MeshStandardMaterial({color:0x1c2631,roughness:.55,metalness:.35});
 for(const x of [-3.55,3.55]){const g=new THREE.Mesh(new THREE.BoxGeometry(.65,.22,31),gutterMat);g.position.set(x,-.02,0);g.receiveShadow=true;building.add(g)}
 function setAlleyTheme(next){
@@ -152,7 +195,7 @@ function renderScoreboard(){
  const total=mode==='challenge'?challengeScore:([...sc].reverse().find(v=>v!==undefined)||0);
  $('bestStat').textContent=mode==='challenge'?challengeBest:best;
  $('frameStat').textContent=mode==='practice'?'PRACTICE':(mode==='challenge'?'RACK ':'FRAME ')+Math.min(frameIndex+1,10)+' / 10';
- return total
+ nd3PaintArenaBoard();return total
 }
 function updateUI(){const deg=(aim*12).toFixed(1);$('posRead').textContent=playerX.toFixed(1);$('aimRead').textContent=(aim>=0?'+':'')+deg+'°';$('hookRead').textContent=Math.round(Math.abs(hook)*100)+'%';$('hookSide').textContent=Math.abs(hook)<.05?'STRAIGHT':hook<0?'LEFT HOOK':'RIGHT HOOK';$('phaseLabel').textContent=phase.toUpperCase();$('bowl').textContent=phase==='setup'?'START POWER':phase==='power'?'RELEASE BALL':'ROLLING';$('shotTitle').textContent=phase==='setup'?'SET YOUR LINE':phase==='power'?'TIME THE RELEASE':'BALL IN MOTION';$('shotText').textContent=phase==='setup'?'Move your feet, choose an angle, add hook, then start the power meter.':phase==='power'?'Release while the white marker is inside the moving green target.':'Watch the hook develop down-lane.';const disabled=phase==='rolling'||phase==='settling';for(const id of ['moveL','moveR','aimL','aimR'])$(id).disabled=disabled;$('hook').disabled=disabled}
 function updateMeter(){$('needle').style.left='calc('+(power*100)+'% - 2px)';$('powerText').textContent=phase==='power'?Math.round(power*100)+'%':'WAITING'}
