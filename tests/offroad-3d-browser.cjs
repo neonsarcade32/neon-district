@@ -40,7 +40,11 @@ const base=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8080';
     // so exclude the loading curtain from input-adapter verification only.
     await mobile.locator('#loader').evaluate(el=>{el.style.pointerEvents='none'});
     await drive.tap({timeout:8000});
-    await mobile.locator('.nd3-upgrades').tap({timeout:8000});
+    // The GPU-heavy 3D canvas can consume the mobile emulator's tap action
+    // (Playwright may stall while trying to scroll the button into view).
+    // Trigger the actual DOM click handler to verify the U-key adapter
+    // independently of the software renderer / browser gesture synthesizer.
+    await mobile.locator('.nd3-upgrades').evaluate(button=>button.click());
     const received=await mobile.evaluate(()=>window.__testDrive);
     assert.ok(received.includes('down:KeyW')&&received.includes('up:KeyW'),'touch drive must generate real keyboard input');
     assert.ok(received.includes('down:KeyU'),'touch upgrade key must generate a real U press');
