@@ -90,18 +90,20 @@ const origin=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8080';
    try{
     await p.goto(origin+'/open-platformer.html');
     await p.waitForFunction(()=>window.ndPlatformerGame?._state==='playing',{timeout:10000});
-    const b=p.locator('[data-platform-hold="ArrowRight"]');assert.ok(await b.isVisible());
-    const before=await p.evaluate(()=>window.ndPlatformerGame._player.x);
-    const r=await b.boundingBox();
-    await p.mouse.move(r.x+r.width/2,r.y+r.height/2);await p.mouse.down();await p.waitForTimeout(300);await p.mouse.up();
-    const after=await p.evaluate(()=>window.ndPlatformerGame._player.x);
-    assert.ok(after>before+5,'on-screen directional button should move the player');
+    // Check pause before running into level hazards: the original game can
+    // legitimately enter its 'dead' animation after sustained movement.
     await p.locator('[data-platform-tap="KeyP"]').click();
     await p.waitForTimeout(220);
     assert.equal(await p.evaluate(()=>window.ndPlatformerGame._state),'paused');
     await p.locator('[data-platform-tap="KeyP"]').click();
     await p.waitForTimeout(220);
     assert.equal(await p.evaluate(()=>window.ndPlatformerGame._state),'playing');
+    const b=p.locator('[data-platform-hold="ArrowRight"]');assert.ok(await b.isVisible());
+    const before=await p.evaluate(()=>window.ndPlatformerGame._player.x);
+    const r=await b.boundingBox();
+    await p.mouse.move(r.x+r.width/2,r.y+r.height/2);await p.mouse.down();await p.waitForTimeout(300);await p.mouse.up();
+    const after=await p.evaluate(()=>window.ndPlatformerGame._player.x);
+    assert.ok(after>before+5,'on-screen directional button should move the player');
     assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth-innerWidth)<=12);
     assert.deepEqual(errs,[])
    }finally{await p.close()}
