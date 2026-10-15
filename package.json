@@ -12,7 +12,9 @@
     "test:gameplay": "node tests/arcade-gameplay.cjs",
     "test:bowling": "node tests/bowling-rules.cjs",
     "test:visual": "node tests/arcade-visual.cjs",
-    "test:visual3": "node tests/visual-3.cjs"
+    "test:visual3": "node tests/visual-3.cjs",
+    "test:bowlingPhysics": "node tests/bowling-physics.cjs",
+    "test:bowlingGameplay": "node tests/bowling-3-browser.cjs"
   },
   "engines": {
     "node": ">=20"
