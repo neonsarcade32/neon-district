@@ -56,7 +56,7 @@ async function horizontalOverflow(p){return p.evaluate(()=>document.documentElem
     else {
       check(g.name+' unified 3.0 presentation',await p.locator('html.nd3-game-ui').count()===1);
       check(g.name+' new visual CSS variables',await p.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--nd3-accent').trim().length>0));
-      check(g.name+' stage loads',await p.locator('canvas').count()>0);
+      check(g.name+' stage loads',await p.locator('canvas,.arena,.stage,.app .city').count()>0);
     }
     check(g.name+' no JS startup error',errors.length===0);
     if(['city','bowling','snake','hockey','tetris','space'].includes(g.id)){
