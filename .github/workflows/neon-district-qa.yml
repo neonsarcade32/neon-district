@@ -40,6 +40,8 @@ jobs:
         run: npm run test:multiplayer
       - name: Browser smoke test — 35 games, desktop and mobile
         run: npm run test:browser
+      - name: Real gameplay checks — upgraded modes and flagship UI
+        run: npm run test:gameplay
       - name: Server output when checks fail
         if: failure()
         run: cat /tmp/neon-district-server.log || true
