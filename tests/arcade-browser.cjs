@@ -45,6 +45,78 @@ const games=[...index.matchAll(/\bid:'([^']+)',name:'([^']+)',file:'([^']+)'/g)]
       }catch(e){failures.push('mobile '+g+': '+e.message)}
       finally{await page.close()}
     }
+    // Targeted gameplay checks for systems that previously looked loaded but were inert.
+    async function gameplay(file,label,fn){
+      const page=await browser.newPage({viewport:{width:1180,height:840}});
+      const errors=[];
+      page.on('pageerror',err=>errors.push(err.message));
+      try{
+        await page.goto(base+'/'+file,{waitUntil:'domcontentloaded',timeout:25000});
+        await page.waitForTimeout(file==='bowling.html'||file==='arcade-city.html'?1800:250);
+        await fn(page);
+        assert.deepEqual(errors,[],'no gameplay JavaScript errors');
+        console.log('PASS interactive '+label);
+      }catch(err){failures.push('interactive '+label+': '+err.message);console.error('FAIL interactive '+label+': '+err.message)}
+      finally{await page.close()}
+    }
+    await gameplay('snake.html','Snake maze',async p=>{
+      await p.locator('[data-mode="maze"]').click();
+      await p.locator('#start').click();
+      assert.equal((await p.locator('#modeHud').innerText()).trim(),'MAZE');
+      await p.keyboard.press('ArrowUp');
+      await p.waitForTimeout(250);
+    });
+    await gameplay('pong.html','Pong two players',async p=>{
+      await p.locator('[data-level="versus"]').click();
+      assert.equal((await p.locator('#opponentLabel').innerText()).trim(),'PLAYER 2');
+      await p.locator('#start').click();
+      await p.keyboard.press('j');
+      await p.waitForTimeout(200);
+    });
+    await gameplay('tap.html','Tap Survival scoring',async p=>{
+      await p.locator('[data-mode="survival"]').click();
+      await p.locator('#start').click();
+      await p.locator('#target').click();
+      assert.ok(Number(await p.locator('#score').innerText())>0);
+      assert.equal((await p.locator('#time').innerText()).trim(),'3/3');
+    });
+    await gameplay('reaction.html','Reaction false starts',async p=>{
+      await p.locator('#arena').click();
+      await p.locator('#arena').click();
+      assert.equal((await p.locator('#falseCount').innerText()).trim(),'1');
+    });
+    await gameplay('free-throw.html','Free Throw 10-shot logic',async p=>{
+      await p.locator('#start').click();
+      await p.keyboard.press('Space');
+      assert.ok(Number(await p.locator('#round').innerText())>=1);
+    });
+    await gameplay('goalkeeper.html','Goalkeeper 10-save logic',async p=>{
+      await p.locator('#start').click();
+      await p.waitForTimeout(1000);
+      await p.keyboard.press('Space');
+      assert.ok(Number(await p.locator('#round').innerText())>=1);
+    });
+    await gameplay('laser-defender.html','Laser controls and lives',async p=>{
+      await p.locator('#start').click();
+      assert.match(await p.locator('#status').innerText(),/LIVES/);
+      await p.keyboard.press('Space');
+      await p.waitForTimeout(200);
+    });
+    await gameplay('rooftop-run.html','Rooftop run progression',async p=>{
+      await p.locator('#start').click();
+      assert.match(await p.locator('#status').innerText(),/BOOST/);
+      await p.waitForTimeout(220);
+      assert.ok(Number(await p.locator('#score').innerText())>0);
+    });
+    await gameplay('arcade-city.html','Arcade City solo entry',async p=>{
+      await p.locator('#soloBtn').click();
+      assert.equal(await p.locator('#menuShade').evaluate(el=>getComputedStyle(el).display),'none');
+    });
+    await gameplay('bowling.html','Bowling classic game entry',async p=>{
+      await p.locator('#classicBtn').click();
+      assert.equal(await p.locator('#menuShade').evaluate(el=>getComputedStyle(el).display),'none');
+      assert.ok(await p.locator('#bowl').isVisible());
+    });
   }finally{await browser.close()}
   if(failures.length){console.error('\n'+failures.length+' browser smoke failures:\n'+failures.join('\n'));process.exitCode=1}
   else console.log('\nPASS all '+games.length+' games opened; mobile smoke checks passed.');
