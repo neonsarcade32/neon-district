@@ -2,7 +2,7 @@ name: Neon District 3.0 game QA
 
 on:
   push:
-    branches: [main, neon-district-3.0-upgrade, neon-district-3-visual-rebuild, bowling-3-1-real-physics, nd3-open-source-games-pack]
+    branches: [main, neon-district-3.0-upgrade, neon-district-3-visual-rebuild, bowling-3-1-real-physics, nd3-open-source-games-pack, nd3-upgrade-real-3d-offroad]
   pull_request:
     branches: [main]
 
@@ -42,7 +42,7 @@ jobs:
           exit 1
       - name: Multiplayer regression tests
         run: npm run test:multiplayer
-      - name: Browser smoke test — 37 games, desktop and mobile
+      - name: Browser smoke test — 38 games, desktop and mobile
         run: npm run test:browser
       - name: Real gameplay checks — upgraded modes and flagship UI
         run: npm run test:gameplay
@@ -50,7 +50,17 @@ jobs:
         run: npm run test:bowlingGameplay
       - name: Imported MIT games — real tile merging, level loading, keyboard and touch controls
         run: npm run test:openSource
-      - name: Visual regression — all 37 games at desktop and mobile widths
+      - name: Premium real 3D offroad world — renderer and physics initialization
+        run: npm run test:offroad
+      - name: Upload actual 3D game render screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: open-offroad-3d-test-render
+          path: test-artifacts/offroad-3d.png
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Visual regression — all 38 games at desktop and mobile widths
         run: npm run test:visual
       - name: Upload visual gallery screenshots
         if: always()
