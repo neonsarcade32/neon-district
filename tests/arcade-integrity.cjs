@@ -23,7 +23,7 @@ function checkSyntax(code,mod,label){
     checked++;
   }catch(err){problems.push(label+': '+err.message)}
 }
-expect(entries.length===35,'Expected 35 games in catalog; found '+entries.length);
+expect(entries.length===37,'Expected 37 games in catalog; found '+entries.length);
 expect(new Set(entries.map(x=>x.id)).size===entries.length,'Duplicate game catalog ID');
 expect(new Set(entries.map(x=>x.file)).size===entries.length,'Duplicate game catalog path');
 for(const e of entries)expect(fs.existsSync(path.join(root,e.file)),'Missing game page '+e.name+': '+e.file);
@@ -48,7 +48,18 @@ for(const html of pages){
 }
 for(const js of files.filter(x=>x.endsWith('.js'))){
   if(js==='server.js')continue;
-  checkSyntax(read(js),false,js);
+  checkSyntax(read(js),js.startsWith('open-platformer-'),js);
+}
+// Check exact imported MIT code and data references (no missing level files).
+for(const game of ['open-2048','open-platformer']){
+ expect(fs.existsSync(path.join(root,game+'.html')),'Missing '+game+' open source game');
+}
+for(const license of ['third-party-2048-license.txt','third-party-platformer-license.txt']){
+ expect(read(license).includes('MIT'),'Missing required MIT license: '+license);
+}
+for(const file of ['open-platformer-level1.json','open-platformer-level2.json']){
+ try{const parsed=JSON.parse(read(file));expect(Array.isArray(parsed.tiles)&&parsed.tiles.length>=8,'Invalid platformer level '+file)}
+ catch(e){problems.push(file+': '+e.message)}
 }
 const server=read('server.js');
 for(const js of linkedScripts)expect(server.includes("'"+js+"'"),'Multiplayer static server does not allow '+js);
