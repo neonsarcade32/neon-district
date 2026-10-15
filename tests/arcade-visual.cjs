@@ -10,7 +10,7 @@ const games=[...html.matchAll(/\bid:'([^']+)',name:'([^']+)',file:'([^']+)'/g)].
 const base=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8080';
 const output=path.join(root,'test-artifacts','nd3-visual');
 fs.mkdirSync(output,{recursive:true});
-const selection=new Set(['snake','pong','hockey','ski','traffic','tap','city','bowling','laser','pixelhop','open2048']);
+const selection=new Set(['snake','pong','hockey','ski','traffic','tap','city','bowling','laser','pixelhop','open2048','offroad']);
 async function inspect(page,name,standard,wide,save){
  const issues=[],summary=await page.evaluate(()=>{
   const doc=document.documentElement,body=document.body,stage=document.querySelector('.stage,.arena,.city,.game-container,#container'),h=document.querySelector('h1,.cityTitle strong,.app .brand');
@@ -36,9 +36,9 @@ async function inspect(page,name,standard,wide,save){
   if(name!=='idle'&&!summary.gameUI)issues.push('missing ND3 game tools');
   if(!['reaction','tap','idle'].includes(name)&&summary.canvasCount<1)issues.push('missing game canvas');
   if(summary.stageHeight<120)issues.push('missing game screen');
- }else if(name==='pixelhop'||name==='open2048'){
-  if(!summary.headingVisible)issues.push('missing visible imported game title');
-  if(summary.stageHeight<120)issues.push('missing source game play area');
+ }else if(name==='pixelhop'||name==='open2048'||name==='offroad'){
+  if(name!=='offroad'&&!summary.headingVisible)issues.push('missing visible imported game title');
+  if(name!=='offroad'&&summary.stageHeight<120)issues.push('missing source game play area');
   if(name==='pixelhop'&&summary.canvasCount<1)issues.push('platformer canvas missing');
   if(name==='open2048'&&!await page.locator('.tile-container').count())issues.push('2048 tile engine missing');
   if(!await page.locator('a[href*="github.com"]').count())issues.push('upstream credit missing');
@@ -69,7 +69,7 @@ async function inspect(page,name,standard,wide,save){
      const response=await page.goto(base+'/'+g.page,{waitUntil:'domcontentloaded',timeout:30000});
      assert.equal(response.status(),200);
      await page.waitForTimeout(g.id==='city'||g.id==='bowling'?1300:120);
-     const standard=!['home','city','bowling','pixelhop','open2048'].includes(g.id);
+     const standard=!['home','city','bowling','pixelhop','open2048','offroad'].includes(g.id);
      const r=await inspect(page,g.id,standard,wide,g.id==='home'||selection.has(g.id));
      if(r.issues.length)failures.push((wide?'desktop ':'mobile ')+g.id+': '+r.issues.join('; '));
      else {checks++;console.log('PASS '+(wide?'desktop':'mobile')+' '+g.id+(standard?' · shared ND3 game interface':''))}
