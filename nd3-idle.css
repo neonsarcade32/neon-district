@@ -1,0 +1,60 @@
+/* Neon District 3.0 — Idle Empire management-console revamp */
+.nd3-idle{--idle-lime:#d9ff7a;--idle-cyan:#76dfff;--idle-ink:#0a1625;--idle-panel:#122439}
+.nd3-idle .app{max-width:1260px!important;margin:auto!important;padding:0 22px 90px!important}
+.nd3-idle .topbar{z-index:42!important;background:#091725ed!important;border-bottom:1px solid #55758d!important;padding:13px 17px!important;box-shadow:0 8px 35px #0004!important}
+.nd3-idle .topin{max-width:1260px!important;gap:15px!important}
+.nd3-idle .back{background:#1b3348;border:1px solid #52748b;border-radius:9px;padding:10px 14px;font-size:11px!important;text-decoration:none!important;color:#bdeaff!important}
+.nd3-idle .brand{font-size:19px!important;letter-spacing:-.8px!important}
+.nd3-idle .brandIcon{border-radius:10px!important;background:var(--idle-lime)!important;color:#061523!important;box-shadow:0 0 0 5px #d9ff6718!important}
+.nd3-idle .cash{font-size:clamp(22px,4vw,36px)!important;color:var(--idle-lime)!important;letter-spacing:-1.5px!important}
+.nd3-idle .ips{color:var(--idle-cyan)!important}
+.nd3-idle .tokenPill{border:1px solid #60768b!important;background:#1c3650!important;color:#edfdff!important;padding:11px 14px!important}
+.nd3-idle .nd3-commandbar{margin:17px auto 10px!important;max-width:1260px!important}
+.nd3-idle .hero{grid-template-columns:1.15fr .85fr!important;gap:16px!important;margin-top:14px!important;padding-top:12px!important}
+.nd3-idle .city{min-height:315px!important;border:1px solid #6690ad!important;border-radius:19px!important;background:radial-gradient(ellipse at 66% 20%,#31709060,transparent 50%),linear-gradient(#142f49 0%,#0e2235 64%,#06111b 64%)!important;box-shadow:inset 0 1px #ffffff25,0 25px 62px #0007!important;overflow:hidden}
+.nd3-idle .city:before{background:linear-gradient(#9ad6ff0e 1px,transparent 1px),linear-gradient(90deg,#9ad6ff0d 1px,transparent 1px)!important;background-size:39px 39px!important;opacity:.35!important}
+.nd3-idle .cityTitle{left:22px!important;top:22px!important}
+.nd3-idle .cityTitle strong{font-size:26px!important;font-weight:1000!important;letter-spacing:-1.1px!important;color:var(--idle-lime)!important}
+.nd3-idle .cityTitle span{font-size:12px!important;color:#daecf6!important}
+.nd3-idle .skyline{top:90px!important;bottom:35px!important;gap:7px!important}
+.nd3-idle .tower{background:linear-gradient(120deg,#2a4761,#132a3d)!important;border:1px solid #6aa8c244!important;border-radius:5px 5px 0 0!important;box-shadow:inset 0 2px #ffffff15!important}
+.nd3-idle .tower.on{background:linear-gradient(150deg,#4983a0,#1c4761)!important;border-color:#b7f6ff71!important;box-shadow:0 0 23px #7fdcff30!important}
+.nd3-idle .tower:after{opacity:.8!important;background:repeating-linear-gradient(0deg,transparent 0 8px,#e4fa9560 8px 11px),repeating-linear-gradient(90deg,transparent 0 9px,#e4fa9520 9px 12px)!important}
+.nd3-idle .road{height:35px!important;background:#091521!important;border-color:#73b0bb!important}
+.nd3-idle .road:after{border-color:#d9ff7a77!important}
+.nd3-idle .event{background:var(--idle-lime)!important;color:#06151d!important;border:0!important;border-radius:10px!important}
+.nd3-idle .boost{border:1px solid #497789!important;background:#102b40!important;border-radius:9px!important;color:#c9edff!important}
+.nd3-idle .dash{gap:10px!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.nd3-idle .metric{background:linear-gradient(145deg,#193249,#112539)!important;border:1px solid #496b86!important;border-radius:15px!important;min-height:118px!important;padding:17px!important;box-shadow:inset 0 1px #ffffff14!important}
+.nd3-idle .metric span{font-size:10px!important;color:#aec7d9!important;letter-spacing:1px!important}
+.nd3-idle .metric strong{font-size:clamp(20px,2.5vw,31px)!important;color:#f0faff!important}
+.nd3-idle .metric:nth-child(1) strong{color:var(--idle-lime)!important}
+.nd3-idle .metric:nth-child(3) strong{color:var(--idle-cyan)!important}
+.nd3-idle .metric small{color:#9ab9c9!important}
+.nd3-idle .metric.goal{background:#143445!important;border-color:#5a98a5!important}
+.nd3-idle .metric.goal .bar i{background:linear-gradient(90deg,var(--idle-cyan),var(--idle-lime))!important}
+.nd3-idle .tabs{position:sticky!important;top:86px!important;z-index:32!important;display:flex!important;gap:9px!important;background:#0a1929e8!important;backdrop-filter:blur(12px)!important;padding:12px!important;border:1px solid #3e627b!important;border-radius:14px!important;margin:22px 0 20px!important}
+.nd3-idle .tabs .tab{border:1px solid #466e86!important;border-radius:9px!important;background:#142d41!important;color:#d3e9f5!important;padding:12px 17px!important;font-weight:1000!important;letter-spacing:.7px!important}
+.nd3-idle .tabs .tab.active{background:var(--idle-lime)!important;color:#0a1922!important;border-color:transparent!important}
+.nd3-idle .sectionHead h2{font-size:32px!important;font-weight:1000!important;letter-spacing:-1.3px!important;color:#f0fcff!important}
+.nd3-idle .sectionHead p{color:#a2bbcf!important;font-size:12px!important}
+.nd3-idle .buyModes{background:#0c2031!important;border:1px solid #4e6c87!important;border-radius:10px!important;padding:5px!important}
+.nd3-idle .buyModes button{border-radius:7px!important}
+.nd3-idle .buyModes button.active{background:var(--idle-lime)!important;color:#0b1c25!important}
+.nd3-idle .quickTip{border:1px solid #3f6178!important;border-radius:13px!important;background:#112439!important}
+.nd3-idle .tipStep{font-size:11px!important;color:#a9c5d7!important}
+.nd3-idle .tipStep b{color:var(--idle-cyan)!important}
+.nd3-idle .biz,.nd3-idle .business,.nd3-idle .businessCard,.nd3-idle .card,.nd3-idle .upgrade,.nd3-idle .managerCard,.nd3-idle .legacyCard{
+ background:linear-gradient(145deg,#192f44,#102033)!important;
+ border:1px solid #436984!important;
+ border-radius:15px!important;box-shadow:inset 0 1px #ffffff12,0 8px 25px #0003!important
+}
+.nd3-idle .businesses button,.nd3-idle .cards button,.nd3-idle .legacyGrid button{border-radius:9px!important}
+.nd3-idle .businesses button:not(:disabled):hover,.nd3-idle .cards button:not(:disabled):hover{border-color:var(--idle-lime)!important;filter:brightness(1.12)!important}
+.nd3-idle .prestige{background:linear-gradient(120deg,#172943,#271d3a)!important;border:1px solid #7d76a1!important;border-radius:18px!important}
+.nd3-idle .gain{color:var(--idle-lime)!important}
+.nd3-idle .modalBox{background:#12283ced!important;border:1px solid #6292ac!important;border-radius:21px!important}
+.nd3-idle .offlineCash{color:var(--idle-lime)!important}
+.nd3-idle a:focus-visible,.nd3-idle button:focus-visible{outline:3px solid var(--idle-cyan)!important;outline-offset:3px}
+@media(max-width:850px){.nd3-idle .hero{grid-template-columns:1fr!important}.nd3-idle .dash{grid-template-columns:repeat(2,minmax(0,1fr))!important}.nd3-idle .tabs{top:70px!important}}
+@media(max-width:540px){.nd3-idle .app{padding:0 12px 50px!important}.nd3-idle .topbar{margin:0 -12px!important;padding:10px 12px!important}.nd3-idle .topin{gap:6px!important}.nd3-idle .brand{font-size:14px!important}.nd3-idle .brandIcon{width:29px;height:29px}.nd3-idle .cash{font-size:21px!important}.nd3-idle .back{padding:7px 9px!important;font-size:9px!important}.nd3-idle .tokenPill{font-size:9px!important;padding:8px!important}.nd3-idle .city{min-height:260px!important}.nd3-idle .metric{min-height:97px!important;padding:11px!important}.nd3-idle .metric strong{font-size:20px!important}.nd3-idle .tabs{top:57px!important;gap:5px!important;padding:8px!important}.nd3-idle .tabs .tab{font-size:10px!important;padding:10px!important;flex:1}.nd3-idle .sectionHead h2{font-size:27px!important}}

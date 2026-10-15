@@ -1,0 +1,164 @@
+/* NEON DISTRICT 3.0 / VISUAL SYSTEM — new game-shell layout */
+:root{--nd3-ink:#070a12;--nd3-panel:#0f1827;--nd3-card:#132133;--nd3-text:#f4faff;--nd3-muted:#a3b3c5;--nd3-accent:#48dfff;--nd3-accent2:#d6fb6b;--nd3-purple:#9b83ff;--nd3-line:#42617e}
+:root[data-nd3-skin="ember"]{--nd3-accent:#ffb767;--nd3-accent2:#ff6a8e;--nd3-purple:#ffb0cd;--nd3-line:#70566c}
+:root[data-nd3-skin="arctic"]{--nd3-accent:#90bcff;--nd3-accent2:#8af2ef;--nd3-purple:#8d9afe;--nd3-line:#507e98}
+html.nd3-game-ui{background:#060b14;color-scheme:dark}
+html.nd3-game-ui body{
+  background:radial-gradient(ellipse 75% 44% at 48% -11%,color-mix(in srgb,var(--nd3-accent) 19%,transparent),transparent 75%),
+             radial-gradient(ellipse 45% 33% at 105% 41%,color-mix(in srgb,var(--nd3-purple) 13%,transparent),transparent 83%),
+             linear-gradient(165deg,#080d19 5%,#070b11 46%,#090c15)!important;
+  color:var(--nd3-text)!important;min-height:100vh;overflow-x:hidden;
+}
+html.nd3-game-ui body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.3;background-image:linear-gradient(#80bcff0b 1px,transparent 1px),linear-gradient(90deg,#80bcff0b 1px,transparent 1px);background-size:46px 46px;mask-image:linear-gradient(to bottom,transparent,#000 10%,#000 70%,transparent)}
+html.nd3-game-ui body:after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.18;background:repeating-linear-gradient(0deg,transparent 0 3px,#ffffff06 4px 4.3px)}
+html.nd3-game-ui main{width:min(100%,970px)!important;position:relative;z-index:1;margin:0 auto!important;padding:13px 16px 52px!important}
+html.nd3-game-ui main>a[href*="index.html"]:first-child, html.nd3-game-ui main>a[href="index.html"]{display:inline-flex;align-items:center;gap:8px;width:max-content;max-width:100%;border-radius:50px;border:1px solid #57728b77;background:#101e2b99;color:#c4dfff!important;text-decoration:none!important;letter-spacing:.65px;font-size:10px!important;font-weight:950!important;padding:10px 15px!important;margin:8px 0!important;transition:background .15s,border .15s;box-shadow:inset 0 1px #ffffff0b}
+html.nd3-game-ui main>a[href="index.html"]:hover{background:#20384d;border-color:var(--nd3-accent)}
+html.nd3-game-ui .head{position:relative;display:flex;gap:16px;align-items:center;justify-content:space-between;min-height:120px;margin:14px 0 18px!important;padding:20px 25px!important;border:1px solid #3d617877;border-radius:20px;background:linear-gradient(115deg,#11253cfa 0%,#0d1728f9 58%,#1c1933e8)!important;box-shadow:inset 0 1px #ffffff13,0 20px 60px #0005;overflow:hidden}
+html.nd3-game-ui .head:before{content:"";position:absolute;width:280px;height:280px;border-radius:50%;right:-125px;top:-168px;background:var(--nd3-accent);opacity:.13;filter:blur(45px)}
+html.nd3-game-ui .head:after{content:"ND // 03";position:absolute;top:10px;right:12px;font:1000 10px system-ui;letter-spacing:1.9px;color:#c3deff55;pointer-events:none}
+html.nd3-game-ui .head h1,html.nd3-game-ui main>h1{
+ font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif!important;
+ font-size:clamp(31px,5vw,52px)!important;line-height:.96!important;font-weight:1000!important;
+ letter-spacing:-2px!important;margin:6px 0 10px!important;
+ color:#f7fbff!important;text-shadow:0 6px 38px #02070d44;
+}
+html.nd3-game-ui .head .sub,html.nd3-game-ui .head p,html.nd3-game-ui main>p:not(#score):not(.help){font-size:12px!important;line-height:1.55!important;color:#b4c7d8!important;margin:6px 0!important}
+html.nd3-game-ui .head .badge,html.nd3-game-ui .head .pill{background:#0a192a!important;border:1px solid var(--nd3-line)!important;padding:7px 12px!important;border-radius:9px!important;color:var(--nd3-accent)!important;white-space:nowrap;font-size:10px!important;letter-spacing:1px}
+html.nd3-game-ui .nd3-commandbar{background:#091723ee!important;border:1px solid #3b556d!important;padding:10px 13px!important;border-radius:15px!important;box-shadow:inset 0 1px #ffffff16,0 14px 28px #0004!important;margin:0 0 16px!important}
+html.nd3-game-ui .nd3-commandbar:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--nd3-accent2);box-shadow:0 0 12px var(--nd3-accent2);flex:none}
+html.nd3-game-ui .nd3-commandbar>span{font-weight:1000!important;color:#d7eeff!important;letter-spacing:2px!important}
+html.nd3-game-ui .nd3-commandbar button{border-color:#426682!important;background:#12273a!important;color:#e8faff!important;border-radius:10px!important;box-shadow:0 2px 8px #0003!important}
+html.nd3-game-ui .nd3-commandbar .nd3-passport{border-color:#8070af!important;background:#2b2150!important}
+html.nd3-game-ui .nd3-commandbar .nd3-snapshot{border-color:#4f9685!important;background:#163b39!important}
+html.nd3-game-ui .nd3-commandbar button:hover{border-color:var(--nd3-accent)!important;filter:brightness(1.17)}
+html.nd3-game-ui .hud{gap:10px!important;margin:0 0 16px!important}
+html.nd3-game-ui .hud .box,html.nd3-game-ui .hud .stat,html.nd3-game-ui .hud>div:not(.overlay),html.nd3-game-ui .card,html.nd3-game-ui .stats .stat{
+ background:linear-gradient(130deg,#182b41,#0e1b2d)!important;
+ border:1px solid #43617c!important;border-radius:13px!important;
+ box-shadow:inset 0 1px #ffffff12,0 8px 26px #0002!important;
+ padding:12px 15px!important;
+}
+html.nd3-game-ui .hud span,html.nd3-game-ui .box span,html.nd3-game-ui .stat span{color:#afc4d5!important;font:900 9px system-ui!important;letter-spacing:1.15px!important}
+html.nd3-game-ui .hud strong,html.nd3-game-ui .box strong,html.nd3-game-ui .stat strong{font-size:clamp(19px,2.9vw,28px)!important;letter-spacing:-.6px!important;color:#f1fbff!important;font-weight:1000!important}
+html.nd3-game-ui .hud>div:nth-child(2) strong,html.nd3-game-ui .hud .box:nth-child(2) strong{color:var(--nd3-accent2)!important}
+html.nd3-game-ui .toolbar,html.nd3-game-ui .modebar,html.nd3-game-ui .nd3-settings{display:flex!important;flex-wrap:wrap!important;gap:8px!important;padding:9px!important;margin:9px 0 16px!important;background:#0c1727a6!important;border:1px solid #2e455c!important;border-radius:15px!important}
+html.nd3-game-ui .toolbar button,html.nd3-game-ui .modebar button,html.nd3-game-ui .nd3-settings button{background:#17293c!important;color:#d6e6f4!important;border:1px solid #405a78!important;border-radius:10px!important;min-height:41px!important;font-size:11px!important;padding:10px 15px!important;font-weight:900!important;letter-spacing:.3px!important}
+html.nd3-game-ui .toolbar button.active,html.nd3-game-ui .modebar button.active,html.nd3-game-ui .nd3-settings button.active{background:linear-gradient(100deg,var(--nd3-accent),var(--nd3-accent2))!important;color:#07131b!important;border-color:transparent!important;box-shadow:0 0 24px color-mix(in srgb,var(--nd3-accent) 20%,transparent)!important}
+html.nd3-game-ui .stage{position:relative!important;isolation:isolate!important;border-radius:22px!important;overflow:hidden!important;border:1px solid #52728f!important;background:#06101d!important;box-shadow:0 34px 85px #0008,0 0 0 1px #8bcbff12,inset 0 1px #ffffff2a!important}
+html.nd3-game-ui .stage:before{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(180deg,#b7e5ff0e,transparent 15%,transparent 74%,#00152224),radial-gradient(ellipse 75% 68% at 50% 48%,transparent 66%,#00000034);border-radius:inherit}
+html.nd3-game-ui .stage:after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;opacity:.16;background:repeating-linear-gradient(0deg,transparent 0 3px,#050b1888 4px 4.8px)}
+html.nd3-game-ui .stage canvas{display:block!important;width:100%!important;height:auto!important}
+html.nd3-game-ui .overlay{z-index:6!important;background:#061223c9!important;backdrop-filter:blur(8px)!important}
+html.nd3-game-ui .overlay .panel,html.nd3-game-ui .overlay>div,html.nd3-game-ui #overlay .panel{
+  background:linear-gradient(148deg,#1b314b,#111c2d 65%,#1e1c37)!important;
+  border:1px solid #6789ac!important;border-radius:20px!important;
+  box-shadow:0 22px 80px #01060d9c,inset 0 1px #ffffff24!important;
+  padding:24px!important;
+}
+html.nd3-game-ui .overlay h2,html.nd3-game-ui #overlay h2{font-size:clamp(25px,5vw,37px)!important;font-weight:1000!important;letter-spacing:-1px!important;color:#f9fdff!important;text-shadow:none!important}
+html.nd3-game-ui .overlay p,html.nd3-game-ui #overlay p{font-size:12px!important;line-height:1.55!important;color:#b5c7d8!important}
+html.nd3-game-ui .primary,html.nd3-game-ui #start,html.nd3-game-ui .actions button,html.nd3-game-ui .controls button{font-weight:950!important;letter-spacing:.3px!important;border-radius:11px!important;min-height:45px!important;transition:transform .1s,filter .14s!important}
+html.nd3-game-ui .primary,html.nd3-game-ui #start{background:linear-gradient(110deg,var(--nd3-accent),var(--nd3-accent2))!important;color:#07141c!important;border:0!important;box-shadow:0 10px 25px color-mix(in srgb,var(--nd3-accent) 26%,transparent)!important}
+html.nd3-game-ui .actions button,html.nd3-game-ui .controls button{background:#172c43!important;border:1px solid #4a6884!important;color:#e9f5ff!important;padding:12px 14px!important;font-size:11px!important}
+html.nd3-game-ui .controls button[data-act],html.nd3-game-ui .controls button[data-dir]{background:linear-gradient(160deg,#24435b,#142336)!important;border-color:#56839c!important}
+html.nd3-game-ui .actions button:hover,html.nd3-game-ui .controls button:hover{filter:brightness(1.17)!important}
+html.nd3-game-ui .actions{margin-top:13px!important;gap:9px!important}
+html.nd3-game-ui .controls{gap:9px!important;margin-top:12px!important}
+html.nd3-game-ui .controls button{touch-action:manipulation!important}
+html.nd3-game-ui .help,html.nd3-game-ui .status{color:#aac2d3!important;font-size:11px!important;line-height:1.55!important;margin:12px auto!important;letter-spacing:.2px!important}
+html.nd3-game-ui .nd3-status{background:linear-gradient(90deg,#132f3a,#152338)!important;border-color:#497486!important;color:#d1ffff!important;padding:12px 15px!important;border-radius:12px!important}
+html.nd3-game-ui #score:not(canvas){color:var(--nd3-accent2)!important;font-weight:950!important}
+html.nd3-game-ui .passportRibbon{display:none!important}
+html.nd3-game-ui button:focus-visible,html.nd3-game-ui a:focus-visible{outline:3px solid var(--nd3-accent)!important;outline-offset:3px}
+html.nd3-game-ui .nd3-era-footer{display:flex;justify-content:space-between;align-items:center;gap:9px;margin:24px 0 0;padding:16px 0 6px;border-top:1px solid #36516a;color:#95aebf;font:900 10px system-ui;letter-spacing:1px;flex-wrap:wrap}
+html.nd3-game-ui .nd3-era-footer a{color:var(--nd3-accent);text-decoration:none}
+html.nd3-game-ui .nd3-era-footer b{color:var(--nd3-accent2)}
+html.nd3-game-ui[data-nd3-game="snake"] .stage{border-color:#4d9d8a!important}
+html.nd3-game-ui[data-nd3-game="hockey"] .stage,html.nd3-game-ui[data-nd3-game="breakaway"] .stage{border-color:#75b7d9!important}
+html.nd3-game-ui[data-nd3-game="traffic"] .stage,html.nd3-game-ui[data-nd3-game="drift"] .stage{border-color:#9d86d5!important}
+@media(max-width:720px){
+ html.nd3-game-ui main{padding:9px 11px 40px!important}
+ html.nd3-game-ui .head{padding:17px!important;min-height:96px;flex-wrap:wrap;gap:6px!important}
+ html.nd3-game-ui .head h1{font-size:clamp(27px,7vw,40px)!important}
+ html.nd3-game-ui .hud{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html.nd3-game-ui .hud .box{padding:9px!important}
+ html.nd3-game-ui .nd3-commandbar{gap:5px!important}
+ html.nd3-game-ui .nd3-commandbar>span{text-align:left!important;width:100%;font-size:9px!important}
+ html.nd3-game-ui .nd3-commandbar button{flex:1;min-width:75px}
+ html.nd3-game-ui .toolbar button,html.nd3-game-ui .modebar button{flex:1 1 40%;padding:9px!important;min-height:44px!important}
+ html.nd3-game-ui .stage{border-radius:17px!important}
+ html.nd3-game-ui .overlay .panel{padding:17px!important}
+}
+@media(prefers-reduced-motion:reduce){html.nd3-game-ui *,html.nd3-game-ui *:before,html.nd3-game-ui *:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+
+/* Three DOM-based game experiences have their own bespoke stage systems */
+html.nd3-game-ui[data-nd3-game="reaction"] .arena{position:relative;isolation:isolate;overflow:hidden;border:1px solid #e3977d!important;border-radius:23px!important;background:radial-gradient(circle at 52% 30%,#662b42 0%,#291b37 43%,#13182c 100%)!important;box-shadow:0 25px 70px #0009,inset 0 1px #ffe8fb37!important}
+html.nd3-game-ui[data-nd3-game="reaction"] .arena:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.24;background:linear-gradient(90deg,transparent 49.9%,#ebdeff82 50%,transparent 50.2%),linear-gradient(transparent 49.9%,#ebdeff82 50%,transparent 50.2%),repeating-radial-gradient(circle at 50% 50%,transparent 0 55px,#ffa3c01f 57px 59px)}
+html.nd3-game-ui[data-nd3-game="reaction"] .arena>div{position:relative;z-index:1}
+html.nd3-game-ui[data-nd3-game="reaction"] .arena h2{font-size:clamp(37px,9vw,78px)!important;color:#fff!important;font-weight:1000!important;letter-spacing:-2px!important;text-shadow:0 5px 36px #14091e99}
+html.nd3-game-ui[data-nd3-game="reaction"] .arena.wait{background:radial-gradient(circle at center,#772b39,#361325)!important;border-color:#e66f85!important}
+html.nd3-game-ui[data-nd3-game="reaction"] .arena.go{background:radial-gradient(circle at center,#149c72,#083c32)!important;border-color:#7affce!important;box-shadow:0 0 62px #4defaf64,0 26px 70px #0008!important}
+html.nd3-game-ui[data-nd3-game="reaction"] .arena.false{background:radial-gradient(circle at center,#a7472c,#3e232b)!important;border-color:#f7ae76!important}
+html.nd3-game-ui[data-nd3-game="tap"] .stage{background:radial-gradient(circle at center,#1a3051 0%,#111e33 54%,#0c1426 100%)!important;border-color:#9978e4!important;box-shadow:0 25px 75px #0009,0 0 42px #9779ff18!important}
+html.nd3-game-ui[data-nd3-game="tap"] .stage:before{background:radial-gradient(circle at 50% 50%,transparent 0 19%,#a8d8fa13 19.3% 19.5%,transparent 20% 35%,#a8d8fa12 35.3% 35.5%,transparent 36%),linear-gradient(90deg,transparent 49.9%,#c9dcff14 50%,transparent 50.1%),linear-gradient(transparent 49.9%,#c9dcff14 50%,transparent 50.1%)!important;opacity:.9}
+html.nd3-game-ui[data-nd3-game="tap"] .target{z-index:4;border:3px solid #e0ffff!important;background:radial-gradient(circle at 34% 25%,#fff 0,#fff9d0 11%,#b7fb71 24%,#69eafa 51%,#7482e5 80%)!important;box-shadow:0 0 0 5px #7cedff36,0 0 42px #77edff7e!important}
+html.nd3-game-ui[data-nd3-game="tap"] .overlay{z-index:6!important}
+html.nd3-game-ui[data-nd3-game="idle"] body{background:radial-gradient(ellipse 70% 45% at 65% -15%,#29527e4d,transparent),linear-gradient(145deg,#070e19,#0a1220 54%,#0b1120)!important}
+html.nd3-game-ui[data-nd3-game="idle"] .app{max-width:1260px;padding-bottom:75px}
+html.nd3-game-ui[data-nd3-game="idle"] .topbar{border:1px solid #354e68!important;border-top:0!important;border-radius:0 0 14px 14px!important;background:#081724ef!important;box-shadow:0 16px 35px #0007!important;backdrop-filter:blur(24px)}
+html.nd3-game-ui[data-nd3-game="idle"] .back{color:#cff6ff!important;padding:9px 13px!important;border:1px solid #3c627d!important;border-radius:10px!important;background:#18314b!important;text-decoration:none!important;font-weight:950!important;font-size:10px!important}
+html.nd3-game-ui[data-nd3-game="idle"] .brandIcon{width:41px;height:41px;background:linear-gradient(130deg,#d2ff7d,#6fdbff)!important;color:#091525;font-size:22px;border-radius:12px!important;transform:rotate(-4deg)}
+html.nd3-game-ui[data-nd3-game="idle"] .brand span{font:1000 16px system-ui!important;letter-spacing:-.4px!important;color:#f5fbff!important}
+html.nd3-game-ui[data-nd3-game="idle"] .wallet .cash{font:1000 clamp(20px,4vw,32px) system-ui;letter-spacing:-1px;color:#eafaff}
+html.nd3-game-ui[data-nd3-game="idle"] .wallet .ips{color:#b8f783}
+html.nd3-game-ui[data-nd3-game="idle"] .hero{grid-template-columns:1.15fr .85fr!important;gap:15px!important;margin:18px 0 18px!important}
+html.nd3-game-ui[data-nd3-game="idle"] .city{min-height:270px!important;border:1px solid #5685a6!important;border-radius:21px!important;background:linear-gradient(180deg,#17364f 0%,#10253c 61%,#122a3d 62%,#081423 65%,#080e18 100%)!important;box-shadow:0 22px 64px #0008,inset 0 1px #a0e3ff25!important}
+html.nd3-game-ui[data-nd3-game="idle"] .city:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 80% 3%,#a0efff25,transparent 80%),repeating-linear-gradient(0deg,transparent 0 39px,#b3e9ff0d 40px 40.5px);z-index:0;pointer-events:none}
+html.nd3-game-ui[data-nd3-game="idle"] .cityTitle{top:20px;left:22px}
+html.nd3-game-ui[data-nd3-game="idle"] .cityTitle strong{font:1000 22px system-ui!important;letter-spacing:-.6px}
+html.nd3-game-ui[data-nd3-game="idle"] .cityTitle span{color:#b8ccd8!important;font-size:12px!important}
+html.nd3-game-ui[data-nd3-game="idle"] .tower{background:linear-gradient(150deg,#254765,#132943)!important;border:1px solid #6c9ab04f!important}
+html.nd3-game-ui[data-nd3-game="idle"] .tower.on{background:linear-gradient(140deg,#316a88,#20445d)!important;box-shadow:0 0 28px #6ae0f844!important}
+html.nd3-game-ui[data-nd3-game="idle"] .dash{gap:10px!important}
+html.nd3-game-ui[data-nd3-game="idle"] .metric{background:linear-gradient(143deg,#192b42,#101d30)!important;border:1px solid #42627e!important;border-radius:15px!important;box-shadow:inset 0 1px #fff1,0 12px 28px #0002}
+html.nd3-game-ui[data-nd3-game="idle"] .metric span{color:#b4c7d9!important}
+html.nd3-game-ui[data-nd3-game="idle"] .metric strong{font-size:clamp(18px,2vw,26px)!important;color:#f5fcff!important;letter-spacing:-.5px}
+html.nd3-game-ui[data-nd3-game="idle"] .goal .bar i{background:linear-gradient(90deg,#9bedff,#d1ff79)!important}
+html.nd3-game-ui[data-nd3-game="idle"] .tabs{top:60px!important;gap:8px!important;background:linear-gradient(#071421 80%,transparent)!important;padding:12px 0!important}
+html.nd3-game-ui[data-nd3-game="idle"] .tab{border:1px solid #42627e!important;background:#14263a!important;color:#d0e4f0!important;min-height:45px;border-radius:11px!important;letter-spacing:.3px}
+html.nd3-game-ui[data-nd3-game="idle"] .tab.active{background:linear-gradient(110deg,#c9f978,#77e5e7)!important;color:#101f27!important;border-color:transparent!important}
+html.nd3-game-ui[data-nd3-game="idle"] .quickTip .tipStep{background:#112335;border:1px solid #355777;color:#b3cbdd;border-radius:12px;padding:12px!important}
+html.nd3-game-ui[data-nd3-game="idle"] .quickTip b{color:#e6f5ff}
+html.nd3-game-ui[data-nd3-game="idle"] .biz,html.nd3-game-ui[data-nd3-game="idle"] .card,html.nd3-game-ui[data-nd3-game="idle"] .legacy{border:1px solid #405d76!important;background:linear-gradient(145deg,#17293f,#0f1e31)!important;border-radius:16px!important;box-shadow:inset 0 1px #ffffff10,0 10px 24px #0003}
+html.nd3-game-ui[data-nd3-game="idle"] .bizIcon{background:linear-gradient(135deg,#22465d,#182940);border-color:#496b87}
+html.nd3-game-ui[data-nd3-game="idle"] .buy{background:linear-gradient(110deg,#469fd2,#5676ed)!important}
+html.nd3-game-ui[data-nd3-game="idle"] .run{background:linear-gradient(110deg,#4fda9c,#b5f57a)!important;color:#0c241a!important}
+html.nd3-game-ui[data-nd3-game="idle"] .run.auto{background:#14352a!important;color:#9de9bb!important}
+html.nd3-game-ui[data-nd3-game="idle"] .prestige{border-color:#7a63a5!important;background:linear-gradient(135deg,#241e43,#141729)!important}
+@media(max-width:800px){html.nd3-game-ui[data-nd3-game="idle"] .hero{grid-template-columns:1fr!important}html.nd3-game-ui[data-nd3-game="idle"] .city{min-height:230px!important}}
+@media(max-width:480px){html.nd3-game-ui[data-nd3-game="idle"] .brand span{display:none!important}html.nd3-game-ui[data-nd3-game="idle"] .topin{gap:7px!important}html.nd3-game-ui[data-nd3-game="idle"] .app{padding:0 10px 45px}html.nd3-game-ui[data-nd3-game="idle"] .quickTip{gap:4px}}
+
+/* Dedicated visual treatment for DOM-rendered games and canvas engine menus. */
+html.nd3-game-ui .arena{
+ position:relative!important;isolation:isolate;
+ border:2px solid var(--nd3-accent)!important;border-radius:23px!important;
+ box-shadow:0 24px 85px #0008,0 0 35px color-mix(in srgb,var(--nd3-accent) 12%,transparent),inset 0 0 85px #0004!important;
+ background:radial-gradient(circle at 52% 48%,#2e3b51,#101c2d 65%,#081121)!important;
+ overflow:hidden!important;
+}
+html.nd3-game-ui .arena:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:repeating-linear-gradient(0deg,#ffffff06 0 1px,transparent 1px 7px),radial-gradient(circle at 50% 50%,transparent 25%,#010d194c)}
+html.nd3-game-ui .arena>div{z-index:1;position:relative}
+html.nd3-game-ui .arena.wait{background:radial-gradient(circle at center,#602b40,#1b192c 72%,#0d1020)!important;border-color:#ff869f!important}
+html.nd3-game-ui .arena.go{background:radial-gradient(circle at center,#25a66c,#104632 69%,#071a23)!important;border-color:#84ffc2!important;box-shadow:0 0 70px #40ffa73e,inset 0 0 80px #0b201950!important}
+html.nd3-game-ui .arena.false{background:radial-gradient(circle at center,#a9562d,#342219 75%,#1a1221)!important;border-color:#ffd178!important}
+html.nd3-game-ui .arena h2{font:1000 clamp(34px,7.2vw,74px)/.95 system-ui!important;letter-spacing:-2.8px!important;color:#f8fdff!important;text-shadow:0 4px 35px #0008!important}
+html.nd3-game-ui .arena p{font-size:13px!important;line-height:1.55!important;color:#d6e5f0!important}
+html.nd3-game-ui .stage .target{background:radial-gradient(circle at 33% 27%,#ffffff 4%,var(--nd3-accent2) 18%,var(--nd3-accent) 58%,#26366e)!important;box-shadow:0 0 32px color-mix(in srgb,var(--nd3-accent) 62%,transparent),0 0 0 7px color-mix(in srgb,var(--nd3-accent) 16%,transparent)!important;border:2px solid #ffffff77!important}
+html.nd3-game-ui .stage #overlay:not(.overlay){z-index:7!important;background:#06131fd8!important;backdrop-filter:blur(8px)!important;color:#f0fbff!important}
+html.nd3-game-ui .stage #overlay:not(.overlay)>h2{font:1000 clamp(25px,5vw,36px)/1 system-ui!important;color:#f1fcff!important;letter-spacing:-.8px!important}
+html.nd3-game-ui .stage #overlay:not(.overlay)>p{font:600 12px/1.5 system-ui!important;color:#b9cddd!important}
+html.nd3-game-ui .stage #overlay:not(.overlay)>button{background:linear-gradient(105deg,var(--nd3-accent),var(--nd3-accent2))!important;color:#07141c!important;border:0!important;border-radius:10px!important;font:950 12px system-ui!important;padding:13px 22px!important}
+html.nd3-game-ui .stage #overlay:not(.overlay)[hidden]{display:none!important}
+html.nd3-game-ui .gameGrid{gap:12px!important}

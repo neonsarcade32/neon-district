@@ -1,0 +1,118 @@
+/* Neon District 3.0 flagship visual overhaul — City 3D and Bowling 3D */
+:root{--nd3-key:#dbff70;--nd3-teal:#6de6ff;--nd3-ink:#081420;--nd3-paper:#effaff;--nd3-line:#547189}
+:root[data-nd3-skin="ember"]{--nd3-key:#ffc28a;--nd3-teal:#ff829d}
+:root[data-nd3-skin="arctic"]{--nd3-key:#9af9fc;--nd3-teal:#a6bfff}
+.nd3-world, .nd3-bowling{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif!important}
+.nd3-world button:focus-visible,.nd3-bowling button:focus-visible{outline:3px solid var(--nd3-teal)!important;outline-offset:3px}
+.nd3-world .pill,.nd3-bowling .glass{background:#0b1b2be8!important;border:1px solid #496982!important;box-shadow:inset 0 1px #ffffff15,0 12px 40px #0007!important;backdrop-filter:blur(13px)!important}
+.nd3-world .topbar,.nd3-bowling .top{gap:6px!important}
+.nd3-world .topbar .pill,.nd3-bowling .top .glass{border-radius:9px!important}
+.nd3-world .topbar .brand,.nd3-bowling .top .brand{color:#f4fbff!important;font-weight:1000!important;letter-spacing:.5px!important}
+.nd3-world .topbar .brand span,.nd3-bowling .top .brand span{color:var(--nd3-key)!important}
+.nd3-world .wallet,.nd3-bowling .top .stats .stat{border-color:var(--nd3-line)!important}
+.nd3-world .speed{width:131px!important;border-left:3px solid var(--nd3-key)!important;padding:15px!important}
+.nd3-world .speed strong{font-size:46px!important;letter-spacing:-3px!important;color:var(--nd3-key)!important}
+.nd3-world .mission{border-left:3px solid var(--nd3-teal)!important;padding:16px!important;width:min(365px,calc(100vw - 24px))!important}
+.nd3-world .mission small{color:var(--nd3-teal)!important;letter-spacing:1.2px!important}
+.nd3-world .mission h2{font-size:18px!important;letter-spacing:-.4px!important}
+.nd3-world .bar{height:9px!important}
+.nd3-world .bar i{background:linear-gradient(90deg,var(--nd3-teal),var(--nd3-key))!important}
+.nd3-world .minimapWrap{border-radius:13px!important;border:2px solid #6594ae!important;box-shadow:0 13px 45px #0009,0 0 25px #59dfff1b!important}
+.nd3-world .minimapWrap .gpsLabel{color:var(--nd3-key)!important}
+.nd3-world .menuShade{
+ background:linear-gradient(90deg,#07131dfb 0%,#07131de7 35%,#08192781 70%,#0c25464a)!important;
+ backdrop-filter:blur(4px);align-items:center!important;overflow-y:auto!important;
+}
+.nd3-world .menuShade:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(119deg,#07192800 58%,#87e5ff11 80%,transparent),repeating-linear-gradient(90deg,transparent 0 65px,#9bc7ff07 66px 66.5px);opacity:.9}
+.nd3-world .menuShade:after{content:"03";position:absolute;right:4vw;top:13vh;font:1000 clamp(170px,33vw,480px)/.7 system-ui;letter-spacing:-24px;color:#b4eaff13;transform:skewX(-10deg);pointer-events:none}
+.nd3-world .menu{position:relative;z-index:2;width:min(610px,calc(100vw - 28px))!important;margin-left:max(20px,5vw)!important;padding:30px 0!important}
+.nd3-world .releaseTag,.nd3-bowling .release{
+ border:1px solid #6499ac!important;border-radius:8px!important;background:#123144cc!important;
+ color:var(--nd3-key)!important;letter-spacing:1.75px!important;font-size:10px!important;padding:9px 12px!important;
+}
+.nd3-world .releaseTag:before{background:var(--nd3-key)!important;box-shadow:0 0 16px var(--nd3-key)!important}
+.nd3-world .logo,.nd3-bowling .logo{font-family:Inter,system-ui,sans-serif!important;font-size:clamp(64px,9.3vw,127px)!important;line-height:.81!important;letter-spacing:-7px!important;margin:20px 0 25px!important;text-shadow:0 14px 40px #0008}
+.nd3-world .logo span,.nd3-bowling .logo span{background:none!important;-webkit-text-fill-color:var(--nd3-key)!important;color:var(--nd3-key)!important}
+.nd3-world .menu p,.nd3-bowling .menu p{font-size:clamp(12px,1.3vw,15px)!important;line-height:1.65!important;color:#c4d8e5!important;max-width:510px!important;margin-bottom:24px!important}
+.nd3-world .menuBtns,.nd3-bowling .menuBtns{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+.nd3-world .menuBtns button,.nd3-bowling .menuBtns button{
+ background:#11273b!important;border:1px solid #4d7795!important;color:#e8f7ff!important;
+ min-height:71px!important;padding:13px 15px!important;border-radius:11px!important;
+ letter-spacing:.5px!important;font-size:11px!important;box-shadow:inset 0 1px #ffffff1c!important;
+}
+.nd3-world .menuBtns button:hover,.nd3-bowling .menuBtns button:hover{background:#21415b!important;border-color:var(--nd3-teal)!important}
+.nd3-world .menuBtns button.primary,.nd3-bowling .menuBtns button.primary{background:var(--nd3-key)!important;border-color:transparent!important;color:#061620!important;box-shadow:0 14px 33px #b8f8752b!important}
+.nd3-world .menuBtns button.primary small,.nd3-bowling .menuBtns button.primary small{color:#3a4d39!important}
+.nd3-world .menuBtns small,.nd3-bowling .menuBtns small{color:#a9c3d5!important;font-size:10px!important;font-weight:600!important;line-height:1.4!important;margin-top:6px!important;letter-spacing:0!important}
+.nd3-world .panel{background:#07121cf7!important;backdrop-filter:blur(15px)}
+.nd3-world .panelTop{padding:0 0 19px!important;border-bottom:1px solid #52748a!important;margin-bottom:12px!important}
+.nd3-world .panel h2{font-size:34px!important;letter-spacing:-1.5px!important}
+.nd3-world .panel .card,.nd3-world .panel .customCard,.nd3-world .panel .upgrade{background:linear-gradient(135deg,#172e41,#101e2e)!important;border:1px solid #466c83!important;border-radius:15px!important;box-shadow:inset 0 1px #ffffff17!important}
+.nd3-world .panel .carPreview{background:linear-gradient(160deg,#284b62,#12263a)!important;border:1px solid #3c6481!important}
+.nd3-world .panel button:not(.close){border-radius:9px!important}
+.nd3-world .panel .close{background:#244058!important;border-color:#6b91aa!important}
+.nd3-world .nd3-open{background:#12334c!important;border-color:var(--nd3-key)!important;color:var(--nd3-key)!important;box-shadow:0 0 25px #9de9f924!important}
+.nd3-world .nd3-box{background:linear-gradient(139deg,#16354a,#0c1b2b)!important;border-color:#5f91a7!important}
+.nd3-world .nd3-box h2{color:var(--nd3-key)!important}
+.nd3-world .nd3-box button{background:var(--nd3-key)!important;color:#0b1a25!important}
+.nd3-world .nd3-card{border-color:#476e86!important;background:#102439!important}
+.nd3-world .nd3-card small{color:var(--nd3-key)!important}
+.nd3-world .nd3-head button{background:#244157!important;color:#e8faff!important}
+.nd3-bowling .top{z-index:20}
+.nd3-bowling .brand{border-left:3px solid var(--nd3-key)!important}
+.nd3-bowling .mode{color:var(--nd3-key)!important}
+.nd3-bowling .stat b{color:#f5fbff!important}
+.nd3-bowling .scoreboard{border:1px solid #6994a6!important;border-radius:13px!important;padding:10px!important;background:#071623ee!important;box-shadow:0 10px 45px #0009!important}
+.nd3-bowling .scoreboard .frame{background:#182f41c9!important;border-color:#456179!important;border-radius:7px!important}
+.nd3-bowling .scoreboard .frame.active{border-color:var(--nd3-key)!important;box-shadow:0 0 0 1px var(--nd3-key),0 0 17px #d4ff6538!important;background:#1e3b44db!important}
+.nd3-bowling .frameNo{font-size:8px!important;color:#c0d5e2!important}
+.nd3-bowling .frameTotal{color:var(--nd3-key)!important;font-size:13px!important}
+.nd3-bowling .aimPanel,.nd3-bowling .meterPanel,.nd3-bowling .shotCard{background:#0b1d2de9!important;border:1px solid #577e94!important;border-radius:14px!important;box-shadow:0 12px 45px #000a,inset 0 1px #ffffff17!important}
+.nd3-bowling .aimTitle span,.nd3-bowling .meterHead span,.nd3-bowling .shotCard small{color:var(--nd3-key)!important}
+.nd3-bowling .aimTitle b,.nd3-bowling .meterHead b{font-size:12px!important;letter-spacing:.6px!important}
+.nd3-bowling .readout{background:#162e40!important;border-color:#45677d!important;padding:9px!important;border-radius:9px!important}
+.nd3-bowling .readout b{font-size:16px!important;color:#d7f7ff!important}
+.nd3-bowling input[type="range"]{accent-color:var(--nd3-key)!important}
+.nd3-bowling .buttonGrid button{border-color:#618296!important;border-radius:9px!important;background:#20384c!important;min-height:43px!important}
+.nd3-bowling .buttonGrid .bowlBtn{background:var(--nd3-key)!important;color:#08151b!important;font-size:11px!important;min-height:48px!important;box-shadow:0 9px 26px #b1ef6a40!important}
+.nd3-bowling .meter{background:linear-gradient(90deg,#253b50,#3e93c9 45%,var(--nd3-key) 78%,#ff9b76)!important}
+.nd3-bowling .menuShade{
+ background:linear-gradient(90deg,#07121cf9 0%,#09151eed 35%,#06172666 70%)!important;
+ overflow-y:auto!important;backdrop-filter:blur(4px);
+}
+.nd3-bowling .menuShade:after{content:"03";position:absolute;right:2vw;top:10vh;font:1000 clamp(150px,32vw,450px)/.75 system-ui;letter-spacing:-30px;color:#b4fff50f;pointer-events:none;transform:skewX(-10deg)}
+.nd3-bowling .menu{position:relative;z-index:2;width:min(610px,calc(100vw - 28px))!important;margin-left:max(20px,5vw)!important;padding:40px 0!important}
+.nd3-bowling .menuBtns button{min-height:76px!important}
+.nd3-bowling .alleyThemes{justify-content:flex-start!important;margin:18px 0 10px!important;gap:7px!important}
+.nd3-bowling .alleyThemes span{width:100%;text-align:left!important;font-size:10px!important;letter-spacing:1.5px!important;color:#cbdbe8!important}
+.nd3-bowling .alleyThemes button,.nd3-bowling .difficulty button{border-radius:8px!important;border-color:#52748b!important;background:#112c3d!important;color:#d8efff!important;padding:11px 13px!important;font-size:9px!important}
+.nd3-bowling .alleyThemes button.active,.nd3-bowling .difficulty button.active{background:var(--nd3-key)!important;color:#0b1921!important;border-color:transparent!important}
+.nd3-bowling .centerCall strong{color:var(--nd3-key)!important;text-shadow:0 0 35px #d1ff7630!important}
+.nd3-bowling .resultBox{background:#102337ed!important;border-color:#7390a9!important;border-radius:19px!important}
+.nd3-bowling .resultScore{color:var(--nd3-key)!important}
+@media(max-width:1000px){.nd3-world .menuShade:after,.nd3-bowling .menuShade:after{right:2vw;opacity:.55}.nd3-world .menuBtns,.nd3-bowling .menuBtns{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:680px){
+ .nd3-world .menu,.nd3-bowling .menu{margin:25px auto!important;padding:10px!important}
+ .nd3-world .menuShade,.nd3-bowling .menuShade{align-items:flex-start!important;background:#07121cf0!important}
+ .nd3-world .logo,.nd3-bowling .logo{font-size:clamp(48px,11vw,75px)!important;letter-spacing:-4px!important}
+ .nd3-world .menuBtns button,.nd3-bowling .menuBtns button{min-height:64px!important;padding:10px!important;font-size:10px!important}
+ .nd3-world .menuBtns small,.nd3-bowling .menuBtns small{font-size:8px!important}
+ .nd3-world .topbar .brand{display:none!important}
+ .nd3-world .topbar .pill{padding:7px 8px!important;font-size:8px!important}
+ .nd3-world .mission{top:57px!important}
+ .nd3-world .nd3-open{top:auto!important;bottom:250px!important;right:10px!important}
+ .nd3-bowling .top .brand{display:none!important}
+ .nd3-bowling .aimPanel{width:min(238px,calc(100vw - 22px))!important}
+ .nd3-bowling .meterPanel{width:min(245px,calc(100vw - 22px))!important}
+}
+@media(max-width:500px){
+ .nd3-world .menuBtns,.nd3-bowling .menuBtns{grid-template-columns:1fr!important}
+ .nd3-world .menu p,.nd3-bowling .menu p{font-size:11px!important}
+ .nd3-world .logo,.nd3-bowling .logo{font-size:57px!important}
+ .nd3-world .menuBtns button,.nd3-bowling .menuBtns button{min-height:55px!important}
+ .nd3-bowling .alleyThemes button{flex:1!important}
+ .nd3-world .mission{max-width:230px!important;padding:10px!important}
+ .nd3-world .mission h2{font-size:14px!important}
+ .nd3-world .wallet b{font-size:12px!important}
+}
+@media(prefers-reduced-motion:reduce){.nd3-world *, .nd3-bowling *{animation-duration:.01ms!important;transition-duration:.01ms!important}}

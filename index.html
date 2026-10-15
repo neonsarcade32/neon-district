@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#07090f">
+<meta name="theme-color" content="#091523">
 <title>Neon District 3.0</title>
 <style>
 :root{--bg:#07090f;--panel:#0f1420;--panel2:#151c2b;--line:#273247;--text:#f7f9ff;--muted:#8c98ad;--cyan:#52dcff;--green:#59e8a4;--violet:#8f72ff;--gold:#ffd15c}
@@ -35,35 +35,37 @@
 .passportRight button{width:100%;padding:11px 12px;border:1px solid #5ecdfb;border-radius:11px;background:#17435a;color:#e0f8ff;font-size:10px;font-weight:1000;cursor:pointer}
 @media(max-width:680px){.passportRibbon{flex-direction:column;align-items:stretch;padding:16px}.passportRight{width:100%}.passportRibbon h2{font-size:21px}}
 </style>
+<link rel="stylesheet" href="nd3-home.css?v=3.0.1">
 </head>
-<body>
-<header class="topbar"><nav class="nav"><a class="brand" href="index.html"><span class="brandmark">N</span><span>Neon District<small>ARCADE 3.0 · EXPANSION</small></span></a><div class="navActions"><button class="navBtn" id="favoritesJump">★ Favorites</button><a class="navBtn hideMobile" href="search.html?v=external">⌕ Web Search</a><a class="navBtn hideMobile" href="https://github.com/neonsarcade32/neon-district">GitHub</a></div></nav></header>
-<main class="wrap">
+<body class="nd3-home">
+<header class="topbar"><nav class="nav"><a class="brand" href="index.html"><span class="brandmark">ND</span><span>NEON DISTRICT<small>VERSION 3.0 · REBUILT</small></span></a><div class="navActions"><button class="navBtn" id="favoritesJump">★ Favorites</button><a class="navBtn hideMobile" href="#discover">ALL GAMES ↗</a><a class="navBtn hideMobile" href="https://github.com/neonsarcade32/neon-district" target="_blank" rel="noopener">SOURCE</a><div class="nd3-themebar" aria-label="Color theme"><button data-theme="volt" title="Electric theme" aria-label="Electric theme" aria-pressed="true"></button><button data-theme="ember" title="Sunset theme" aria-label="Sunset theme" aria-pressed="false"></button><button data-theme="arctic" title="Arctic theme" aria-label="Arctic theme" aria-pressed="false"></button></div></div></nav></header>
+<main class="wrap"><div class="nd3-ribbon"><span><span class="dot"></span><b>NEON DISTRICT 3.0</b> · THE REBUILT ARCADE · 35 PLAYABLE GAMES</span><span class="right">NEW LOOK / NEW GAME ART / SAME SAVED PROGRESS</span></div>
 <section class="hero">
-<a class="feature" href="arcade-city.html?v=3.3" data-launch="Arcade City 3D">
-<div class="featureScene"><div class="cityGlow"></div><div class="skyline"><i class="tower"></i><i class="tower"></i><i class="tower"></i><i class="tower"></i><i class="tower"></i><i class="tower"></i></div><div class="roadGlow"></div><div class="featureCars">🏎️ 🚓</div></div>
-<div class="featureContent"><span class="release"><i></i> FEATURED · OPEN WORLD</span><h1>ARCADE<br>CITY 3D</h1><p>Explore Arcade City 3.1 · Seamless City: drive across the huge world, get out anywhere, walk straight through open shop and house doorways with no teleport, explore furnished interiors, buy homes and set a home base, race, escape police, customize cars, and join the live Open World or play Solo.</p><div class="featureActions"><span class="primary">PLAY ARCADE CITY →</span><span class="secondary">OPEN WORLD 3.3</span></div></div>
+<a class="feature" href="arcade-city.html?v=nd3visual" data-launch="Arcade City 3D">
+<div class="featureScene"><div class="nd3-hero-art" id="nd3HeroArt" aria-hidden="true"></div><span class="nd3-hero-strip">THE FLAGSHIP EXPERIENCE · 01</span></div>
+<div class="featureContent"><span class="release"><i></i> REBUILT FOR VERSION 3.0 · OPEN WORLD</span><h1>OWN<br>THE <span>CITY.</span></h1><p>Your neon-lit open world. Race across a huge map, build a garage, chase reputation, explore buildings, and take on the new Driver Trials. Drive solo or join online multiplayer.</p><div class="featureActions"><span class="primary">ENTER ARCADE CITY ↗</span><span class="secondary">OPEN WORLD · 3D</span></div></div>
 </a>
 <div class="sideFeatures">
-<a class="miniFeature" href="breakaway.html" data-launch="Hockey Breakaway" style="--glow:#24a9ff"><div class="miniArt">🏒🥅</div><small>SPORTS · FEATURED</small><h3>Hockey Breakaway</h3><p>Skate in, sell the deke, and beat the goalie.</p></a>
-<a class="miniFeature" href="qb.html" data-launch="QB Challenge" style="--glow:#4ee188"><div class="miniArt">🏈🎯</div><small>SPORTS · FEATURED</small><h3>QB Challenge</h3><p>Move in the pocket and lead receivers under pressure.</p></a>
-<a class="miniFeature" href="bowling.html?v=3d2" data-launch="Neon Bowling 3D" style="--glow:#5bdfff"><div class="miniArt">🎳✨</div><small>3D · FEATURED</small><h3>Neon Bowling 3D</h3><p>Full 10-frame bowling with aim, hook, a clean power meter, and improved 3D pin physics.</p></a>
+<a class="miniFeature" href="breakaway.html" data-art="breakaway" data-launch="Hockey Breakaway" style="--glow:#24a9ff"><div class="nd3-mini-art" aria-hidden="true"></div><div class="miniArt">🏒🥅</div><small>SPORTS · FEATURED</small><h3>Hockey Breakaway</h3><p>Break down the goalie in an arcade hockey showdown.</p></a>
+<a class="miniFeature" href="qb.html" data-art="qb" data-launch="QB Challenge" style="--glow:#4ee188"><div class="nd3-mini-art" aria-hidden="true"></div><div class="miniArt">🏈🎯</div><small>SPORTS · FEATURED</small><h3>QB Challenge</h3><p>Read the defense. Make the throw.</p></a>
+<a class="miniFeature" href="bowling.html?v=nd3visual" data-art="bowling" data-launch="Neon Bowling 3D" style="--glow:#5bdfff"><div class="nd3-mini-art" aria-hidden="true"></div><div class="miniArt">🎳✨</div><small>3D · FEATURED</small><h3>Neon Bowling 3D</h3><p>3D lanes, Strike Rush, precision hook and authentic scoring.</p></a>
 </div>
 </section>
 
 <div class="stats"><div class="stat"><span>GAMES</span><strong id="gameCount">35</strong></div><div class="stat"><span>FAVORITES</span><strong id="favCount">0</strong></div><div class="stat"><span>RECENTLY PLAYED</span><strong id="playedCount">0</strong></div><div class="stat"><span>EXPLORATION PASSPORT</span><strong id="passportCount" style="color:#8addff">0/35</strong></div></div>
 
 <section class="passportRibbon" aria-labelledby="passportTitle"><div><small>NEON DISTRICT 3.0 · YOUR ARCADE JOURNEY</small><h2 id="passportTitle">🏅 Arcade Passport <span id="passportTier">ROOKIE</span></h2><p>Explore games across the whole arcade. Your high scores and existing saves stay exactly where they are.</p></div><div class="passportRight"><strong id="passportInfo">0 / 35 EXPLORED</strong><div class="passportProgress"><i id="passportBar"></i></div><button id="passportExplore">DISCOVER A NEW GAME →</button></div></section>
-<div class="quickbar"><div class="searchBox"><span class="searchIcon">⌕</span><input id="search" type="search" placeholder="Search all games..." autocomplete="off"></div><button class="randomBtn" id="randomBtn">↻ SURPRISE ME</button></div>
+<div class="nd3-editorial"><small>02 / GAME LIBRARY</small><h2>CHOOSE YOUR GAME.</h2><span class="dash"></span></div><div class="quickbar"><div class="searchBox"><span class="searchIcon">⌕</span><input id="search" type="search" placeholder="Search 35 games, genres, skills..." autocomplete="off"></div><button class="randomBtn" id="randomBtn">↻ SURPRISE ME</button></div>
 <div class="tabs" id="tabs"><button class="tab active" data-cat="All">ALL GAMES</button><button class="tab" data-cat="Sports">SPORTS</button><button class="tab" data-cat="Racing">RACING</button><button class="tab" data-cat="Arcade">ARCADE</button><button class="tab" data-cat="Chill">CHILL</button><button class="tab" data-cat="Favorites">★ FAVORITES</button></div>
 
 <section class="section hidden" id="favoriteSection"><div class="sectionHead"><div class="sectionTitle"><h2>★ Favorites</h2><p>Your saved games on this device.</p></div></div><div class="row" id="favoriteRow"></div></section>
 <section class="section hidden" id="recentSection"><div class="sectionHead"><div class="sectionTitle"><h2>Continue playing</h2><p>Jump back into your most recent games.</p></div></div><div class="smallRow" id="recentRow"></div></section>
 
-<section class="section" id="discover"><div class="sectionHead"><div class="sectionTitle"><h2 id="sectionTitle">All games</h2><p id="sectionSub">35 games across sports, racing, arcade, and chill.</p></div><span class="sectionMeta" id="resultCount">35 GAMES</span></div><div class="gameGrid" id="gameGrid"></div><div class="empty hidden" id="empty">No games match that search or category.</div></section>
+<section class="section" id="discover"><div class="sectionHead"><div class="sectionTitle"><h2 id="sectionTitle">35 games. Your rules.</h2><p id="sectionSub">35 games across sports, racing, arcade, and chill.</p></div><span class="sectionMeta" id="resultCount">35 GAMES</span></div><div class="gameGrid" id="gameGrid"></div><div class="empty hidden" id="empty">No games match that search or category.</div></section>
 
-<footer class="footer"><span>Neon District · Arcade 3.0</span><span>Old saves stay on your device.</span></footer>
+<footer class="footer"><span>NEON DISTRICT · 03 / THE NEW ERA</span><span>Old saves stay on your device.</span></footer>
 </main>
+<script src="nd3-art.js?v=3.0.1"></script>
 <script>
 const games=[
 {id:'snake',name:'Snake',file:'snake.html',cat:'Arcade',tag:'Classic',icon:'🐍',c1:'#193a2b',c2:'#0b1510',desc:'Grow longer, chase food, and survive the board.',search:'snake classic arcade'},
@@ -127,6 +129,16 @@ document.getElementById('passportExplore').onclick=()=>{
  saveRecent(g.name,g.file);location.href=g.file
 };
 
+(function setupVisuals(){
+ const valid=['volt','ember','arctic'];
+ let theme='volt';try{theme=localStorage.getItem('nd3_skin')||'volt'}catch(e){}
+ if(!valid.includes(theme))theme='volt';
+ function choose(name){document.documentElement.dataset.nd3Skin=name;document.querySelectorAll('[data-theme]').forEach(b=>{b.classList.toggle('active',b.dataset.theme===name);b.setAttribute('aria-pressed',String(b.dataset.theme===name))});try{localStorage.setItem('nd3_skin',name)}catch(e){}}
+ document.querySelectorAll('[data-theme]').forEach(b=>b.addEventListener('click',()=>choose(b.dataset.theme)));
+ choose(theme);
+ document.getElementById('nd3HeroArt').innerHTML=ND3Art.render('city','Arcade City 3D','Racing');
+ document.querySelectorAll('[data-art]').forEach(el=>{const g=games.find(g=>g.id===el.dataset.art);if(g)el.querySelector('.nd3-mini-art').innerHTML=ND3Art.render(g.id,g.name,g.cat)});
+})();
 const grid=document.getElementById('gameGrid'),search=document.getElementById('search'),empty=document.getElementById('empty'),result=document.getElementById('resultCount');
 let activeCat='All';
 function getRecent(){try{return JSON.parse(localStorage.getItem('charlie_recent')||'[]')}catch(e){return[]}}
@@ -135,13 +147,13 @@ function setFavs(v){localStorage.setItem('charlie_favorites',JSON.stringify(v))}
 function saveRecent(name,href){markPassport(href);let r=getRecent().filter(x=>x.href!==href);r.unshift({name:name,href:href});localStorage.setItem('charlie_recent',JSON.stringify(r.slice(0,6)))}
 function isFav(id){return getFavs().includes(id)}
 function toggleFav(id){let f=getFavs();f=f.includes(id)?f.filter(x=>x!==id):[id].concat(f);setFavs(f);renderAll()}
-function cardHtml(g){return '<a class="gameCard" href="'+g.file+'" data-id="'+g.id+'" data-launch="'+g.name+'" data-cat="'+g.cat+'"><div class="preview" style="--c1:'+g.c1+';--c2:'+g.c2+'"><span class="previewLabel">'+g.tag.toUpperCase()+'</span><span class="previewLines"></span><span class="previewIcon">'+g.icon+'</span></div><button class="fav '+(isFav(g.id)?'on':'')+'" type="button" aria-label="Favorite '+g.name+'" data-fav="'+g.id+'">'+(isFav(g.id)?'★':'☆')+'</button><div class="cardBody"><h3>'+g.name+'</h3><p>'+g.desc+'</p><div class="cardFoot"><span>'+g.cat.toUpperCase()+'</span><span class="playPill">PLAY →</span></div></div></a>'}
+function cardHtml(g){return '<article class="gameCard" data-id="'+g.id+'" data-cat="'+g.cat+'"><a class="gameLink" href="'+g.file+'" data-launch="'+g.name+'"><div class="preview" style="--c1:'+g.c1+';--c2:'+g.c2+'">'+ND3Art.render(g.id,g.name,g.cat)+'<span class="previewLabel">'+g.tag.toUpperCase()+'</span></div><div class="cardBody"><h3>'+g.name+'</h3><p>'+g.desc+'</p><div class="cardFoot"><span>'+g.cat.toUpperCase()+'</span><span class="playPill">PLAY ↗</span></div></div></a><button class="fav '+(isFav(g.id)?'on':'')+'" type="button" aria-label="'+(isFav(g.id)?'Remove '+g.name+' from':'Add '+g.name+' to')+' favorites" data-fav="'+g.id+'">'+(isFav(g.id)?'★':'☆')+'</button></article>'}
 function matching(){const q=search.value.trim().toLowerCase(),favs=getFavs();return games.filter(g=>(activeCat==='All'||g.cat===activeCat||(activeCat==='Favorites'&&favs.includes(g.id)))&&(!q||(g.name+' '+g.search+' '+g.cat).toLowerCase().includes(q)))}
 function renderGrid(){const list=matching();grid.innerHTML=list.map(cardHtml).join('');result.textContent=list.length+' '+(list.length===1?'GAME':'GAMES');empty.classList.toggle('hidden',!!list.length);document.getElementById('sectionTitle').textContent=activeCat==='All'?'All games':activeCat;document.getElementById('sectionSub').textContent=activeCat==='Favorites'?'Games you starred on this device.':activeCat==='All'?'35 games across sports, racing, arcade, and chill.':'Browse '+activeCat.toLowerCase()+' games.';bindCards()}
 function renderFavorites(){const favs=getFavs(),list=favs.map(id=>games.find(g=>g.id===id)).filter(Boolean),section=document.getElementById('favoriteSection'),row=document.getElementById('favoriteRow');section.classList.toggle('hidden',!list.length);row.innerHTML=list.map(cardHtml).join('');document.getElementById('favCount').textContent=list.length;bindCards()}
 function renderRecent(){const r=getRecent(),section=document.getElementById('recentSection'),box=document.getElementById('recentRow');section.classList.toggle('hidden',!r.length);document.getElementById('playedCount').textContent=r.length;box.innerHTML=r.map(x=>{const g=games.find(y=>y.file===x.href||y.name===x.name);return '<a class="chip" href="'+x.href+'" data-launch="'+x.name+'"><span>'+(g?g.icon:'▶')+'</span>'+x.name+'</a>'}).join('');bindLaunches()}
 function bindLaunches(){document.querySelectorAll('[data-launch]').forEach(el=>{if(el.dataset.bound)return;el.dataset.bound='1';el.addEventListener('click',()=>saveRecent(el.dataset.launch,el.getAttribute('href')))})}
-function bindCards(){document.querySelectorAll('[data-fav]').forEach(b=>{b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();toggleFav(b.dataset.fav)})});bindLaunches()}
+function bindCards(){document.querySelectorAll('[data-fav]').forEach(b=>{if(b.dataset.favBound==='1')return;b.dataset.favBound='1';b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();toggleFav(b.dataset.fav)})});bindLaunches()}
 function renderAll(){renderGrid();renderFavorites();renderRecent()}
 document.getElementById('tabs').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;activeCat=b.dataset.cat;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));renderGrid();document.getElementById('discover').scrollIntoView({behavior:'smooth',block:'start'})});
 search.addEventListener('input',renderGrid);
