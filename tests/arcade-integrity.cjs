@@ -43,6 +43,11 @@ for(const html of pages){
   }
   for(const [n,script] of [...src.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].entries()){
     if(!script[2].trim())continue;
+    if(/\btype=["']importmap["']/i.test(script[1])) {
+      try{const data=JSON.parse(script[2]);expect(data&&typeof data.imports==='object',html+' invalid module importmap')}
+      catch(e){problems.push(html+' bad importmap: '+e.message)}
+      continue;
+    }
     checkSyntax(script[2],/\btype=["']module["']/i.test(script[1]),html+' inline script '+n);
   }
 }
