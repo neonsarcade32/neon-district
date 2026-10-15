@@ -1,0 +1,50 @@
+/* Neon District 3.0 skin for genuine Pixel Hop Twins by stm1978 (MIT).
+   Game logic, pixel sprites and level physics are from the credited upstream project. */
+:root{color-scheme:dark;--cyan:#61e9ff;--lime:#daff72;--violet:#b5a0ff;--line:#557994;--ink:#07111e}
+*{box-sizing:border-box}
+html{min-height:100%;background:#07111e}
+body{margin:0;min-height:100vh;background:
+ radial-gradient(ellipse 55% 35% at 85% -15%,#37759e49,transparent 83%),
+ radial-gradient(ellipse 50% 40% at 5% 80%,#6155aa22,transparent 90%),
+ linear-gradient(160deg,#070b16,#081827 65%,#090d19);
+ color:#ecf8ff;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;background-image:linear-gradient(#a0deff17 1px,transparent 1px),linear-gradient(90deg,#a0deff17 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(#000,transparent 85%)}
+a{color:var(--cyan);text-decoration:none}
+button{font:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.nd-import-nav{position:relative;display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:1200px;margin:auto;padding:19px 20px 17px;border-bottom:1px solid #4c748f80}
+.nd-import-nav a{color:#daeeff;font-size:11px;font-weight:950;letter-spacing:.5px;border:1px solid #476d87;padding:11px 14px;background:#142c40;border-radius:9px}
+.nd-import-nav .brand{border:0;background:none;padding:0;font-size:15px;color:#f0faff;font-weight:1000;letter-spacing:-.6px}
+.nd-import-nav .mark{display:inline-grid;place-items:center;width:30px;height:30px;color:#0a1721;background:var(--lime);border-radius:8px;margin-right:7px}
+.nd-import-nav .badge{color:var(--lime);font-size:10px;font-weight:950;letter-spacing:1.2px}
+.nd-import-main{position:relative;max-width:1150px;padding:25px 18px 45px;margin:auto}
+.intro{text-align:center;margin:auto auto 23px;max-width:870px}
+.eyebrow{font-size:10px;font-weight:950;letter-spacing:2.3px;color:var(--lime);text-transform:uppercase}
+.intro h1{font:1000 clamp(35px,6.9vw,69px)/1 system-ui;margin:10px 0 14px;letter-spacing:-3px;color:#f2faff}
+.intro h1 span{color:var(--lime)}
+.intro p{color:#acc9dc;font-size:12px;line-height:1.65;margin:0}
+.platformWrap{padding:13px;background:linear-gradient(125deg,#183249,#0b1d2d);border:1px solid #61829b;border-radius:19px;box-shadow:0 25px 88px #0009,inset 0 1px #ffffff28;overflow:hidden;margin:auto;max-width:1026px}
+.frameTop{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:5px 6px 13px}
+.frameTop strong{font:1000 10px system-ui;color:var(--cyan);letter-spacing:1.5px}
+.frameTop small{font:700 10px system-ui;color:#a1c4d7}
+.frameTop .led{display:inline-block;height:7px;width:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 11px var(--lime);margin-right:7px}
+#container{width:100%;max-width:960px;aspect-ratio:8/5;margin:auto;position:relative;border:2px solid #77bdd3;border-radius:11px;background:#07080f;overflow:hidden;box-shadow:0 0 34px #43bffc19,inset 0 0 34px #000}
+#gameCanvas{width:100%;height:100%;display:block;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges;touch-action:none}
+.nd-import-hud{max-width:1026px;margin:15px auto;display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap}
+.nd-import-hud .tag{background:#17324a;border:1px solid #47728e;color:#ceeafa;border-radius:10px;padding:10px 13px;font:850 10px system-ui;letter-spacing:.6px}
+.nd-import-hud .tag b{color:var(--lime)}
+.nd-import-hud .buttons{display:flex;gap:9px;flex-wrap:wrap}
+.nd-import-hud button{border:1px solid #648bb1;background:#162d45;color:#e4f6ff;padding:12px 18px;border-radius:10px;font:950 11px system-ui}
+.nd-import-hud button:hover{border-color:var(--lime)}
+.mobileControls{display:flex;align-items:end;justify-content:space-between;gap:16px;max-width:970px;margin:20px auto 0;touch-action:none}
+.mobileControls .cluster{display:flex;gap:11px}
+.mobileControls button{width:85px;height:76px;display:grid;place-items:center;background:linear-gradient(170deg,#213e56,#10283d);color:#f1fbff;border:1px solid #7ea5c0;border-bottom:4px solid #3c6078;border-radius:15px;font:1000 22px system-ui;touch-action:none;user-select:none;-webkit-user-select:none}
+.mobileControls button.jump{width:120px;background:linear-gradient(140deg,#d4ff76,#9ad79b);color:#0a212c;border:1px solid #dbffb2;border-bottom:4px solid #668f69;font:1000 16px system-ui}
+.mobileControls button.pressed{transform:translateY(3px);border-bottom-width:1px;filter:brightness(1.23)}
+.nd-footer{max-width:1026px;text-align:center;margin:27px auto 0;padding:18px;border-top:1px solid #425e78;color:#9cb7c8;font:650 11px/1.6 system-ui}
+.nd-footer b{color:var(--lime)}
+.nd-footer a{font-weight:950;text-decoration:underline}
+@media(min-width:950px) and (pointer:fine){.mobileControls{display:none}}
+@media(max-width:740px){.nd-import-nav{padding:12px}.nd-import-nav .brand{font-size:12px}.nd-import-nav .badge{display:none}.nd-import-main{padding:19px 10px 40px}.intro h1{font-size:clamp(32px,8vw,49px);letter-spacing:-1.9px}.intro p{font-size:11px}.platformWrap{padding:7px;border-radius:13px}.frameTop{padding:5px 3px 9px}.frameTop strong{font-size:9px}.frameTop small{font-size:8px}.mobileControls{margin:13px auto 0;gap:5px}.mobileControls .cluster{gap:7px}.mobileControls button{width:70px;height:67px;font-size:19px;border-radius:12px}.mobileControls button.jump{width:105px;font-size:13px}.nd-import-hud{gap:7px}.nd-import-hud .tag{font-size:9px}.nd-import-hud button{padding:10px 14px;font-size:10px}}
+@media(max-width:395px){.nd-import-nav a{padding:10px;font-size:9px}.frameTop small{display:none}.mobileControls button{width:60px;height:57px}.mobileControls button.jump{width:90px}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}

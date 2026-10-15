@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b192a">
+<meta name="description" content="Play Neon 2048, the original MIT-licensed 2048 puzzle by Gabriele Cirulli, with new Neon District visuals and on-screen mobile controls.">
+<title>Neon 2048 · Open Source Edition · Neon District</title>
+<link rel="stylesheet" href="open-2048-base.css?v=1">
+<link rel="stylesheet" href="open-2048-theme.css?v=1">
+</head>
+<body>
+<nav class="nd-import-top" aria-label="Game navigation">
+ <a class="nd-import-brand" href="index.html"><span class="nd-import-mark">ND</span>NEON DISTRICT</a>
+ <span class="nd-import-chip">✦ COMMUNITY GAME · MIT LICENSE</span>
+ <a href="index.html#discover">← ALL GAMES</a>
+</nav>
+<main class="nd-import-page">
+ <header class="nd-import-intro">
+  <span class="nd-import-kicker">01 / OPEN SOURCE ARCADE COLLECTION</span>
+  <h1>MERGE YOUR WAY TO <span>2048.</span></h1>
+  <p>The original 2048 puzzle by Gabriele Cirulli, imported with permission under its MIT license and rebuilt visually for Neon District.</p>
+ </header>
+  <div class="container">
+    <div class="heading">
+      <h1 class="title" aria-label="2048">2048</h1>
+      <div class="scores-container">
+        <div class="score-container">0</div>
+        <div class="best-container">0</div>
+      </div>
+    </div>
+
+    <div class="above-game">
+      <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
+      <a class="restart-button">New Game</a>
+    </div>
+
+    <div class="game-container">
+      <div class="game-message">
+        <p></p>
+        <div class="lower">
+	        <a class="keep-playing-button">Keep going</a>
+          <a class="retry-button">Try again</a>
+        </div>
+      </div>
+
+      <div class="grid-container">
+        <div class="grid-row">
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+        </div>
+        <div class="grid-row">
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+        </div>
+        <div class="grid-row">
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+        </div>
+        <div class="grid-row">
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+        </div>
+      </div>
+
+      <div class="tile-container">
+
+      </div>
+    </div>
+
+
+ <p class="game-explanation"><strong class="important">How to play:</strong> Swipe on your phone, use the arrow keys or WASD, or tap the buttons below. Matching tiles combine into bigger numbers. Reach <strong>2048</strong>!</p>
+ <div class="nd2048-arrows" aria-label="On-screen tile controls">
+  <span class="blank" aria-hidden="true"></span>
+  <button type="button" data-nd2048-dir="0" aria-label="Slide up">↑</button>
+  <span class="blank" aria-hidden="true"></span>
+  <button type="button" data-nd2048-dir="3" aria-label="Slide left">←</button>
+  <button type="button" data-nd2048-dir="2" aria-label="Slide down">↓</button>
+  <button type="button" data-nd2048-dir="1" aria-label="Slide right">→</button>
+ </div>
+ </div>
+ <p class="nd-import-credit">Original game and logic © 2014 <a href="https://github.com/gabrielecirulli/2048" target="_blank" rel="noopener noreferrer">Gabriele Cirulli · GitHub source</a>. Preserved under the <a href="https://github.com/gabrielecirulli/2048/blob/master/LICENSE.txt" target="_blank" rel="noopener noreferrer">MIT license</a>. Neon District adds original site styling, an isolated save key, and touch buttons.</p>
+ <footer class="nd-import-bottom">NEON DISTRICT <b>3.0</b> / OPEN SOURCE GAMES · YOUR PROGRESS SAVES AUTOMATICALLY</footer>
+</main>
+<script src="open-2048-engine.js?v=1"></script>
+</body>
+</html>

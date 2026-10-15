@@ -1,0 +1,26 @@
+/* Neon District 3.0 — community/open-source games discovery station */
+.nd3-home .nd3-community{position:relative;border-radius:21px;border:1px solid #507992;background:linear-gradient(145deg,#123046,#101b2c 59%,#17203b);padding:27px 29px 20px;margin:26px 0 22px;box-shadow:inset 0 1px #ffffff27,0 24px 66px #0004;isolation:isolate;overflow:hidden}
+.nd3-home .nd3-community:before{content:"";position:absolute;width:320px;height:320px;right:-135px;top:-165px;border-radius:50%;background:var(--nd3-lime);filter:blur(78px);opacity:.075;z-index:-1}
+.nd3-community-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px}
+.nd3-community-head small{display:block;color:var(--nd3-lime);font:1000 10px system-ui;letter-spacing:1.9px;margin:0 0 9px}
+.nd3-community-head h2{font:1000 clamp(25px,4vw,39px)/.99 system-ui;letter-spacing:-1.6px;color:#f5fcff;margin:0 0 9px}
+.nd3-community-head h2 em{font-style:normal;color:var(--nd3-lime)}
+.nd3-community-head p{color:#a6c3d7;line-height:1.5;font-size:11px;max-width:630px;margin:0}
+.nd3-community-counter{display:inline-block;flex:none;white-space:nowrap;border:1px solid #7791a9;background:#0f2638;padding:11px 12px;color:#bce6fb;border-radius:8px;font:950 10px system-ui;letter-spacing:1px}
+.nd3-community-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.nd3-community-card{position:relative;min-height:265px;border:1px solid #62839d;border-radius:16px;overflow:hidden;background:#11243b;color:#f3faff;text-decoration:none;display:flex;flex-direction:column;justify-content:flex-end;box-shadow:0 13px 35px #0005;transition:transform .22s,border-color .22s,box-shadow .22s}
+.nd3-community-card:hover{transform:translateY(-4px);border-color:var(--nd3-lime);box-shadow:0 20px 50px #0008,0 0 22px #d2ff7a22}
+.nd3-community-card:focus-visible{outline:3px solid var(--nd3-lime);outline-offset:3px}
+.nd3-community-card:before{content:"";pointer-events:none;position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,#06152123 20%,#08162599 51%,#071420ed 100%)}
+.nd3-community-card .nd3-community-art{position:absolute;inset:0;overflow:hidden}
+.nd3-community-card .nd3-illustration{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s;filter:saturate(1.25)}
+.nd3-community-card:hover .nd3-illustration{transform:scale(1.08)}
+.nd3-community-tag{position:absolute;top:13px;left:13px;z-index:2;border:1px solid #abecfa99;border-radius:7px;background:#0c253ccc;padding:7px 10px;color:var(--nd3-lime);font:950 9px system-ui;letter-spacing:.8px;backdrop-filter:blur(8px)}
+.nd3-community-info{position:relative;z-index:2;padding:22px 17px 19px;display:flex;flex-direction:column;gap:6px;max-width:80%}
+.nd3-community-info strong{font:1000 clamp(19px,3vw,28px)/1 system-ui;letter-spacing:-.7px}
+.nd3-community-info small{font:850 9px/1.4 system-ui;letter-spacing:.55px;color:#b4d2df}
+.nd3-community-cta{position:absolute;bottom:20px;right:15px;z-index:2;display:block;border-radius:8px;background:var(--nd3-lime);color:#0d2027;font:1000 10px system-ui;padding:10px 12px}
+.nd3-community-credit{color:#8faebf!important;font:650 10px/1.55 system-ui!important;text-align:center;letter-spacing:.4px;margin:17px 0 0!important}
+@media(max-width:800px){.nd3-community{padding:22px 17px!important}.nd3-community-head{gap:8px}.nd3-community-counter{display:none}.nd3-community-grid{gap:9px}.nd3-community-card{min-height:230px}.nd3-community-info{max-width:100%;padding:20px 13px 47px}.nd3-community-cta{bottom:12px;right:13px;padding:7px 9px}}
+@media(max-width:540px){.nd3-community-grid{grid-template-columns:1fr}.nd3-community-card{min-height:215px}.nd3-community-info{max-width:85%;padding:16px 14px 44px}.nd3-community-info strong{font-size:24px}.nd3-community-head h2{font-size:28px}.nd3-community-head small{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.nd3-community-card,.nd3-community-art .nd3-illustration{transition:none!important}}

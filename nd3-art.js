@@ -1,4 +1,4 @@
-/* Visual-first vector game thumbnails: designed for the 35 Neon District titles.
+/* Visual-first vector game thumbnails: designed for the Neon District game catalog.
    All illustrations are self-contained SVG, no external network or image assets. */
 (function(){
 'use strict';
@@ -33,6 +33,28 @@ function stadium(fg,light){return path('M 0 248 Q 300 145 560 248 L 560 330 L 0 
 function scene(id,c){
  const [base,mid,a,b]=c;
  switch(id){
+ case 'pixelhop':{
+  let blocks=range(10,i=>rr(i*59,244+(i%3===0?-40:0),60,100,'#17384c',3,'stroke="#69d8ff" stroke-opacity=".4" stroke-width="2"'))+
+   range(6,i=>rr(41+i*90,175+((i*7)%5)*12,66,14,'#5273aa',2,'stroke="#aacbff" stroke-opacity=".5"'))+
+   range(15,i=>circ((i*53+38)%560,35+(i*61)%140,(i%3)+1,'#a2dfff'));
+  const player=rr(190,118,49,72,'#6eacfa',5)+rr(199,130,31,24,'#e3f8ff',3)+
+   rr(199,107,32,15,'#d3ff7d',1)+rr(203,146,8,6,'#172d47')+rr(221,146,8,6,'#172d47')+
+   rr(180,154,13,18,'#96c2fc',2)+rr(239,154,13,18,'#96c2fc',2)+rr(201,189,12,18,'#1e3046',2)+rr(222,189,12,18,'#1e3046',2);
+  const gem=poly('355,105 377,125 355,158 333,125','#d7ff79')+poly('355,110 366,125 355,147 345,125','#f6ffc8')+circ(355,125,47,'none','stroke="#d9ff79" stroke-width="3" opacity=".34"');
+  const finish=rr(485,95,8,125,'#efffff',3)+poly('492,95 544,110 492,131','#ff93b2');
+  return blocks+player+gem+finish+text(28,52,'PIXEL / HOP',35,'#ecfaff','letter-spacing="-1.2"');
+ }
+ case 'open2048':{
+  const vals=[2,4,8,16,4,8,16,32,8,16,32,64,16,32,64,128];
+  const palette=['#a7f5ff','#dcff87','#b2adff','#ffb9a4','#ff98ce','#75e8c5'];
+  let tiles=rr(123,29,316,248,'#0c2438',17,'stroke="#7cdfff" stroke-opacity=".45" stroke-width="2"');
+  for(let i=0;i<16;i++){const value=vals[i],x=136+(i%4)*76,y=40+Math.floor(i/4)*58;
+   const bg=palette[Math.min(5,Math.floor(Math.log2(value))-1)%palette.length];
+   tiles+=rr(x,y,67,49,bg,8,'stroke="#ecffff" stroke-opacity=".4" stroke-width="1.5"')+
+   text(x+33.5,y+32,String(value),value>=100?23:29,'#162a3b','text-anchor="middle" letter-spacing="-1"');
+  }
+  return tiles+text(26,282,'MERGE / LEVEL UP',13,'#dfff9a','letter-spacing="2"');
+ }
  case 'snake':return path('M 88 215 H 179 V 145 H 280 V 208 H 359 V 94 H 443','none','stroke="'+a+'" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"')+circ(444,94,21,b)+circ(451,87,5,'#112635')+circ(474,218,23,'#ff657c')+path('M 474 192 Q 477 180 488 175','none','stroke="#9cf68a" stroke-width="6"');
  case 'pong':return line(280,30,280,285,'#8aabc0',3,'stroke-dasharray="7 14"')+rr(78,110,14,91,a,7)+rr(470,65,14,91,b,7)+circ(315,140,15,'#fff9da')+line(339,140,413,95,a,5,'opacity=".35"')+text(218,76,'07',36,a)+text(315,76,'05',36,b);
  case 'reaction':return range(5,i=>circ(280,150,30+i*27,'none','stroke="'+a+'" stroke-width="2" opacity="'+(.7-i*.12)+'"'))+poly('297,35 211,169 273,169 232,262 367,118 305,118',b)+circ(282,152,28,a);
