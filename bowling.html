@@ -328,13 +328,14 @@ function centerLine(){
 }
 function queueRackReset(full=true){
  const session=gameSession;phase='resetting';rackResetAt=performance.now();
+ if(full)centerLine(); // reset ball position, angle and hook the instant the frame ends
  ball.visible=false;rollAnim=null;pinsetterGroup.visible=true;
  $('rackBanner').querySelector('strong').textContent=full?'FRESH RACK · CENTER LINE':'SPARE SHOT · STANDING PINS';
  $('rackBanner').querySelector('span').textContent=full?'Ball position, angle and hook return to zero.':'Only remaining pins stay standing.';
  $('rackBanner').classList.add('show');updateUI();
  setTimeout(()=>{
   if(!running||gameSession!==session)return;
-  if(full){pinAlive=Array(10).fill(true);centerLine()}
+  if(full)pinAlive=Array(10).fill(true);
   resetPinObjects(full);renderScoreboard();
  },450);
  setTimeout(()=>{
