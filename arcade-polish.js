@@ -2,6 +2,22 @@
 const skins=['volt','ember','arctic'];let chosen='volt';
 try{chosen=localStorage.getItem('nd3_skin')||'volt'}catch(e){}
 document.documentElement.dataset.nd3Skin=skins.includes(chosen)?chosen:'volt';
+const signatures={
+ 'snake':['#77efad','#dfff78'],'pong':['#80dcff','#fbffae'],'reaction':['#ffe07b','#ff8da3'],'breakout':['#ff9dc9','#fadb84'],
+ 'flappy':['#81e2ff','#ffe17c'],'traffic':['#ff9775','#a4c8ff'],'tetris':['#c4a2ff','#8ceef4'],'neon-dino':['#a8f67a','#65dfff'],
+ 'space':['#b4a4ff','#6aefff'],'hockey':['#8ed7ff','#bdfdff'],'breakaway':['#8bd7ff','#ffe589'],'drift':['#ff9488','#ffd575'],
+ 'ski':['#99e3ff','#f0faff'],'basketball':['#ffb277','#f1ec98'],'qb':['#ffc56f','#a7fbff'],'derby':['#ffb685','#dcff90'],
+ 'idle':['#ffda7b','#9ee7ff'],'tap':['#7ff0e9','#eab6ff'],'field-goal':['#95edc4','#ffeb9a'],'mini-golf':['#94f6a1','#dbff8f'],
+ 'turbo-slalom':['#ffae88','#83eff6'],'meteor-dodge':['#ffa2ad','#bbf7ff'],'stack-tower':['#ab99ff','#ffe6a2'],
+ 'penalty':['#89f1cf','#ffb3a2'],'circuit-hacker':['#8be8ff','#e1a3ff'],'beat-tiles':['#b298ff','#ff8fc5'],
+ 'claw-machine':['#ffa8d9','#8cedfa'],'color-dash':['#ffe173','#9bafff'],'free-throw':['#ffb77e','#fff3a4'],
+ 'goalkeeper':['#96edc4','#c4ffe9'],'highway':['#ff9e79','#83cbff'],'laser-defender':['#98afff','#fc9bbf'],
+ 'rooftop-run':['#9ad5ff','#ffc887']
+};
+if(chosen==='volt'&&signatures[slug]){
+ const pair=signatures[slug];document.documentElement.style.setProperty('--nd3-accent',pair[0]);document.documentElement.style.setProperty('--nd3-accent2',pair[1])
+}
+
 const main=document.querySelector('main');
 if(main&&!main.querySelector('.nd3-era-footer')){const foot=document.createElement('footer');foot.className='nd3-era-footer';foot.innerHTML='<span>NEON DISTRICT <b>3.0</b> / GAME STATION</span><a href="index.html">← RETURN TO THE ARCADE</a>';main.appendChild(foot)}
 document.body?.setAttribute('data-nd-quality','3');const title=(document.querySelector('h1')?.textContent||document.title||'Neon District game').trim();document.querySelectorAll('a[href="index.html"]').forEach(a=>{if(/arcade 2\.0/i.test(a.textContent||''))a.textContent='← NEON DISTRICT 3.0'});const head=document.querySelector('.head')||document.querySelector('main h1');if(head&&!document.querySelector('.nd3-commandbar')){const bar=document.createElement('div');bar.className='nd3-commandbar';const brand=document.createElement('span');brand.textContent='NEON DISTRICT · 3.0';bar.appendChild(brand);if(document.fullscreenEnabled){const full=document.createElement('button');full.type='button';full.className='nd3-fullscreen';full.textContent='⛶ FULLSCREEN';full.setAttribute('aria-label','Toggle fullscreen for the game');full.onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await(document.querySelector('.stage')||document.querySelector('canvas')||document.documentElement).requestFullscreen()}catch(e){full.textContent='FULLSCREEN UNAVAILABLE'}};document.addEventListener('fullscreenchange',()=>{full.textContent=document.fullscreenElement?'⇲ EXIT FULLSCREEN':'⛶ FULLSCREEN'});bar.appendChild(full)}head.insertAdjacentElement('afterend',bar);
