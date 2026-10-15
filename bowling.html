@@ -31,7 +31,7 @@
  <div class="glass meterPanel"><div class="meterHead"><b>POWER & RELEASE</b><span id="powerText">WAITING</span></div><div class="meter"><i class="needle" id="needle"></i></div><div class="meterHint" id="meterHint">Power sets real speed. Adjust angle, hook and line to find the pocket.</div></div>
  <div class="glass toast" id="toast"></div>
  <div class="rackBanner" id="rackBanner" role="status" aria-live="polite"><small>PINSETTER ACTIVE</small><strong>FRESH RACK · CENTER LINE</strong><span>Resetting ball, angle and hook</span></div>
- <div class="glass oilHud" id="oilHud" role="status">LANE CONDITION <strong id="laneCondition">FRESH OIL</strong></div>
+ <div class="glass oilHud" id="oilHud" role="status">LANE CONDITION <strong id="laneCondition">FRESH OIL</strong> · <span id="ballLoadout">PRO BALL</span></div>
  <div class="centerCall" id="centerCall"><strong id="callBig">STRIKE!</strong><span id="callSub">PERFECT POCKET</span></div>
 </div>
 
@@ -45,6 +45,11 @@
   <button id="challengeBtn">🎯 STRIKE RUSH CHALLENGE<small>Ten racks · one ball each · combos and bonus points</small></button>
  </div>
  <div class="alleyThemes" aria-label="Bowling alley visual theme"><span>ALLEY LOOK</span><button type="button" data-theme="classic">🎳 CLASSIC</button><button type="button" data-theme="cosmic">🌌 COSMIC</button><button type="button" data-theme="sunset">🌇 SUNSET</button></div>
+ <div class="ballLoadout" aria-label="Choose physics-based bowling ball"><span>SELECT BALL · EACH ONE HAS DIFFERENT PHYSICS</span>
+  <button type="button" data-ball="control">🟡 CONTROL<small>More hook · less carry</small></button>
+  <button type="button" data-ball="pro">🔵 PRO BALL<small>Balanced all-around</small></button>
+  <button type="button" data-ball="power">🟣 POWER<small>More carry · less hook</small></button>
+ </div>
  <div class="difficulty"><button data-diff="rookie">ROOKIE</button><button data-diff="pro">PRO</button><button data-diff="hard">HARD</button><button data-diff="legend">LEGEND</button></div>
 </div></div>
 
@@ -69,7 +74,7 @@ const CFG={
 let diff=localStorage.nd_bowl3d_diff||'pro',mode='classic',running=false,phase='setup';
 let playerX=0,aim=0,hook=0,power=.15,powerDir=1,rollAnim=null,settleTimer=0,pinCarryBudget=0,pinImpactAge=0,lastPinClack=0;
 let frameIndex=0,frames=[],practiceRolls=0,strikes=0,spares=0,best=+(localStorage.nd_bowl3d_best||0),lastScore=0;
-let alleyTheme=localStorage.nd_bowl3d_theme||'classic';let pinAlive=Array(10).fill(true),toastTimer=0,callTimer=0,audioCtx=null;
+let alleyTheme=localStorage.nd_bowl3d_theme||'classic',ballType=['control','pro','power'].includes(localStorage.nd_bowl3d_ball)?localStorage.nd_bowl3d_ball:'pro';let pinAlive=Array(10).fill(true),toastTimer=0,callTimer=0,audioCtx=null;
 let challengeScore=0,challengeStreak=0,challengeBest=+(localStorage.nd_bowl3d_challenge_best||0),gameSession=0,slowMotion=false;
 let physicalPins=createRack(),shotAccumulator=0,rackResetAt=0,oilBias=0,lastContactSound=0,shotLaunchCount=0;
 
@@ -183,7 +188,19 @@ const guideGeo=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,.13
 const aimGuide=new THREE.Line(guideGeo,guideMat);scene.add(aimGuide);
 const releaseGlow=new THREE.PointLight(0x43dfff,0,7);releaseGlow.position.set(0,1.1,10.6);scene.add(releaseGlow);
 const holeMat=new THREE.MeshBasicMaterial({color:0x061018});
-const ballHoles=new THREE.Group();for(const [x,y,z] of [[-.11,.30,.25],[.11,.31,.24],[0,.17,.31]]){const h=new THREE.Mesh(new THREE.SphereGeometry(.045,10,8),holeMat);h.position.set(x,y,z);ballHoles.add(h)}ball.add(ballHoles);
+const ballHoles=new THREE.Group();for(const [x,y,z] of [[-.11,.30,.25],[.11,.31,.24],[0,.17,.31]]){const h=new THREE.Mesh(new THREE.SphereGeometry(.045,10,8),holeMat);h.position.set(x,y,z);ballHoles.add(h)}
+ball.add(ballHoles);
+function setBallType(next){
+ if(!['control','pro','power'].includes(next)||running&&phase!=='setup')return;
+ ballType=next;localStorage.nd_bowl3d_ball=next;
+ const colors={control:0xffd866,pro:0x1cb8e8,power:0x9b79f9};
+ ballMat.color.setHex(colors[next]);ballMat.roughness=next==='control'?.3:.18;ballMat.metalness=next==='power'?.48:.28;
+ $('ballLoadout').textContent=next.toUpperCase()+' BALL';
+ document.querySelectorAll('[data-ball]').forEach(b=>{b.classList.toggle('active',b.dataset.ball===next);b.setAttribute('aria-pressed',String(b.dataset.ball===next))});
+ if(phase==='setup')updateAimGuide()
+}
+document.querySelectorAll('[data-ball]').forEach(b=>b.onclick=()=>setBallType(b.dataset.ball));
+setBallType(ballType);
 
 const sign=new THREE.Mesh(new THREE.PlaneGeometry(8,2.2),new THREE.MeshBasicMaterial({color:0x102b3b}));sign.position.set(0,4.7,-15.65);scene.add(sign);
 
@@ -255,7 +272,7 @@ function updateUI(){
 function updateMeter(){$('needle').style.left='calc('+(power*100)+'% - 2px)';$('powerText').textContent=phase==='power'?Math.round(power*100)+'%':'WAITING'}
 function updateAimGuide(){
  // Trace the same ball physics as the actual throw with no pins present.
- const trial=createShot({x:playerX,aim,hook,power:.68,oil:oilBias}),pts=[];
+ const trial=createShot({x:playerX,aim,hook,power:.68,oil:oilBias,ballType}),pts=[];
  for(let i=0;i<360&&!trial.finished&&trial.z>-14.1;i++){
   if(i%14===0)pts.push(new THREE.Vector3(trial.x,.13,trial.z));
   stepPhysics(trial,[],STEP);
@@ -275,7 +292,7 @@ addEventListener('keydown',e=>{if(!running)return;const k=e.key.toLowerCase();if
 function launchBall(){
  if(phase!=='power'||!running)return;
  const oil=oilBias;phase='rolling';shotLaunchCount++;shotAccumulator=0;
- rollAnim=createShot({x:playerX,aim,hook,power,oil});
+ rollAnim=createShot({x:playerX,aim,hook,power,oil,ballType});
  sfx('roll');aimGuide.visible=false;ballGlow.visible=false;
  releaseGlow.intensity=5.5;updateUI()
 }
