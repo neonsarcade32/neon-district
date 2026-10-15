@@ -32,7 +32,7 @@
  <div class="glass toast" id="toast"></div>
  <div class="rackBanner" id="rackBanner" role="status" aria-live="polite"><small>PINSETTER ACTIVE</small><strong>FRESH RACK · CENTER LINE</strong><span>Resetting ball, angle and hook</span></div>
  <div class="glass oilHud" id="oilHud" role="status">LANE CONDITION <strong id="laneCondition">FRESH OIL</strong> · <span id="ballLoadout">PRO BALL</span></div>
- <div class="centerCall" id="centerCall"><strong id="callBig">STRIKE!</strong><span id="callSub">PERFECT POCKET</span></div>
+ <div class="centerCall" id="centerCall"><strong id="callBig">STRIKE!</strong><span id="callSub">PERFECT POCKET</span></div><div class="strikeBurst" id="strikeBurst" aria-hidden="true"></div>
 </div>
 
 <div class="menuShade" id="menuShade"><div class="menu">
@@ -208,7 +208,18 @@ function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);c
 
 function sfx(type){try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),g=audioCtx.createGain();const map={click:[440,.04,.025],roll:[120,.15,.025],hit:[85,.12,.06],strike:[820,.18,.05],spare:[650,.13,.04],gutter:[160,.12,.035]},v=map[type]||map.click;o.type=type==='hit'?'square':'sine';o.frequency.setValueAtTime(v[0],audioCtx.currentTime);if(type==='strike')o.frequency.exponentialRampToValueAtTime(1280,audioCtx.currentTime+v[1]);g.gain.setValueAtTime(v[2],audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+v[1]);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+v[1]+.03)}catch(e){}}
 function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),900)}
-function call(big,sub){$('callBig').textContent=big;$('callSub').textContent=sub;$('centerCall').classList.add('show');clearTimeout(callTimer);callTimer=setTimeout(()=>$('centerCall').classList.remove('show'),1250)}
+function call(big,sub){
+ $('callBig').textContent=big;$('callSub').textContent=sub;
+ $('centerCall').classList.add('show');
+ if(big==='STRIKE!'||big==='SPARE!'){
+  const burst=$('strikeBurst');burst.innerHTML=Array.from({length:32},(_,i)=>{
+   const angle=(Math.PI*2*i/32)+.17,dist=110+(i%5)*17,dx=Math.cos(angle)*dist,dy=Math.sin(angle)*dist;
+   return '<i style="--tx:'+dx.toFixed(1)+'px;--ty:'+dy.toFixed(1)+'px;--delay:'+((i%4)*.025)+'s;--particle:'+(i%3===0?'#dfff80':i%3===1?'#7bedff':'#f9adf0')+'"></i>'
+  }).join('');
+  burst.classList.remove('show');void burst.offsetWidth;burst.classList.add('show')
+ }
+ clearTimeout(callTimer);callTimer=setTimeout(()=>{$('centerCall').classList.remove('show');$('strikeBurst').classList.remove('show')},1500)
+}
 function setDiff(d){if(!CFG[d])return;diff=d;localStorage.nd_bowl3d_diff=d;document.querySelectorAll('[data-diff]').forEach(b=>b.classList.toggle('active',b.dataset.diff===d));$('modeLabel').textContent=(mode==='practice'?'PRACTICE':mode==='challenge'?'STRIKE RUSH':'10 FRAME')+' · '+diff.toUpperCase()}
 document.querySelectorAll('[data-diff]').forEach(b=>b.onclick=()=>setDiff(b.dataset.diff));setDiff(diff);
 
