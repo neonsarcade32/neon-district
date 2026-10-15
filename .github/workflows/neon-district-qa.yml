@@ -24,6 +24,8 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Static checks — every game, source file and asset
         run: npm run test:arcade
+      - name: 3D Bowling scoring rules
+        run: npm run test:bowling
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Start arcade test server
