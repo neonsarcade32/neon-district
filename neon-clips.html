@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080d17">
+<title>Neon Clips · Neon District 3.0</title>
+<style>
+:root{color-scheme:dark;--bg:#080e17;--panel:#101c2a;--line:#344a5f;--muted:#9cb0c0;--lime:#d5ff65;--cyan:#65e9ff;--white:#f3faff}
+*{box-sizing:border-box}
+html{min-height:100%;scroll-behavior:smooth}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 3% 0%,#22496c66,transparent 36%),radial-gradient(ellipse at 100% 20%,#54318a42,transparent 32%),linear-gradient(160deg,#08111d,#070c14 80%);color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.4}
+a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+header{position:sticky;top:0;z-index:10;background:#07111bea;border-bottom:1px solid #64809738;backdrop-filter:blur(14px)}
+.bar{max-width:1280px;min-height:74px;padding:12px 24px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:1000;letter-spacing:.45px}
+.logo b{background:var(--lime);border-radius:11px;color:#071018;padding:12px 9px;font-size:17px}
+.logo small{display:block;font-size:9px;letter-spacing:1.5px;color:#92adbf;margin-top:3px}
+.back{padding:11px 15px;border-radius:11px;border:1px solid #4e677d;background:#142438;color:#e2f4ff;font-size:12px;font-weight:850}
+.back:hover{background:#203a54}
+main{max-width:1280px;margin:0 auto;padding:38px 24px 60px}
+.intro{display:flex;justify-content:space-between;align-items:end;flex-wrap:wrap;gap:14px;margin-bottom:24px}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;letter-spacing:2px;font-size:10px;font-weight:950;color:var(--cyan)}
+.eyebrow:before{content:"";width:7px;height:7px;background:var(--lime);border-radius:50%;box-shadow:0 0 12px var(--lime)}
+h1{font-size:clamp(48px,7vw,94px);letter-spacing:-5px;line-height:.9;margin:15px 0 15px}
+h1 span{color:var(--lime)}
+.lead{max-width:640px;color:#a9c1d2;font-size:14px;line-height:1.7;margin:0}
+.badge{font-size:11px;font-weight:900;color:#cae2f2;border:1px solid #466279;border-radius:999px;background:#152a3c;padding:10px 14px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;align-items:start;gap:17px}
+.theater,.library{border:1px solid var(--line);border-radius:24px;background:linear-gradient(155deg,#12263a,#0c1420 65%);box-shadow:0 20px 60px #0005}
+.theater{padding:22px;min-height:650px}
+.theaterHead{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+.theaterHead strong{font-size:12px;letter-spacing:1.5px}
+.count{font-size:11px;color:var(--lime);font-weight:900}
+.stage{display:flex;justify-content:center;align-items:center;gap:14px}
+.screen{width:min(100%,382px);aspect-ratio:9/16;max-height:min(70vh,680px);position:relative;overflow:hidden;border-radius:20px;border:1px solid #53677b;isolation:isolate;background:radial-gradient(circle at 60% 20%,#2c3650,#080c15 65%);box-shadow:0 22px 60px #0009}
+.screen iframe{display:block;border:0;width:100%;height:100%;background:#05090f}
+.blank{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:30px;background:radial-gradient(circle at 50% 22%,#26375a,transparent 60%)}
+.blankGraphic{font-size:88px;line-height:1;filter:drop-shadow(0 12px 20px #0009);margin-bottom:24px}
+.blank h2{font-size:25px;margin:0 0 10px}
+.blank p{color:#aabfd0;line-height:1.6;max-width:255px;font-size:12px}
+.blank button{margin-top:9px;padding:12px 15px;border-radius:11px;border:0;background:var(--lime);font-size:12px;font-weight:950;color:#0c1a19}
+.rail{display:flex;flex-direction:column;align-items:center;gap:12px;width:68px}
+.rail button{width:58px;height:58px;border:1px solid #54728b;border-radius:16px;color:var(--white);background:#182e43;font-size:26px;font-weight:950;touch-action:manipulation}
+.rail button:not(:disabled):hover{background:#294b62;border-color:var(--lime)}
+.swipeRail{height:144px;width:58px;display:grid;place-items:center;padding:9px;text-align:center;border:1px dashed #68819a;border-radius:15px;color:#c3e5f5;background:#142b40;font-size:10px;font-weight:850;line-height:1.55;touch-action:none;user-select:none}
+.swipeRail span{display:block;font-size:28px;color:var(--lime)}
+.playerFoot{max-width:560px;margin:16px auto 0;text-align:center;color:#adc2d2;font-size:12px;line-height:1.6}
+.playerFoot strong{color:#fff}
+.playerFoot a{color:var(--cyan);text-decoration:underline;text-underline-offset:3px}
+.library{padding:21px}
+.library small.kicker{font-size:10px;color:var(--cyan);letter-spacing:1.4px;font-weight:950}
+.library h2{font-size:25px;letter-spacing:-.8px;margin:9px 0}
+.library p{color:var(--muted);font-size:12px;line-height:1.65;margin:0 0 15px}
+label{display:block;font-size:11px;color:#d9ebf8;font-weight:800;margin-bottom:8px}
+.entry{display:flex;gap:8px;flex-wrap:wrap}
+.entry input{min-width:0;flex:1 1 190px;padding:13px 12px;border-radius:11px;background:#071522;border:1px solid #48617b;color:#e8f6ff;font-size:12px}
+.entry input::placeholder{color:#819bb0}
+.entry button,.sampleBtn{padding:11px 13px;border:0;border-radius:11px;background:var(--lime);color:#0e1c1c;font-size:11px;font-weight:950}
+.sampleBtn{background:#263d54;color:#d9f3ff;border:1px solid #446782;margin-top:12px}
+.feedback{min-height:32px;font-size:11px;color:var(--lime);padding:10px 0 0}
+.feedback.error{color:#ffb4b4}
+.line{border:0;border-top:1px solid #34495e;margin:15px 0 17px}
+.queueTop{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:10px}
+.queueTop strong{font-size:13px}
+.clear{border:1px solid #4c6174;color:#bbd2e3;border-radius:9px;background:#152a3e;padding:7px 9px;font-size:10px}
+.queue{display:grid;gap:8px;max-height:400px;overflow:auto;padding-right:2px}
+.queueEmpty{border:1px dashed #3e576f;border-radius:14px;padding:20px 12px;color:#839caf;font-size:12px;text-align:center}
+.clip{display:flex;align-items:center;gap:9px;border:1px solid #3b5269;border-radius:13px;background:#102336;padding:9px}
+.clip.active{border-color:var(--lime);background:#263b3c}
+.clipSelect{flex:1;min-width:0;border:0;background:transparent;color:#e9f8ff;cursor:pointer;text-align:left;padding:6px 2px;font-size:12px;font-weight:800;overflow-wrap:anywhere}
+.clipSelect small{display:block;font-weight:600;color:#98adbc;margin-top:4px;font-size:10px}
+.clipRemove{border:1px solid #4a6073;background:#0a1929;border-radius:9px;color:#d3e3ef;min-width:34px;height:34px;font-size:18px}
+.notice{margin-top:20px;padding:15px 17px;border:1px solid #415774;background:#12273a;border-radius:14px;color:#b3c8d7;font-size:12px;line-height:1.65}
+.notice b{color:#eaf8ff}
+@media(max-width:840px){.layout{grid-template-columns:1fr}.theater{min-height:auto}.library{order:-1}.queue{max-height:170px}.intro{margin-bottom:18px}}
+@media(max-width:540px){main{padding:24px 12px 42px}.bar{padding:9px 12px;min-height:65px}.logo{font-size:12px;gap:8px}.logo b{padding:10px 8px}.back{padding:10px;font-size:10px}h1{font-size:52px;letter-spacing:-3px}.theater{padding:12px;border-radius:17px}.library{padding:16px;border-radius:17px}.stage{gap:7px}.screen{max-height:72vh}.rail{width:44px;gap:8px}.rail button{width:43px;height:48px;font-size:21px;border-radius:12px}.swipeRail{width:43px;height:120px;font-size:9px}.swipeRail span{font-size:19px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header><div class="bar"><a class="logo" href="index.html"><b>ND</b><span>NEON DISTRICT<small>3.0 · CLIPS</small></span></a><a class="back" href="index.html">← BACK TO ARCADE</a></div></header>
+<main>
+  <div class="intro"><div><span class="eyebrow">NEW IN THE DISTRICT / WATCH</span><h1>NEON <span>CLIPS.</span></h1><p class="lead">Build your own swipe-style video queue from public TikTok links. Watch in the arcade without installing an Android app.</p></div><span class="badge">OFFICIAL VIDEO EMBEDS · NO APK</span></div>
+  <div class="layout">
+    <section class="theater" aria-label="TikTok video player">
+      <div class="theaterHead"><strong>THE WATCH ROOM</strong><span class="count" id="counter" aria-live="polite">NO VIDEOS YET</span></div>
+      <div class="stage">
+        <div class="screen" id="screen">
+          <div class="blank" id="blank">
+            <div class="blankGraphic" aria-hidden="true">▶️</div>
+            <h2>Your video wall.</h2>
+            <p>Paste a public TikTok video link to start watching. You choose what goes in your queue.</p>
+            <button id="blankAdd" type="button">ADD YOUR FIRST CLIP ↗</button>
+          </div>
+        </div>
+        <div class="rail">
+          <button id="previous" type="button" aria-label="Previous video" title="Previous video">↑</button>
+          <div id="swipeRail" class="swipeRail" aria-label="Swipe up or down here to change videos"><span>↕</span>SWIPE<br>HERE</div>
+          <button id="next" type="button" aria-label="Next video" title="Next video">↓</button>
+        </div>
+      </div>
+      <div class="playerFoot" id="playerFoot">Add a video to begin. Use the arrows, ↑/↓ keys, or swipe on the side rail to change clips.</div>
+    </section>
+    <aside class="library" aria-label="Your video queue">
+      <small class="kicker">01 / BUILD YOUR FEED</small>
+      <h2>Add a TikTok</h2>
+      <p>Copy a full public TikTok video link, paste it below, and add it to your saved lineup. Videos stay hosted by TikTok.</p>
+      <form id="addForm">
+        <label for="videoUrl">TikTok video link or video ID</label>
+        <div class="entry"><input id="videoUrl" name="videoUrl" type="text" placeholder="tiktok.com/@creator/video/..." inputmode="url" autocomplete="off" spellcheck="false" maxlength="600" required><button type="submit">+ ADD</button></div>
+      </form>
+      <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+      <button id="sample" class="sampleBtn" type="button">TRY OFFICIAL EXAMPLE VIDEO ↗</button>
+      <hr class="line">
+      <div class="queueTop"><strong>MY VIDEO QUEUE <span id="queueCount">(0)</span></strong><button id="clear" class="clear" type="button">CLEAR ALL</button></div>
+      <div id="queue" class="queue"></div>
+    </aside>
+  </div>
+  <div class="notice"><b>The real rundown:</b> This is a TikTok video viewer, not the full TikTok app or a way around blocked websites. TikTok must be reachable on your network; removed, private, or restricted videos may not play. There is no automatic “For You” feed, searching accounts, or uploading. Your video list is saved in this browser on this device only. TikTok's player may receive browser data when you load a video. <b>Neon Clips is not affiliated with TikTok.</b></div>
+</main>
+<script>
+(()=>{
+'use strict';
+const KEY='nd3_neon_clips_v1',MAX=30;
+const byId=id=>document.getElementById(id);
+const screen=byId('screen'),blank=byId('blank'),queue=byId('queue'),feedback=byId('feedback');
+let current=0,items=load();
+function load(){try{const data=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(data)?data.filter(x=>typeof x==='string'&&/^[0-9]{15,22}$/.test(x)).slice(0,MAX):[]}catch(e){return []}}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(items));return true}catch(e){show('Storage is unavailable, so this queue may not be saved.',true);return false}}
+function show(message,error=false){feedback.textContent=message;feedback.classList.toggle('error',error)}
+function parseVideoId(value){
+ const input=value.trim();
+ if(/^[0-9]{15,22}$/.test(input))return input;
+ let u;try{u=new URL(input)}catch(e){return null}
+ if(!['https:','http:'].includes(u.protocol))return null;
+ const host=u.hostname.toLowerCase();
+ if(host!=='tiktok.com'&&!host.endsWith('.tiktok.com'))return null;
+ const match=u.pathname.match(/(?:\/video\/|\/player\/v1\/)([0-9]{15,22})(?:\/|$)/);
+ return match?match[1]:null;
+}
+function add(value){
+ const id=parseVideoId(value);
+ if(!id){show('Use a full TikTok video URL (with /video/ and its ID) or paste the video ID. Short share links cannot be resolved here.',true);return}
+ const prior=items.indexOf(id);
+ if(prior!==-1){current=prior;render();show('This clip was already saved. Opened it instead.');return}
+ if(items.length>=MAX){show('Your queue holds up to 30 clips. Remove one before adding another.',true);return}
+ items.push(id);current=items.length-1;persist();render();show('Added to your queue! Press play on the TikTok player.');
+ byId('videoUrl').value='';
+}
+function makeButton(className,text,label,onClick){
+ const b=document.createElement('button');b.className=className;b.type='button';b.textContent=text;b.setAttribute('aria-label',label);b.addEventListener('click',onClick);return b;
+}
+function renderQueue(){
+ queue.replaceChildren();byId('queueCount').textContent='('+items.length+')';byId('clear').disabled=!items.length;
+ if(!items.length){const empty=document.createElement('div');empty.className='queueEmpty';empty.textContent='No clips yet. Add a public TikTok video link above.';queue.append(empty);return}
+ items.forEach((id,index)=>{
+  const row=document.createElement('div');row.className='clip'+(index===current?' active':'');
+  const choose=makeButton('clipSelect','Clip '+(index+1),'Watch clip '+(index+1),()=>{current=index;render()});
+  const sub=document.createElement('small');sub.textContent='Video ID '+id;choose.append(sub);
+  const remove=makeButton('clipRemove','×','Remove clip '+(index+1),()=>{
+   items.splice(index,1);if(index<current)current--;if(current>=items.length)current=Math.max(0,items.length-1);persist();render();show('Clip removed.');
+  });
+  row.append(choose,remove);queue.append(row);
+ });
+}
+function render(){
+ byId('counter').textContent=items.length?'CLIP '+(current+1)+' / '+items.length:'NO VIDEOS YET';
+ byId('previous').disabled=items.length<2;
+ byId('next').disabled=items.length<2;
+ const iframe=screen.querySelector('iframe');if(iframe)iframe.remove();
+ if(!items.length){blank.hidden=false;byId('playerFoot').textContent='Add a video to begin. Use the arrows, ↑/↓ keys, or swipe on the side rail to change clips.'}
+ else{
+  blank.hidden=true;
+  const id=items[current];
+  const player=document.createElement('iframe');
+  player.src='https://www.tiktok.com/player/v1/'+id+'?controls=1&autoplay=0&description=1&music_info=1';
+  player.title='Public TikTok video '+(current+1);
+  player.allow='autoplay; fullscreen; encrypted-media; picture-in-picture';
+  player.setAttribute('allowfullscreen','');
+  screen.append(player);
+  const foot=byId('playerFoot');foot.replaceChildren();
+  const text=document.createElement('strong');text.textContent='Clip '+(current+1)+'. ';
+  const helper=document.createTextNode('Press play in the video. If it will not load, ');
+  const external=document.createElement('a');external.href='https://www.tiktok.com/player/v1/'+id;external.target='_blank';external.rel='noopener noreferrer';external.textContent='open it on TikTok';
+  foot.append(text,helper,external,document.createTextNode('.'));
+ }
+ renderQueue();
+}
+function change(dir){if(!items.length)return;current=(current+dir+items.length)%items.length;render()}
+byId('addForm').addEventListener('submit',e=>{e.preventDefault();add(byId('videoUrl').value)});
+byId('sample').addEventListener('click',()=>add('6718335390845095173'));
+byId('blankAdd').addEventListener('click',()=>byId('videoUrl').focus());
+byId('previous').addEventListener('click',()=>change(-1));
+byId('next').addEventListener('click',()=>change(1));
+byId('clear').addEventListener('click',()=>{
+ if(!items.length)return;
+ if(!window.confirm('Clear your saved video queue on this device?'))return;
+ items=[];current=0;persist();render();show('Queue cleared.');
+});
+document.addEventListener('keydown',e=>{
+ if(e.target.closest('input,textarea,button,[contenteditable]'))return;
+ if(e.key==='ArrowDown'){e.preventDefault();change(1)}
+ if(e.key==='ArrowUp'){e.preventDefault();change(-1)}
+});
+let touchStart=null;
+const rail=byId('swipeRail');
+rail.addEventListener('touchstart',e=>{if(e.touches.length===1)touchStart=e.touches[0].clientY},{passive:true});
+rail.addEventListener('touchend',e=>{
+ if(touchStart===null||!e.changedTouches.length)return;
+ const delta=e.changedTouches[0].clientY-touchStart;touchStart=null;
+ if(Math.abs(delta)>24)change(delta<0?1:-1);
+},{passive:true});
+rail.addEventListener('touchcancel',()=>{touchStart=null});
+render();
+})();
+</script>
+</body>
+</html>
