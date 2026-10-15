@@ -12,3 +12,12 @@ html{scroll-behavior:smooth}body{padding-left:max(env(safe-area-inset-left),0px)
 @keyframes ndPop{0%{transform:scale(1)}45%{transform:scale(1.16)}100%{transform:scale(1)}}
 @keyframes ndShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
 @keyframes ndFlash{from{opacity:.13}to{opacity:0}}
+
+/* Neon District 3.0 shared game toolbar */
+.nd3-commandbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:10px 0 13px;padding:9px 13px;border:1px solid #47617d55;border-radius:13px;background:linear-gradient(95deg,#0d2030bb,#19122ebb);box-shadow:inset 0 1px #ffffff12,0 8px 28px #0002}
+.nd3-commandbar span{color:#8edffa;font:900 10px/1.35 system-ui,sans-serif;letter-spacing:1.25px}
+.nd3-commandbar button{border:1px solid #4b7690;border-radius:9px;background:#132e44;color:#dff7ff;padding:9px 13px;font:900 10px system-ui;letter-spacing:.5px;min-height:38px}
+.nd3-commandbar button:hover{border-color:#78e9ff;background:#194765}
+.nd3-commandbar button:focus-visible{outline:3px solid #87e9ff;outline-offset:3px}
+.nd-polish-ready .hud .box,.nd-polish-ready .hud .stat{box-shadow:inset 0 1px #ffffff0b,0 7px 24px #00000015}
+@media(max-width:480px){.nd3-commandbar{padding:8px 10px}.nd3-commandbar span{font-size:8px;letter-spacing:.8px}.nd3-commandbar button{padding:8px 9px;font-size:9px}}
