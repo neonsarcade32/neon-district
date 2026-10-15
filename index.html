@@ -34,30 +34,12 @@
 .passportProgress i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#4ad8ff,#66e5af,#f7db7d);transition:width .4s}
 .passportRight button{width:100%;padding:11px 12px;border:1px solid #5ecdfb;border-radius:11px;background:#17435a;color:#e0f8ff;font-size:10px;font-weight:1000;cursor:pointer}
 @media(max-width:680px){.passportRibbon{flex-direction:column;align-items:stretch;padding:16px}.passportRight{width:100%}.passportRibbon h2{font-size:21px}}
-/* Neon Clips: a separate video lounge, not counted as one of the 37 games */
-.nd3-clips-teaser{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr) minmax(150px,.65fr);min-height:300px;gap:15px;align-items:center;overflow:hidden;border:1px solid #64809b;border-radius:23px;background:radial-gradient(circle at 85% 38%,#465ba457,transparent 42%),linear-gradient(125deg,#10283b,#0b1422 74%);margin:24px 0;padding:28px 34px;box-shadow:0 20px 50px #0004}
-.nd3-clips-teaser:before{content:"";position:absolute;inset:0;z-index:-1;opacity:.45;background-image:linear-gradient(90deg,#c2dfff14 1px,transparent 1px),linear-gradient(#c2dfff14 1px,transparent 1px);background-size:39px 39px}
-.nd3-clips-content{position:relative;z-index:1}
-.nd3-clips-content>small{color:#7ef0ff;letter-spacing:1.8px;font-size:10px;font-weight:950}
-.nd3-clips-content h2{font-size:clamp(38px,5.2vw,66px);line-height:1;letter-spacing:-3px;margin:12px 0}
-.nd3-clips-content h2 em{font-style:normal;color:#d5ff65}
-.nd3-clips-content p{font-size:13px;line-height:1.65;color:#b8cfdb;max-width:530px}
-.nd3-clips-cta{display:inline-flex;align-items:center;justify-content:center;margin:12px 0 4px;padding:13px 17px;border-radius:10px;background:#d5ff65;color:#0a161e;font-size:12px;font-weight:1000;letter-spacing:.3px;text-decoration:none}
-.nd3-clips-cta:hover{background:#f1ffad}
-.nd3-clips-caveat{display:block;color:#94adc0;font-size:10px;margin-top:8px}
-.nd3-clips-art{position:relative;display:grid;place-items:center;min-height:240px}
-.nd3-clips-phone{width:142px;height:244px;border-radius:23px;border:6px solid #222b3a;background:radial-gradient(circle at 50% 30%,#44a3bc,#19275c 55%,#0b1231);box-shadow:inset 0 0 0 2px #7de3ff77,0 20px 70px #0009;transform:rotate(10deg);display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
-.nd3-clips-phone>span{width:66px;height:66px;background:#cafa65;border-radius:50%;color:#0f2030;display:grid;place-items:center;font-size:35px;box-shadow:0 0 32px #cbff6466}
-.nd3-clips-phone>i{position:absolute;top:6px;width:48px;height:7px;border-radius:50px;background:#121921}
-.nd3-clips-phone>b{position:absolute;bottom:18px;left:12px;color:#e4f6ff;letter-spacing:1px;font-size:10px}
-.nd3-clips-shadow{position:absolute;width:180px;height:220px;border-radius:50%;background:#62e4ff40;filter:blur(42px)}
-@media(max-width:680px){.nd3-clips-teaser{grid-template-columns:1fr;min-height:0;padding:23px}.nd3-clips-art{display:none}.nd3-clips-content h2{font-size:46px}}
 </style>
 <link rel="stylesheet" href="nd3-home.css?v=3.0.1">
 <link rel="stylesheet" href="nd3-community.css?v=1">
 </head>
 <body class="nd3-home">
-<header class="topbar"><nav class="nav"><a class="brand" href="index.html"><span class="brandmark">ND</span><span>NEON DISTRICT<small>VERSION 3.0 · REBUILT</small></span></a><div class="navActions"><button class="navBtn" id="favoritesJump">★ Favorites</button><a class="navBtn" href="neon-clips.html" aria-label="Open Neon Clips video viewer">▶ CLIPS</a><a class="navBtn hideMobile" href="#discover">ALL GAMES ↗</a><a class="navBtn hideMobile" href="https://github.com/neonsarcade32/neon-district" target="_blank" rel="noopener">SOURCE</a><div class="nd3-themebar" aria-label="Color theme"><button data-theme="volt" title="Electric theme" aria-label="Electric theme" aria-pressed="true"></button><button data-theme="ember" title="Sunset theme" aria-label="Sunset theme" aria-pressed="false"></button><button data-theme="arctic" title="Arctic theme" aria-label="Arctic theme" aria-pressed="false"></button></div></div></nav></header>
+<header class="topbar"><nav class="nav"><a class="brand" href="index.html"><span class="brandmark">ND</span><span>NEON DISTRICT<small>VERSION 3.0 · REBUILT</small></span></a><div class="navActions"><button class="navBtn" id="favoritesJump">★ Favorites</button><a class="navBtn hideMobile" href="#discover">ALL GAMES ↗</a><a class="navBtn hideMobile" href="https://github.com/neonsarcade32/neon-district" target="_blank" rel="noopener">SOURCE</a><div class="nd3-themebar" aria-label="Color theme"><button data-theme="volt" title="Electric theme" aria-label="Electric theme" aria-pressed="true"></button><button data-theme="ember" title="Sunset theme" aria-label="Sunset theme" aria-pressed="false"></button><button data-theme="arctic" title="Arctic theme" aria-label="Arctic theme" aria-pressed="false"></button></div></div></nav></header>
 <main class="wrap"><div class="nd3-ribbon"><span><span class="dot"></span><b>NEON DISTRICT 3.0</b> · THE REBUILT ARCADE · 37 PLAYABLE GAMES</span><span class="right">NEW LOOK / NEW GAME ART / SAME SAVED PROGRESS</span></div>
 <section class="hero">
 <a class="feature" href="arcade-city.html?v=nd3visual" data-launch="Arcade City 3D">
@@ -80,10 +62,6 @@
   <a class="nd3-community-card nd3-offroad-feature" href="open-offroad.html" data-launch="Offroad Expedition 3D"><div class="nd3-community-art" data-source-art="offroad" aria-hidden="true"></div><span class="nd3-community-tag">NEW · ACTUAL 3D PHYSICS GAME</span><div class="nd3-community-info"><strong>OFFROAD EXPEDITION 3D</strong><small>EXPLORE · PROCEDURAL LANDSCAPES · CAR PHYSICS · COLLECT AND UPGRADE</small></div><span class="nd3-community-cta">ENTER WORLD ↗</span></a>
  </div>
  <p class="nd3-community-credit">Original developers credited inside each game. Licenses preserved in this site's GitHub repository.</p>
-</section>
-<section class="nd3-clips-teaser" aria-label="Neon Clips video viewer">
-  <div class="nd3-clips-content"><small>NEW EXPERIENCE / 3.0 · VIDEO LOUNGE</small><h2>NEON <em>CLIPS.</em></h2><p>Bring your favorite public TikTok videos into the District. Build a personal queue, watch official embeds, and move between clips. No app install required.</p><a class="nd3-clips-cta" href="neon-clips.html">ENTER THE WATCH ROOM ↗</a><span class="nd3-clips-caveat">Not a TikTok app or an unblocker · Videos require TikTok access.</span></div>
-  <div class="nd3-clips-art" aria-hidden="true"><div class="nd3-clips-phone"><span>▶</span><i></i><b>01 / CLIP</b></div><div class="nd3-clips-shadow"></div></div>
 </section>
 <div class="nd3-editorial"><small>03 / GAME LIBRARY</small><h2>CHOOSE YOUR GAME.</h2><span class="dash"></span></div><div class="quickbar"><div class="searchBox"><span class="searchIcon">⌕</span><input id="search" type="search" placeholder="Search 38 games, genres, skills..." autocomplete="off"></div><button class="randomBtn" id="randomBtn">↻ SURPRISE ME</button></div>
 <div class="tabs" id="tabs"><button class="tab active" data-cat="All">ALL GAMES</button><button class="tab" data-cat="Sports">SPORTS</button><button class="tab" data-cat="Racing">RACING</button><button class="tab" data-cat="Arcade">ARCADE</button><button class="tab" data-cat="Chill">CHILL</button><button class="tab" data-cat="Open Source">GITHUB GAMES</button><button class="tab" data-cat="Favorites">★ FAVORITES</button></div>
