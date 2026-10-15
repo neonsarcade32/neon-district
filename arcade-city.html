@@ -41,13 +41,14 @@
 .nd3-readout{border:1px solid #304c64;border-radius:10px;padding:12px;background:#0c1829;font-size:12px;font-weight:900}
 @media(max-width:780px){.nd3-open{top:auto;bottom:291px;right:10px}.nd3-cards{grid-template-columns:1fr}.nd3-card{min-height:100px}.nd3-box h2{font-size:26px}}
 </style>
+<link rel="stylesheet" href="nd3-flagships.css?v=3.0.1">
 </head>
-<body>
+<body class="nd3-world">
 <div class="game">
 <canvas id="c"></canvas>
 <div class="hud">
  <button type="button" id="nd3Open" class="nd3-open">🏆 DRIVER TRIALS</button>
- <div class="topbar"><a class="pill back" href="index.html">← Arcade</a><div class="pill brand">🏙️ <span>Arcade City 3D</span></div><div class="pill rep">REP <b id="rep">0</b></div><div class="pill wanted" id="wanted">WANTED ☆☆☆</div><div class="pill clock" id="clock">12:00</div><div class="pill weather" id="weather">☀ CLEAR</div><div class="pill condition" id="condition">CAR 100%</div><div class="pill zone" id="zone">DOWNTOWN</div><div class="pill travelHud" id="travelMode">DRIVING · E EXIT</div><div class="pill mpHud" id="mpHud">SOLO</div><div class="pill wallet"><b id="money">$2,500</b><span id="carName">STREET 86</span></div></div>
+ <div class="topbar"><a class="pill back" href="index.html">← Arcade</a><div class="pill brand">ND / <span>CITY 3.0</span></div><div class="pill rep">REP <b id="rep">0</b></div><div class="pill wanted" id="wanted">WANTED ☆☆☆</div><div class="pill clock" id="clock">12:00</div><div class="pill weather" id="weather">☀ CLEAR</div><div class="pill condition" id="condition">CAR 100%</div><div class="pill zone" id="zone">DOWNTOWN</div><div class="pill travelHud" id="travelMode">DRIVING · E EXIT</div><div class="pill mpHud" id="mpHud">SOLO</div><div class="pill wallet"><b id="money">$2,500</b><span id="carName">STREET 86</span></div></div>
  <div class="pill mission"><small id="missionType">FREE ROAM</small><h2 id="missionTitle">Build your reputation</h2><p id="missionText">Blue = races · Yellow = drift · Red = speed trap · Green/Purple = garage & dealer</p><div class="bar"><i id="missionBar"></i></div></div>
  <div class="pill speed"><strong id="speed">0</strong><span id="speedUnit">MPH</span></div>
  <div class="minimapWrap" id="minimapWrap"><canvas id="minimap" width="300" height="300"></canvas><span class="miniLabel">CITY MAP · TAP MARKER FOR GPS</span><span class="gpsLabel" id="gpsLabel">GPS: NONE</span></div>
