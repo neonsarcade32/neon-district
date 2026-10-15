@@ -2,7 +2,7 @@ name: Neon District 3.0 game QA
 
 on:
   push:
-    branches: [main, neon-district-3.0-upgrade]
+    branches: [main, neon-district-3.0-upgrade, neon-district-3-visual-rebuild]
   pull_request:
     branches: [main]
 
@@ -54,6 +54,16 @@ jobs:
           path: test-artifacts/nd3-visual
           if-no-files-found: ignore
           retention-days: 10
+      - name: Visual rebuild and mobile regression checks
+        run: npm run test:visual3
+      - name: Upload visual comparison screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: neon-district-3-visual-snapshots
+          path: tests/screenshots/
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Server output when checks fail
         if: failure()
         run: cat /tmp/neon-district-server.log || true
