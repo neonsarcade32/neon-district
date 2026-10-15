@@ -27,15 +27,17 @@
    <div class="hookRow"><label><span>HOOK / SPIN</span><b id="hookSide">STRAIGHT</b></label><input id="hook" type="range" min="-100" max="100" value="0"></div>
    <div class="buttonGrid"><button id="moveL">POS ◀</button><button id="moveR">POS ▶</button><button id="aimL">AIM ◀</button><button id="aimR">AIM ▶</button><button class="bowlBtn" id="bowl">START POWER</button></div>
  </div>
- <div class="glass meterPanel"><div class="meterHead"><b>POWER & RELEASE</b><span id="powerText">WAITING</span></div><div class="meter"><i class="needle" id="needle"></i></div><div class="meterHint" id="meterHint">Release at the power you want · higher power = faster ball and stronger pin carry</div></div>
+ <div class="glass meterPanel"><div class="meterHead"><b>POWER & RELEASE</b><span id="powerText">WAITING</span></div><div class="meter"><i class="needle" id="needle"></i></div><div class="meterHint" id="meterHint">Power sets real speed. Adjust angle, hook and line to find the pocket.</div></div>
  <div class="glass toast" id="toast"></div>
+ <div class="rackBanner" id="rackBanner" role="status" aria-live="polite"><small>PINSETTER ACTIVE</small><strong>FRESH RACK · CENTER LINE</strong><span>Resetting ball, angle and hook</span></div>
+ <div class="glass oilHud" id="oilHud" role="status">LANE CONDITION <strong id="laneCondition">FRESH OIL</strong></div>
  <div class="centerCall" id="centerCall"><strong id="callBig">STRIKE!</strong><span id="callSub">PERFECT POCKET</span></div>
 </div>
 
 <div class="menuShade" id="menuShade"><div class="menu">
- <span class="release">NEON DISTRICT 3.0 · FULL 3D BOWLING</span>
+ <span class="release">NEON DISTRICT 3.1 · PHYSICS REBUILT</span>
  <h1 class="logo">NEON<br><span>BOWLING 3D</span></h1>
- <p>A full 3D bowling game with standard ten-frame scoring, precision aiming, hook, animated pin physics, camera shots, practice mode, and a new Strike Rush challenge.</p>
+ <p>Rebuilt ball and pin physics, real collision-based strikes, genuine 10-frame rules, an animated pinsetter, fresh lane conditions, and a new start-from-center rule each rack. Find the pocket — every throw matters.</p>
  <div class="menuBtns">
   <button class="primary" id="classicBtn">PLAY 10-FRAME GAME<small>Full game · standard strike/spare scoring · saved best</small></button>
   <button id="practiceBtn">PRACTICE LANE<small>Infinite racks · test lines, hook, and power</small></button>
@@ -46,12 +48,13 @@
 </div></div>
 
 <div class="results" id="results"><div class="glass resultBox"><small>GAME COMPLETE</small><h2>Final Score</h2><div class="resultScore" id="resultScore">0</div><p id="resultCopy"></p><div class="resultStats"><div><span>STRIKES</span><b id="resultStrikes">0</b></div><div><span>SPARES</span><b id="resultSpares">0</b></div><div><span>BEST</span><b id="resultBest">0</b></div></div><div class="resultBtns"><button id="menuBtn">MENU</button><button class="again" id="againBtn">BOWL AGAIN</button></div></div></div>
-<div class="help">A / D = position · ← / → = aim · Q / E = hook · SPACE = power/release</div>
+<div class="help">NEW REAL COLLISIONS · Ball automatically recenters for every fresh rack · A / D position · ← / → aim · Q / E hook · SPACE power/release</div>
 </div>
 
 <script>try{const skin=localStorage.getItem('nd3_skin');if(['volt','ember','arctic'].includes(skin))document.documentElement.dataset.nd3Skin=skin}catch(e){}</script>
 <script type="module">
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js';
+import {createRack,createShot,stepPhysics,knockedCount,movingEnergy,STEP} from './bowling-physics.mjs';
 
 const $=id=>document.getElementById(id);
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
@@ -67,6 +70,7 @@ let playerX=0,aim=0,hook=0,power=.15,powerDir=1,rollAnim=null,settleTimer=0,pinC
 let frameIndex=0,frames=[],practiceRolls=0,strikes=0,spares=0,best=+(localStorage.nd_bowl3d_best||0),lastScore=0;
 let alleyTheme=localStorage.nd_bowl3d_theme||'classic';let pinAlive=Array(10).fill(true),toastTimer=0,callTimer=0,audioCtx=null;
 let challengeScore=0,challengeStreak=0,challengeBest=+(localStorage.nd_bowl3d_challenge_best||0),gameSession=0,slowMotion=false;
+let physicalPins=createRack(),shotAccumulator=0,rackResetAt=0,oilBias=0,lastContactSound=0,shotLaunchCount=0;
 
 const canvas=$('game3d');
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
@@ -161,6 +165,15 @@ const pins=pinPositions.map(([x,z],i)=>{
  const ring=new THREE.Mesh(new THREE.CylinderGeometry(.105,.105,.055,16),redMat);ring.position.y=.66;group.add(ring);
  group.position.set(x,.1,z);group.userData={i,knocked:false,vx:0,vz:0,rv:0};scene.add(group);return group;
 });
+const pinsetterGroup=new THREE.Group(),pinsetterMat=new THREE.MeshStandardMaterial({color:0x203849,metalness:.75,roughness:.28,emissive:0x143850,emissiveIntensity:.55});
+const pinsetterBar=new THREE.Mesh(new THREE.BoxGeometry(5.3,.28,.38),pinsetterMat);
+pinsetterBar.position.set(0,0,0);pinsetterGroup.add(pinsetterBar);
+for(const xx of [-2.63,2.63]){
+ const arm=new THREE.Mesh(new THREE.BoxGeometry(.14,.72,.4),pinsetterMat);arm.position.set(xx,-.19,0);pinsetterGroup.add(arm)
+}
+const pinsetterLights=new THREE.Mesh(new THREE.BoxGeometry(4.9,.032,.42),new THREE.MeshBasicMaterial({color:0xd8ff71,toneMapped:false}));
+pinsetterLights.position.set(0,-.15,0);pinsetterGroup.add(pinsetterLights);
+pinsetterGroup.position.set(0,4,-13.35);pinsetterGroup.visible=false;scene.add(pinsetterGroup);
 const ballMat=new THREE.MeshStandardMaterial({color:0x1cb8e8,roughness:.18,metalness:.28});
 const ball=new THREE.Mesh(new THREE.SphereGeometry(.42,32,22),ballMat);ball.castShadow=true;ball.position.set(0,.48,10.9);scene.add(ball);
 const ballGlow=new THREE.Mesh(new THREE.RingGeometry(.48,.72,40),new THREE.MeshBasicMaterial({color:0x45dfff,transparent:true,opacity:.28,side:THREE.DoubleSide,depthWrite:false}));ballGlow.rotation.x=-Math.PI/2;ballGlow.position.set(0,.115,10.9);scene.add(ballGlow);
@@ -182,10 +195,36 @@ function setDiff(d){if(!CFG[d])return;diff=d;localStorage.nd_bowl3d_diff=d;docum
 document.querySelectorAll('[data-diff]').forEach(b=>b.onclick=()=>setDiff(b.dataset.diff));setDiff(diff);
 
 function freshFrames(){return Array.from({length:10},()=>({rolls:[]}))}
-function resetPinObjects(full=true){pinCarryBudget=0;pinImpactAge=0;pins.forEach((p,i)=>{p.position.set(pinPositions[i][0],.1,pinPositions[i][1]);p.rotation.set(0,0,0);p.userData.knocked=false;p.userData.vx=p.userData.vz=p.userData.vy=p.userData.rv=0;p.userData.rx=p.userData.rz=p.userData.wobble=p.userData.bounces=0;p.visible=full?true:pinAlive[i]});}
+function resetPinObjects(full=true){
+ physicalPins=createRack(full?Array(10).fill(true):pinAlive);
+ pinCarryBudget=0;pinImpactAge=0;
+ pins.forEach((p,i)=>{
+  const sim=physicalPins[i];p.position.set(sim.x,.1,sim.z);
+  p.rotation.set(0,0,0);p.userData.knocked=false;
+  p.userData.vx=p.userData.vz=p.userData.vy=p.userData.rv=0;
+  p.userData.rx=p.userData.rz=p.userData.wobble=p.userData.bounces=0;
+  p.visible=sim.active
+ })
+}
 function resetPower(){power=.08+Math.random()*.12;powerDir=1;updateMeter()}
-function setupBall(){phase='setup';rollAnim=null;ball.visible=true;ball.position.set(playerX,.48,10.9);ball.rotation.set(0,0,0);ballGlow.visible=true;ballGlow.position.set(playerX,.115,10.9);aimGuide.visible=true;releaseGlow.intensity=2.4;releaseGlow.position.set(playerX,.9,10.7);camera.position.set(playerX*.16,2.65,16.9);camera.lookAt(playerX*.28,.36,7.25);resetPower();updateAimGuide();updateUI()}
-function startGame(m){gameSession++;mode=m;running=true;frameIndex=0;frames=freshFrames();practiceRolls=0;strikes=0;spares=0;challengeScore=0;challengeStreak=0;playerX=0;aim=0;hook=0;$('hook').value=0;pinAlive=Array(10).fill(true);resetPinObjects();$('menuShade').style.display='none';$('results').classList.remove('show');setDiff(diff);setupBall();renderScoreboard()}
+function setupBall(){
+ phase='setup';rollAnim=null;shotAccumulator=0;ball.visible=true;
+ ball.position.set(playerX,.52,10.9);ball.rotation.set(0,0,0);
+ ballGlow.visible=true;ballGlow.position.set(playerX,.115,10.9);aimGuide.visible=true;
+ releaseGlow.intensity=2.4;releaseGlow.position.set(playerX,.9,10.7);
+ camera.position.set(playerX*.16,2.65,16.9);camera.lookAt(playerX*.28,.36,7.25);
+ pinsetterGroup.visible=false;$('rackBanner').classList.remove('show');
+ resetPower();updateAimGuide();updateUI()
+}
+function startGame(m){
+ gameSession++;mode=m;running=true;frameIndex=0;frames=freshFrames();
+ practiceRolls=0;strikes=0;spares=0;challengeScore=0;challengeStreak=0;
+ playerX=0;aim=0;hook=0;$('hook').value=0;shotLaunchCount=0;
+ pinAlive=Array(10).fill(true);oilBias=0;resetPinObjects(true);
+ $('menuShade').style.display='none';$('results').classList.remove('show');
+ $('rackBanner').classList.remove('show');
+ setDiff(diff);setupBall();renderScoreboard()
+}
 function currentRolls(){return frames[frameIndex]?.rolls||[]}
 function frameComplete(i){const r=frames[i].rolls;if(i<9)return r[0]===10||r.length>=2;if(r.length<2)return false;if(r[0]===10||r[0]+r[1]===10)return r.length>=3;return r.length>=2}
 function allRollValuesFrom(fi){const vals=[];for(let i=fi;i<10;i++)vals.push(...frames[i].rolls);return vals}
@@ -199,9 +238,32 @@ function renderScoreboard(){
  $('frameStat').textContent=mode==='practice'?'PRACTICE':(mode==='challenge'?'RACK ':'FRAME ')+Math.min(frameIndex+1,10)+' / 10';
  nd3PaintArenaBoard();return total
 }
-function updateUI(){const deg=(aim*12).toFixed(1);$('posRead').textContent=playerX.toFixed(1);$('aimRead').textContent=(aim>=0?'+':'')+deg+'°';$('hookRead').textContent=Math.round(Math.abs(hook)*100)+'%';$('hookSide').textContent=Math.abs(hook)<.05?'STRAIGHT':hook<0?'LEFT HOOK':'RIGHT HOOK';$('phaseLabel').textContent=phase.toUpperCase();$('bowl').textContent=phase==='setup'?'START POWER':phase==='power'?'RELEASE BALL':'ROLLING';$('shotTitle').textContent=phase==='setup'?'SET YOUR LINE':phase==='power'?'TIME THE RELEASE':'BALL IN MOTION';$('shotText').textContent=phase==='setup'?'Move your feet, choose an angle, add hook, then start the power meter.':phase==='power'?'Release while the white marker is inside the moving green target.':'Watch the hook develop down-lane.';const disabled=phase==='rolling'||phase==='settling';for(const id of ['moveL','moveR','aimL','aimR'])$(id).disabled=disabled;$('hook').disabled=disabled}
+function updateUI(){
+ const deg=(aim*10.9).toFixed(1),locked=phase==='rolling'||phase==='settling'||phase==='score'||phase==='resetting';
+ $('posRead').textContent=playerX.toFixed(1);
+ $('aimRead').textContent=(aim>=0?'+':'')+deg+'°';
+ $('hookRead').textContent=Math.round(Math.abs(hook)*100)+'%';
+ $('hookSide').textContent=Math.abs(hook)<.05?'STRAIGHT':hook<0?'LEFT HOOK':'RIGHT HOOK';
+ $('phaseLabel').textContent=phase.toUpperCase();
+ $('bowl').textContent=phase==='setup'?'START POWER':phase==='power'?'RELEASE BALL':phase==='resetting'?'PINSETTER RESET':'BALL IN MOTION';
+ $('shotTitle').textContent=phase==='setup'?'FIND YOUR POCKET':phase==='power'?'TIME THE RELEASE':phase==='resetting'?'FRESH RACK LOADING':'PHYSICS IN MOTION';
+ $('shotText').textContent=phase==='setup'?'Every new rack recenters the ball. Aim toward the head-pin pocket and adjust hook for the lane.':phase==='power'?'Tap to release at your chosen speed. There are no guaranteed strikes.':phase==='resetting'?'The pins and ball are returning to their starting positions.':'Watch real ball-to-pin and pin-to-pin collisions.';
+ for(const id of ['moveL','moveR','aimL','aimR'])$(id).disabled=locked||phase==='power';
+ $('hook').disabled=phase!=='setup';$('bowl').disabled=locked
+}
 function updateMeter(){$('needle').style.left='calc('+(power*100)+'% - 2px)';$('powerText').textContent=phase==='power'?Math.round(power*100)+'%':'WAITING'}
-function updateAimGuide(){const pts=[],h=hook;for(let i=0;i<=24;i++){const t=i/24,x=playerX+aim*3.05*t+h*4.15*Math.pow(Math.max(0,t-.28),2),z=10.5-22.3*t;pts.push(new THREE.Vector3(x,.13,z))}aimGuide.geometry.dispose();aimGuide.geometry=new THREE.BufferGeometry().setFromPoints(pts);ballGlow.position.x=playerX;releaseGlow.position.x=playerX}
+function updateAimGuide(){
+ // Trace the same ball physics as the actual throw with no pins present.
+ const trial=createShot({x:playerX,aim,hook,power:.68,oil:oilBias}),pts=[];
+ for(let i=0;i<360&&!trial.finished&&trial.z>-14.1;i++){
+  if(i%14===0)pts.push(new THREE.Vector3(trial.x,.13,trial.z));
+  stepPhysics(trial,[],STEP);
+  if(trial.gutter)break
+ }
+ if(pts.length<2)pts.push(new THREE.Vector3(playerX,.13,-11.8));
+ aimGuide.geometry.dispose();aimGuide.geometry=new THREE.BufferGeometry().setFromPoints(pts);
+ ballGlow.position.x=playerX;releaseGlow.position.x=playerX
+}
 function adjust(kind,d){if(phase!=='setup')return;sfx('click');if(kind==='move'){playerX=clamp(playerX+d*.18,-2.35,2.35);ball.position.x=playerX}else aim=clamp(aim+d*.055,-1,1);updateAimGuide();updateUI()}
 $('moveL').onclick=()=>adjust('move',-1);$('moveR').onclick=()=>adjust('move',1);$('aimL').onclick=()=>adjust('aim',-1);$('aimR').onclick=()=>adjust('aim',1);
 $('hook').oninput=e=>{if(phase!=='setup')return;hook=+e.target.value/100;updateAimGuide();updateUI()};
@@ -209,15 +271,54 @@ function bowlAction(){if(!running)return;if(phase==='setup'){phase='power';sfx('
 $('bowl').onclick=bowlAction;
 addEventListener('keydown',e=>{if(!running)return;const k=e.key.toLowerCase();if(k==='a'){e.preventDefault();adjust('move',-1)}if(k==='d'){e.preventDefault();adjust('move',1)}if(e.key==='ArrowLeft'){e.preventDefault();adjust('aim',-1)}if(e.key==='ArrowRight'){e.preventDefault();adjust('aim',1)}if(k==='q'&&phase==='setup'){hook=clamp(hook-.08,-1,1);$('hook').value=hook*100;updateAimGuide();updateUI()}if(k==='e'&&phase==='setup'){hook=clamp(hook+.08,-1,1);$('hook').value=hook*100;updateAimGuide();updateUI()}if(e.code==='Space'&&!e.repeat){e.preventDefault();bowlAction()}});
 
-function launchBall(){const powerQuality=.48+power*.52,speed=8.4+power*6.8;phase='rolling';sfx('roll');aimGuide.visible=false;ballGlow.visible=false;releaseGlow.intensity=5.5;rollAnim={t:0,pre:.28,d:28/speed,startX:playerX,aim,hook,powerQuality,speed,power,endX:0,gutter:false};updateUI()}
+function launchBall(){
+ if(phase!=='power'||!running)return;
+ const oil=oilBias;phase='rolling';shotLaunchCount++;shotAccumulator=0;
+ rollAnim=createShot({x:playerX,aim,hook,power,oil});
+ sfx('roll');aimGuide.visible=false;ballGlow.visible=false;
+ releaseGlow.intensity=5.5;updateUI()
+}
 function pathX(a,t){const straight=a.startX+a.aim*3.1*t;const hookCurve=a.hook*4.3*Math.pow(Math.max(0,t-.28),2);return straight+hookCurve}
-function beginPinHit(a){const endX=pathX(a,1);a.endX=endX;const gutter=Math.abs(endX)>2.78;a.gutter=gutter;if(gutter){sfx('gutter');call('GUTTER','NO PIN CONTACT');settleTimer=1.05;phase='settling';return}const pocket=Math.min(Math.abs(endX-.43),Math.abs(endX+.43)),lineQ=clamp(1-pocket/1.25,0,1),hookQ=clamp(1-Math.abs(Math.abs(a.hook)-.38)/.72,0,1),q=clamp(lineQ*.62+a.powerQuality*.28+hookQ*.10,0,1);let knockTarget=q>.91?10:Math.round(clamp(2+q*8+(Math.random()-.5)*CFG[diff].spread*10,0,10));const remaining=pins.filter((p,i)=>pinAlive[i]&&p.visible);knockTarget=Math.min(knockTarget,remaining.length);const scored=remaining.map(p=>{const i=p.userData.i,x=pinPositions[i][0],z=pinPositions[i][1],row=Math.abs(z+12.3);return{p,score:Math.abs(x-endX)*.92+row*.18+Math.random()*(1.2-q*.7)}}).sort((a,b)=>a.score-b.score);if(q>.91&&remaining.length===10)knockTarget=10;const direct=Math.min(knockTarget,q>.9?3:q>.65?2:1);pinCarryBudget=Math.max(0,knockTarget-direct);pinImpactAge=0;for(const {p} of scored.slice(0,direct))knockPin(p,endX,q,1.15);for(const {p} of scored.slice(direct,Math.min(scored.length,direct+3)))p.userData.wobble=.45+q*.4;sfx('hit');settleTimer=2.15;phase='settling'}
-function knockPin(p,impactX,q,impulse=1){if(p.userData.knocked)return;const i=p.userData.i;pinAlive[i]=false;p.userData.knocked=true;const side=Math.sign(p.position.x-impactX)||((Math.random()<.5)?-1:1);p.userData.vx=(side*(.75+q*1.25)+(Math.random()-.5)*1.4)*impulse;p.userData.vz=(-1.65-Math.random()*1.7-q*1.35)*impulse;p.userData.vy=(.65+Math.random()*1.25+q*.45)*impulse;p.userData.rx=(Math.random()-.5)*5.4;p.userData.rz=(side*(3.5+Math.random()*3.8)+(Math.random()-.5)*1.2)*impulse;p.userData.rv=Math.hypot(p.userData.rx,p.userData.rz);p.userData.bounces=0;p.userData.wobble=0}
+function beginPinHit(shot){
+ // The former scripted knock-target logic has been removed entirely.
+ // This phase is entered only AFTER collision simulation reaches the pin deck.
+ if(shot?.gutter){call('GUTTER','NO PIN CONTACT');sfx('gutter')}
+ phase='settling';settleTimer=1.55;
+ ball.visible=false;releaseGlow.intensity=0;updateUI()
+}
+function knockPin(){
+ throw new Error('Obsolete scripted pin knockdown path was called')
+}
 function knockedCountBefore(){return pinAlive.filter(v=>!v).length}
-function pinsDownThisRoll(){return pins.filter(p=>p.userData.knocked).length}
+function pinsDownThisRoll(){return knockedCount(physicalPins)}
+function centerLine(){
+ playerX=0;aim=0;hook=0;$('hook').value=0;
+ oilBias=Math.sin((frameIndex+1)*2.31+(mode==='challenge'?.8:0))*.09;
+ const hint=Math.abs(oilBias)<.025?'BALANCED':oilBias>0?'RIGHT BREAK':'LEFT BREAK';
+ $('laneCondition').textContent=hint
+}
+function queueRackReset(full=true){
+ const session=gameSession;phase='resetting';rackResetAt=performance.now();
+ ball.visible=false;rollAnim=null;pinsetterGroup.visible=true;
+ $('rackBanner').querySelector('strong').textContent=full?'FRESH RACK · CENTER LINE':'SPARE SHOT · STANDING PINS';
+ $('rackBanner').querySelector('span').textContent=full?'Ball position, angle and hook return to zero.':'Only remaining pins stay standing.';
+ $('rackBanner').classList.add('show');updateUI();
+ setTimeout(()=>{
+  if(!running||gameSession!==session)return;
+  if(full){pinAlive=Array(10).fill(true);centerLine()}
+  resetPinObjects(full);renderScoreboard();
+ },450);
+ setTimeout(()=>{
+  if(!running||gameSession!==session)return;
+  setupBall()
+ },1150)
+}
+
 function recordRoll(pinCount){
+ // Score actual fallen pins only. Never award pins via aim quality or strike budgets.
+ pinCount=clamp(Math.round(pinCount),0,pinAlive.filter(Boolean).length);
  if(mode==='challenge'){
-  const idx=frameIndex,session=gameSession;
+  const idx=frameIndex;
   challengeStreak=pinCount===10?challengeStreak+1:0;
   const points=pinCount*10+(pinCount===10?50+Math.min(90,(challengeStreak-1)*15):0);
   challengeScore+=points;frames[idx].rolls=[pinCount];frames[idx].points=points;frameIndex++;
@@ -225,47 +326,111 @@ function recordRoll(pinCount){
   else toast(pinCount+' PINS · +'+points);
   renderScoreboard();
   if(frameIndex>=10){finishGame();return}
-  setTimeout(()=>{if(!running||session!==gameSession)return;pinAlive=Array(10).fill(true);resetPinObjects();setupBall()},450);
-  return;
+  queueRackReset(true);return
  }
- if(mode==='practice'){practiceRolls++;if(pinCount===10){strikes++;call('STRIKE!','PRACTICE PERFECT RACK');sfx('strike')}else toast(pinCount+' PINS');const session=gameSession;setTimeout(()=>{if(!running||session!==gameSession)return;pinAlive=Array(10).fill(true);resetPinObjects();setupBall()},450);return}
- const r=frames[frameIndex].rolls;r.push(pinCount);const wasStrike=r.length===1&&pinCount===10,wasSpare=r.length===2&&r[0]!==10&&r[0]+r[1]===10;
- if(wasStrike){strikes++;call('STRIKE!','PERFECT POCKET');sfx('strike')}else if(wasSpare){spares++;call('SPARE!','CLEANED IT UP');sfx('spare')}else toast(pinCount+' PINS');
- if(frameIndex<9){if(frameComplete(frameIndex)){frameIndex++;pinAlive=Array(10).fill(true);resetPinObjects()}else resetPinObjects(false)}
- else{if(frameComplete(9)){finishGame();return}else{const tenth=frames[9].rolls;if(tenth.length===1&&tenth[0]===10){pinAlive=Array(10).fill(true);resetPinObjects()}else if(tenth.length===2&&(tenth[0]===10||tenth[0]+tenth[1]===10)){pinAlive=Array(10).fill(true);resetPinObjects()}else resetPinObjects(false)}}
- renderScoreboard();const session=gameSession;setTimeout(()=>{if(running&&session===gameSession)setupBall()},450)}
+ if(mode==='practice'){
+  practiceRolls++;if(pinCount===10){strikes++;call('STRIKE!','PRACTICE RACK');sfx('strike')}
+  else toast(pinCount+' PINS');
+  queueRackReset(true);return
+ }
+ const r=frames[frameIndex].rolls;r.push(pinCount);
+ const wasStrike=r.length===1&&pinCount===10;
+ const wasSpare=r.length===2&&r[0]!==10&&r[0]+r[1]===10;
+ if(wasStrike){strikes++;call('STRIKE!','NEW RACK · BACK TO CENTER');sfx('strike')}
+ else if(wasSpare){spares++;call('SPARE!','CLEANED IT UP');sfx('spare')}
+ else toast(pinCount+' PINS');
+ if(frameIndex<9){
+  if(frameComplete(frameIndex)){frameIndex++;renderScoreboard();queueRackReset(true)}
+  else{renderScoreboard();queueRackReset(false)}
+ }else{
+  // Tenth-frame strike: 2nd shot is a new rack; if it isn't a strike,
+  // the 3rd shot is at the remaining pins from the SECOND ball.
+  if(frameComplete(9)){finishGame();return}
+  const t=frames[9].rolls;
+  const fresh=t.length===1&&t[0]===10||
+   t.length===2&&(t[0]===10&&t[1]===10||t[0]!==10&&t[0]+t[1]===10);
+  renderScoreboard();queueRackReset(fresh)
+ }
+}
 function finishGame(){running=false;const total=renderScoreboard();lastScore=total;
  if(mode==='challenge'){if(total>challengeBest){challengeBest=total;localStorage.nd_bowl3d_challenge_best=challengeBest}}
  else if(total>best){best=total;localStorage.nd_bowl3d_best=best}
  $('resultScore').textContent=total;$('resultStrikes').textContent=strikes;$('resultSpares').textContent=spares;$('resultBest').textContent=mode==='challenge'?challengeBest:best;
  $('resultCopy').textContent=mode==='challenge'?'STRIKE RUSH · '+strikes+' strikes in 10 one-ball racks. Bonus for back-to-back strikes.':total>=200?'Elite game. You were living in the pocket.':total>=140?'Strong game. Clean up a few opens and this gets serious.':'Keep working the line, release, and spare shooting.';$('results').classList.add('show')}
-function resetAfterImpact(){const down=pinsDownThisRoll();pins.forEach(p=>p.userData.knocked=false);recordRoll(down)}
-
-function updatePins(dt){pinImpactAge+=dt;lastPinClack=Math.max(0,lastPinClack-dt);
- for(const p of pins){
-  if(!p.visible)continue;
-  if(!p.userData.knocked){if(p.userData.wobble>0){p.userData.wobble=Math.max(0,p.userData.wobble-dt*1.45);const w=p.userData.wobble;p.rotation.z=Math.sin(pinImpactAge*17+p.userData.i)*w*.16;p.rotation.x=Math.cos(pinImpactAge*14+p.userData.i*.7)*w*.07}else{p.rotation.x*=Math.pow(.78,dt*60);p.rotation.z*=Math.pow(.78,dt*60)}continue}
-  p.position.x+=p.userData.vx*dt;p.position.z+=p.userData.vz*dt;p.position.y+=(p.userData.vy||0)*dt;p.userData.vy=(p.userData.vy||0)-6.8*dt;
-  p.rotation.x+=(p.userData.rx||0)*dt;p.rotation.z+=(p.userData.rz||0)*dt;
-  if(p.position.y<.1){p.position.y=.1;if(p.userData.vy<-.7&&p.userData.bounces<2){p.userData.vy=-p.userData.vy*.24;p.userData.vx*=.78;p.userData.vz*=.78;p.userData.rx*=.82;p.userData.rz*=.82;p.userData.bounces++;if(lastPinClack<=0){sfx('hit');lastPinClack=.07}}else{p.userData.vy=0;p.userData.vx*=Math.pow(.82,dt*60);p.userData.vz*=Math.pow(.82,dt*60);p.userData.rx*=Math.pow(.9,dt*60);p.userData.rz*=Math.pow(.9,dt*60)}}
-  p.userData.vx*=Math.pow(.965,dt*60);p.userData.vz*=Math.pow(.972,dt*60);p.userData.rx*=Math.pow(.992,dt*60);p.userData.rz*=Math.pow(.992,dt*60)
- }
- for(let i=0;i<pins.length;i++)for(let j=i+1;j<pins.length;j++){const a=pins[i],b=pins[j];if(!a.visible||!b.visible)continue;const dx=b.position.x-a.position.x,dz=b.position.z-a.position.z,dist=Math.hypot(dx,dz);if(dist>.73||dist<.001)continue;const nx=dx/dist,nz=dz/dist,over=.73-dist,ak=a.userData.knocked,bk=b.userData.knocked;
-  if(ak||bk){const mover=ak&&!bk?a:bk&&!ak?b:null,stand=mover==a?b:mover==b?a:null;
-   if(mover&&stand){const speed=Math.hypot(mover.userData.vx,mover.userData.vz);stand.userData.wobble=Math.max(stand.userData.wobble||0,Math.min(.95,.28+speed*.16));if(pinCarryBudget>0&&speed>.48){pinCarryBudget--;knockPin(stand,mover.position.x,.62+Math.min(.32,speed*.08),.72+Math.min(.42,speed*.09));mover.userData.vx*=.72;mover.userData.vz*=.72;if(lastPinClack<=0){sfx('hit');lastPinClack=.065}}}
-   if(ak&&bk){const av=a.userData.vx*nx+a.userData.vz*nz,bv=b.userData.vx*nx+b.userData.vz*nz;if(av-bv>0){const impulse=(av-bv)*.44;a.userData.vx-=impulse*nx;a.userData.vz-=impulse*nz;b.userData.vx+=impulse*nx;b.userData.vz+=impulse*nz;a.userData.rz-=impulse*.35;b.userData.rz+=impulse*.35}}
-   a.position.x-=nx*over*.45;a.position.z-=nz*over*.45;b.position.x+=nx*over*.45;b.position.z+=nz*over*.45
+function resetAfterImpact(){
+ if(!running||phase!=='score')return;
+ const down=pinsDownThisRoll();
+ physicalPins.forEach(p=>{if(p.fallen)pinAlive[p.id]=false});
+ recordRoll(down)
+}
+function updatePins(dt){
+ // Render exact results of physics state; pinfall is not an animation-only trick.
+ for(let i=0;i<pins.length;i++){
+  const p=pins[i],body=physicalPins[i];p.visible=body.active;
+  if(!body.active)continue;
+  p.position.set(body.x,body.y,body.z);
+  if(body.fallen){
+   const sway=Math.sin(body.t*6+i)*.05;
+   p.rotation.x=body.tipX*body.tip+sway;
+   p.rotation.z=body.tipZ*body.tip-sway
+  }else{
+   const wobble=body.wobble;
+   p.rotation.x=Math.sin(performance.now()*.019+i)*wobble;
+   p.rotation.z=Math.cos(performance.now()*.021+i)*wobble
   }
  }
- if(pinCarryBudget>0&&pinImpactAge>.32){const movers=pins.filter(p=>p.visible&&p.userData.knocked&&Math.hypot(p.userData.vx,p.userData.vz)>.18),stands=pins.filter(p=>p.visible&&!p.userData.knocked);let bestPair=null,best=9;for(const m of movers)for(const st of stands){const d=Math.hypot(m.position.x-st.position.x,m.position.z-st.position.z);if(d<best){best=d;bestPair=[m,st]}}if(bestPair&&best<1.35){pinCarryBudget--;const [m,st]=bestPair;knockPin(st,m.position.x,.58,.68);m.userData.vx+=(st.position.x-m.position.x)*.25;m.userData.vz+=(st.position.z-m.position.z)*.25}}
 }
-function updateBall(dt){if(!rollAnim)return;const a=rollAnim;a.t+=dt;if(a.t<a.pre){const w=a.t/a.pre,e=Math.sin(w*Math.PI);ball.position.set(a.startX,.48+e*.18,10.9+e*.72);ball.rotation.z+=dt*2.4;releaseGlow.position.set(ball.position.x,.9,ball.position.z);releaseGlow.intensity=4+e*4;camera.position.lerp(new THREE.Vector3(a.startX*.12,2.35,16.5),.12);camera.lookAt(a.startX*.2,.38,7.8);return}const t=clamp((a.t-a.pre)/a.d,0,1),ease=1-Math.pow(1-t,1.55),x=pathX(a,ease),z=10.9-26.2*ease;ball.position.set(x,.46,z);ball.rotation.x-=a.speed*dt*2.15;ball.rotation.z+=a.hook*dt*4.1;releaseGlow.position.set(x,.75,z+.35);releaseGlow.intensity=lerp(5.5,.4,ease);const camT=clamp(ease*1.08,0,1),targetZ=Math.max(-7.4,z+5.2);camera.position.x=lerp(a.startX*.16,x*.34,camT);camera.position.z=lerp(16.9,targetZ,camT);camera.position.y=lerp(2.65,2.85,camT);camera.lookAt(x*.32,.36,Math.max(-13,z-4.9));if(t>=1){rollAnim=null;ball.visible=false;releaseGlow.intensity=0;beginPinHit(a)}}
+function updateBall(dt){
+ if(!rollAnim)return;
+ const shot=rollAnim;
+ shotAccumulator=Math.min(shotAccumulator+dt,.085);
+ while(shotAccumulator>=STEP){
+  const events=stepPhysics(shot,physicalPins,STEP);
+  shotAccumulator-=STEP;
+  for(const ev of events){
+   if(ev.type==='ball-pin'||ev.type==='pin-pin'){
+    if(performance.now()-lastContactSound>65){sfx('hit');lastContactSound=performance.now()}
+   }else if(ev.type==='gutter'){toast('GUTTER · NO PIN CONTACT')}
+   else if(ev.type==='ball-finished'&&phase==='rolling'){beginPinHit(shot)}
+  }
+ }
+ if(!shot.finished){
+  ball.position.set(shot.x,shot.y,shot.z);
+  ball.rotation.x+=shot.vz*dt/.42;
+  ball.rotation.z-=shot.vx*dt/.42;
+  const cameraZ=clamp(shot.z+6.1,-6.7,16.5);
+  camera.position.lerp(new THREE.Vector3(shot.x*.32,2.82,cameraZ),.125);
+  camera.lookAt(shot.x*.3,.53,Math.max(-14,shot.z-4.5));
+  releaseGlow.position.set(shot.x,1.1,shot.z+.3);
+  releaseGlow.intensity=clamp(2.8+(1.0-shot.t)*1.5,.4,5)
+ }else{
+  ball.visible=false;releaseGlow.intensity=0
+ }
+}
 function updatePower(dt){if(phase!=='power')return;power+=powerDir*CFG[diff].meter*dt;if(power>=.99){power=.99;powerDir=-1}else if(power<=.03){power=.03;powerDir=1}updateMeter()}
-function animateScene(dt,time){for(let i=0;i<building.children.length;i++){const o=building.children[i];if(o.material?.emissive)o.material.emissiveIntensity=.2+.08*Math.sin(time*.001+i)}if((phase==='setup'||phase==='power')&&ball.visible){const bob=Math.sin(time*.004)*.035;ball.position.y=.48+bob;ball.rotation.y+=dt*.55;ballGlow.material.opacity=.22+.1*Math.sin(time*.005);releaseGlow.intensity=2.1+.8*Math.sin(time*.0045)}}
+function animateScene(dt,time){
+ if(phase==='resetting'){
+  const t=clamp((time-rackResetAt)/1150,0,1);
+  pinsetterGroup.visible=true;
+  pinsetterGroup.position.y=4-2.95*Math.sin(t*Math.PI);
+  pinsetterMat.emissiveIntensity=.4+.3*Math.sin(t*Math.PI);
+ }else pinsetterGroup.visible=false;
+ for(let i=0;i<building.children.length;i++){
+  const o=building.children[i];
+  if(o.material?.emissive)o.material.emissiveIntensity=.2+.08*Math.sin(time*.001+i)
+ }
+ if((phase==='setup'||phase==='power')&&ball.visible){
+  const bob=Math.sin(time*.004)*.017;
+  ball.position.y=.52+bob;ball.rotation.y+=dt*.5;
+  ballGlow.material.opacity=.2+.08*Math.sin(time*.005);
+  releaseGlow.intensity=1.8+.65*Math.sin(time*.0045)
+ }
+}
+
 let last=performance.now();function loop(now){const dt=Math.min(.035,(now-last)/1000);last=now;updatePower(dt);updateBall(dt);updatePins(dt);animateScene(dt,now);if(phase==='settling'){settleTimer-=dt;camera.position.lerp(new THREE.Vector3(0,3.2,-7.2),.035);camera.lookAt(0,.5,-13.3);if(settleTimer<=0){phase='score';resetAfterImpact()}}renderer.render(scene,camera);requestAnimationFrame(loop)}requestAnimationFrame(loop);
 
 $('classicBtn').onclick=()=>startGame('classic');$('practiceBtn').onclick=()=>startGame('practice');$('challengeBtn').onclick=()=>startGame('challenge');
-$('againBtn').onclick=()=>startGame(mode);$('menuBtn').onclick=()=>{$('results').classList.remove('show');$('menuShade').style.display='flex'};
+$('againBtn').onclick=()=>startGame(mode);$('menuBtn').onclick=()=>{running=false;gameSession++;phase='menu';rollAnim=null;pinsetterGroup.visible=false;$('rackBanner').classList.remove('show');$('results').classList.remove('show');$('menuShade').style.display='flex'};
 </script>
 </body>
 </html>
