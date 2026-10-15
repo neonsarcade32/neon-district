@@ -30,6 +30,8 @@ const base=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8080';
   const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
   try{
     assert.equal((await mobile.goto(base+'/open-offroad.html',{waitUntil:'domcontentloaded',timeout:30000})).status(),200);
+    await mobile.waitForFunction(()=>window.__ndOffroadReady===true,{timeout:45000});
+    await mobile.locator('#loader').waitFor({state:'hidden',timeout:8000});
     const drive=mobile.locator('.nd3-drive-zone .nd3-gas');
     assert.ok(await drive.isVisible(),'iPad on-screen acceleration button must be visible');
     await mobile.evaluate(()=>{window.__testDrive=[];window.addEventListener('keydown',e=>window.__testDrive.push('down:'+e.code));window.addEventListener('keyup',e=>window.__testDrive.push('up:'+e.code))});
