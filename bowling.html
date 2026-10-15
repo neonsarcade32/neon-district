@@ -49,6 +49,7 @@
 <div class="help">A / D = position · ← / → = aim · Q / E = hook · SPACE = power/release</div>
 </div>
 
+<script>try{const skin=localStorage.getItem('nd3_skin');if(['volt','ember','arctic'].includes(skin))document.documentElement.dataset.nd3Skin=skin}catch(e){}</script>
 <script type="module">
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js';
 
@@ -126,6 +127,7 @@ function nd3PaintArenaBoard(){
  c.font='900 25px system-ui';c.fillStyle='#aecbdb';c.fillText(mode==='challenge'?'STRIKE RUSH':'PRO LANE · '+diff.toUpperCase(),615,168);
  nd3ScreenTexture.needsUpdate=true
 }
+nd3PaintArenaBoard();
 
 const gutterMat=new THREE.MeshStandardMaterial({color:0x1c2631,roughness:.55,metalness:.35});
 for(const x of [-3.55,3.55]){const g=new THREE.Mesh(new THREE.BoxGeometry(.65,.22,31),gutterMat);g.position.set(x,-.02,0);g.receiveShadow=true;building.add(g)}
