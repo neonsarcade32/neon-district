@@ -13,7 +13,7 @@ const base=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8080';
   const r=await page.goto(base+'/open-offroad.html',{waitUntil:'domcontentloaded',timeout:30000});
   assert.equal(r.status(),200);
   assert.equal(await page.locator('a.nd3-back-link').count(),1);
-  assert.equal(await page.locator('a[href*="rsamwilson2323-cloud/rpg-car-game"]').count(),1);
+  assert.ok(await page.locator('a[href*="rsamwilson2323-cloud/rpg-car-game"]').count()>=1,'Original author source and license links must be displayed');
   console.log('PASS original author credit and correct game HTML');
   await page.waitForFunction(()=>window.__ndOffroadReady===true,{timeout:45000});
   assert.ok(await page.locator('canvas').count()>=1,'WebGPU/WebGL canvas must render a 3D scene');
