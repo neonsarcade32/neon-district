@@ -36,8 +36,11 @@ const base=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8080';
     const drive=mobile.locator('.nd3-drive-zone .nd3-gas');
     assert.ok(await drive.isVisible(),'iPad on-screen acceleration button must be visible');
     await mobile.evaluate(()=>{window.__testDrive=[];window.addEventListener('keydown',e=>window.__testDrive.push('down:'+e.code));window.addEventListener('keyup',e=>window.__testDrive.push('up:'+e.code))});
-    await drive.tap({force:true});
-    await mobile.locator('.nd3-upgrades').tap({force:true});
+    // The headless mobile emulator cannot guarantee software WebGPU startup,
+    // so exclude the loading curtain from input-adapter verification only.
+    await mobile.locator('#loader').evaluate(el=>{el.style.pointerEvents='none'});
+    await drive.tap({timeout:8000});
+    await mobile.locator('.nd3-upgrades').tap({timeout:8000});
     const received=await mobile.evaluate(()=>window.__testDrive);
     assert.ok(received.includes('down:KeyW')&&received.includes('up:KeyW'),'touch drive must generate real keyboard input');
     assert.ok(received.includes('down:KeyU'),'touch upgrade key must generate a real U press');
