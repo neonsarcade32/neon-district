@@ -1626,7 +1626,7 @@ const nd3Quests={
  tour:{name:'🗺️ City Explorer',help:'Visit four unique districts in 180 seconds.',target:4,limit:180,cash:1000,rep:140,unit:'DISTRICTS'}
 };
 if(!state.nd3Records||typeof state.nd3Records!=='object')state.nd3Records={};
-let nd3Active=null,nd3WasPlaying=false,nd3Timer=0;
+let nd3Active=null,nd3WasPlaying=false,nd3OpenedFromMenu=false,nd3Timer=0;
 function nd3Display(){
  const el=$('nd3Readout'),btn=$('nd3Open');
  if(!nd3Active){el.textContent='Pick a Driver Trial — first clears earn cash + REP.';btn.textContent='🏆 DRIVER TRIALS';btn.classList.remove('active');return}
@@ -1641,15 +1641,15 @@ function nd3PaintCards(){
   return '<article class="nd3-card"><strong>'+q.name+'</strong><span>'+q.help+'</span><small>'+status+'</small><button data-quest="'+id+'">START CHALLENGE</button></article>'
  }).join('')
 }
-function nd3OpenPanel(){nd3WasPlaying=running;resetMoveKeys();$('menuShade').style.display='none';$('nd3Mask').hidden=false;nd3PaintCards();nd3Display();$('nd3Close').focus()}
-function nd3ClosePanel(){$('nd3Mask').hidden=true;if(!hasDriven)$('menuShade').style.display='flex';else if(nd3WasPlaying)last=performance.now();$('nd3Open').focus()}
+function nd3OpenPanel(){nd3WasPlaying=running;nd3OpenedFromMenu=$('menuShade').style.display!=='none';running=false;resetMoveKeys();updateEngineAudio();$('menuShade').style.display='none';$('nd3Mask').hidden=false;nd3PaintCards();nd3Display();$('nd3Close').focus()}
+function nd3ClosePanel(){$('nd3Mask').hidden=true;if(nd3OpenedFromMenu||!hasDriven){running=false;$('menuShade').style.display='flex'}else if(nd3WasPlaying){running=true;last=performance.now()}$('nd3Open').focus()}
 function nd3Begin(key){
  const q=nd3Quests[key];if(!q)return;
  if(activeRace||activeJob){popup('Finish your current event before starting a trial');return}
  if(!hasDriven)enterSolo();
  const p=activePos();
  nd3Active={key,elapsed:0,value:0,x:p.x,z:p.z,visited:new Set([districtName()])};
- nd3WasPlaying=true;nd3ClosePanel();nd3Display();popup(q.name+' STARTED')
+ nd3WasPlaying=true;nd3OpenedFromMenu=false;nd3ClosePanel();nd3Display();popup(q.name+' STARTED')
 }
 function nd3Finish(win){
  if(!nd3Active)return;
