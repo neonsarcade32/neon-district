@@ -9,7 +9,8 @@
     "test:multiplayer": "node tests/multiplayer.cjs",
     "test:arcade": "node tests/arcade-integrity.cjs",
     "test:browser": "node tests/arcade-browser.cjs",
-    "test:gameplay": "node tests/arcade-gameplay.cjs"
+    "test:gameplay": "node tests/arcade-gameplay.cjs",
+    "test:bowling": "node tests/bowling-rules.cjs"
   },
   "engines": {
     "node": ">=20"
