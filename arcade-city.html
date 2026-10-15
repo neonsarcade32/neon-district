@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="theme-color" content="#091019">
-<title>Arcade City 3D — 3.3 Mega Motorsports</title>
+<title>Arcade City 3D · Neon District 3.0</title>
 <style>
 :root{--bg:#091019;--panel:#101925;--line:#2b3a4d;--text:#f7fbff;--muted:#91a1b4;--cyan:#56dfff;--green:#59e49b;--gold:#ffd15c;--red:#ff6878;--purple:#9e7cff}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#071019;color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button{font:inherit}.game{position:fixed;inset:0}canvas{display:block;width:100%;height:100%;touch-action:none}.hud{position:absolute;inset:0;pointer-events:none}.pill{background:#0b1320dc;border:1px solid #33445a;border-radius:13px;backdrop-filter:blur(12px);box-shadow:0 12px 35px #0007}.topbar{position:absolute;left:12px;right:12px;top:max(10px,env(safe-area-inset-top));display:flex;gap:8px;align-items:center}.back{pointer-events:auto;text-decoration:none;color:#dfe7f0;font-weight:900;font-size:12px;padding:9px 11px}.brand{padding:9px 11px;font-weight:950;letter-spacing:-.3px}.wallet{margin-left:auto;padding:8px 11px;text-align:right}.wallet b{display:block;font-size:17px}.wallet span{font-size:9px;color:var(--green);font-weight:950}.rep{padding:9px 11px;font-size:10px;font-weight:900;color:#c9bcff}.wanted{padding:9px 11px;font-size:10px;font-weight:950;color:#9aa9ba;transition:.2s}.wanted.hot{color:#ff8d98;border-color:#8c3d49;background:#2a1017e8;box-shadow:0 0 24px #ff526633}.clock{padding:9px 11px;font-size:10px;font-weight:900;color:#b8c7d8}.weather{padding:9px 11px;font-size:10px;font-weight:950;color:#a8dfff}.condition{padding:9px 11px;font-size:10px;font-weight:950;color:#73e6a7}.condition.bad{color:#ff7b86;border-color:#7d3742}.zone{padding:9px 11px;font-size:10px;font-weight:950;color:#7ee9ff;letter-spacing:.45px}.mission{position:absolute;left:12px;top:70px;width:min(330px,calc(100vw - 24px));padding:12px 13px}.mission small{font-size:9px;color:#7f90a5;font-weight:950;letter-spacing:.8px}.mission h2{font-size:15px;margin:4px 0}.mission p{font-size:10px;line-height:1.45;color:#a9b6c7;margin:0}.bar{height:6px;background:#08101a;border:1px solid #26354a;border-radius:999px;overflow:hidden;margin-top:9px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green))}.speed{position:absolute;right:12px;bottom:max(14px,env(safe-area-inset-bottom));width:105px;padding:10px;text-align:center}.speed strong{display:block;font-size:31px;line-height:1}.speed span{font-size:9px;color:#8ea0b5;font-weight:950;letter-spacing:.8px}.minimapWrap{position:absolute;left:12px;bottom:max(14px,env(safe-area-inset-bottom));width:150px;height:150px;border-radius:18px;overflow:hidden;border:1px solid #3a4b63;background:#0b121ddc;box-shadow:0 14px 40px #0008}.minimapWrap canvas{width:100%;height:100%}.miniLabel{position:absolute;left:8px;top:6px;font-size:8px;font-weight:950;color:#a6b3c3;letter-spacing:.7px}.gpsLabel{position:absolute;left:8px;right:8px;bottom:6px;font-size:8px;color:#7fe6ff;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.minimapWrap{pointer-events:auto!important;cursor:pointer}.prompt{position:absolute;left:50%;bottom:92px;z-index:42;transform:translateX(-50%);padding:10px 14px;font-size:11px;font-weight:1000;opacity:0;transition:.15s;pointer-events:none;cursor:pointer;color:#fff;background:#0b1624e8;border:1px solid #4a647f;border-radius:12px}.prompt.show{opacity:1;pointer-events:auto;box-shadow:0 8px 26px #0008,0 0 22px #55dfff26}.popup{position:absolute;left:50%;top:17%;transform:translate(-50%,-10px);opacity:0;padding:10px 14px;font-size:12px;font-weight:950;transition:.2s}.popup.show{opacity:1;transform:translate(-50%,0)}.raceCenter{position:absolute;left:50%;top:34%;transform:translate(-50%,-50%);z-index:25;text-align:center;pointer-events:none;opacity:0;transition:.14s}.raceCenter.show{opacity:1}.raceCenter strong{display:block;font-size:clamp(58px,12vw,112px);line-height:.9;font-weight:1000;text-shadow:0 5px 35px #000,0 0 28px #57dcff77}.raceCenter span{display:block;margin-top:9px;font-size:12px;font-weight:950;letter-spacing:1.2px}.raceControls{position:absolute;left:50%;bottom:22px;z-index:44;transform:translateX(-50%);display:none;gap:6px;pointer-events:auto}.raceControls.show{display:flex}.raceControls button{border:1px solid #40536c;background:#0c1522e8;color:#fff;border-radius:10px;padding:9px 11px;font-size:9px;font-weight:950;backdrop-filter:blur(9px)}.raceResults{position:absolute;inset:0;z-index:55;display:none;place-items:center;background:#050912d6;pointer-events:auto}.raceResults.show{display:grid}.resultBox{width:min(390px,calc(100vw - 30px));background:#111a27;border:1px solid #3c5069;border-radius:20px;padding:20px;box-shadow:0 24px 80px #000b;text-align:center}.resultPlace{font-size:58px;font-weight:1000;line-height:1;color:#67e3ff}.resultBox h2{margin:8px 0 5px}.resultBox p{font-size:11px;color:#9cacbf;line-height:1.5}.resultStats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:13px 0}.resultStats div{border:1px solid #2c3b50;background:#0c131e;border-radius:11px;padding:9px}.resultStats span{font-size:8px;color:#8495aa;font-weight:950}.resultStats b{display:block;font-size:13px;margin-top:4px}.resultBtns{display:grid;grid-template-columns:1fr 1fr;gap:7px}.resultBtns button{border:0;border-radius:11px;padding:11px;color:#fff;font-weight:950;background:#233349}.resultBtns .again{background:linear-gradient(90deg,#2f7dae,#2fa873)}.menuShade{position:absolute;inset:0;display:flex;align-items:center;background:linear-gradient(90deg,#070c14ed 0,#070c14c7 45%,#070c1420 75%);pointer-events:auto}.menu{width:min(430px,calc(100vw - 28px));margin-left:max(28px,6vw)}.logo{font-size:clamp(45px,8vw,78px);line-height:.87;letter-spacing:-4px;font-weight:1000;margin:0 0 15px}.logo span{display:block;background:linear-gradient(90deg,#61dfff,#74e7aa);-webkit-background-clip:text;background-clip:text;color:transparent}.menu p{color:#9caabd;font-size:13px;line-height:1.55;margin:0 0 20px}.menuBtns{display:grid;gap:8px}.menuBtns button{border:1px solid #34445a;background:#141e2b;color:#fff;border-radius:13px;padding:13px 15px;text-align:left;font-weight:950;cursor:pointer}.menuBtns button.primary{background:linear-gradient(90deg,#2b85c6,#2fb979);border-color:#4dcf9d}.menuBtns small{display:block;color:#91a0b4;font-size:9px;margin-top:3px}.panel{position:absolute;inset:0;background:#080d15ed;display:none;pointer-events:auto;overflow:auto;padding:calc(70px + env(safe-area-inset-top)) 18px 40px}.panel.show{display:block}.panelInner{max-width:900px;margin:auto}.panelTop{display:flex;align-items:center;justify-content:space-between;gap:12px}.panel h2{font-size:28px;margin:0}.close{border:1px solid #394a60;background:#131c28;color:#fff;border-radius:11px;padding:9px 12px;font-weight:900}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}.card{border:1px solid #2d3a4e;background:linear-gradient(150deg,#16212f,#0e151e);border-radius:16px;padding:14px}.card.active{border-color:#4f97ba;box-shadow:inset 0 0 0 1px #59ddff24}.carPreview{height:95px;border-radius:12px;background:linear-gradient(145deg,#203149,#101720);display:grid;place-items:center;font-size:44px}.card h3{font-size:14px;margin:9px 0 4px}.card p{font-size:10px;color:#8796aa;line-height:1.45;min-height:30px}.statBars{display:grid;gap:5px;margin:9px 0}.sbar{display:grid;grid-template-columns:46px 1fr;gap:7px;align-items:center;font-size:8px;color:#8595a9;font-weight:900}.sbar i{display:block;height:6px;border-radius:999px;background:#09101a;border:1px solid #26354a;overflow:hidden}.sbar b{display:block;height:100%;background:linear-gradient(90deg,#55dfff,#5be3a0)}.card button{width:100%;border:0;border-radius:10px;padding:9px;background:linear-gradient(90deg,#2c729f,#3d64ba);color:#fff;font-size:10px;font-weight:950}.card button.buyCar{background:linear-gradient(90deg,#755dd2,#a47af0)}.upgradeGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:15px}.upgrade{border:1px solid #2d3a4e;background:linear-gradient(150deg,#172131,#0d141d);border-radius:15px;padding:12px}.upgrade b{font-size:12px}.upgrade p{font-size:9px;color:#8392a6;line-height:1.4;min-height:27px}.upgradeLevel{font-size:9px;font-weight:900;color:#66e3a5;margin:6px 0}.upgrade button{width:100%;border:0;border-radius:9px;padding:8px;background:linear-gradient(90deg,#28795a,#40b47b);color:#fff;font-size:9px;font-weight:950}.sectionSub{margin:18px 0 0;font-size:15px}.paintGrid{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}.paintSwatch{width:38px;height:38px;border-radius:50%;border:3px solid #ffffff24;box-shadow:inset 0 0 0 2px #0004;cursor:pointer}.paintSwatch.active{border-color:#fff;box-shadow:0 0 0 2px #55dfff,0 0 18px #55dfff44}.customGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.customCard{border:1px solid #2d3a4e;background:#101824;border-radius:13px;padding:10px}.customCard b{font-size:10px}.customCard p{font-size:9px;color:#8ea0b5}.customCard button{width:100%;margin-top:7px;border:0;border-radius:9px;padding:8px;background:#203148;color:#fff;font-size:9px;font-weight:950}.touch{position:absolute;inset:0;pointer-events:none;display:none}.touch button{pointer-events:auto;position:absolute;border:1px solid #ffffff22;background:#0c1420d9;color:#fff;backdrop-filter:blur(8px);touch-action:none;user-select:none}.steer{left:16px;bottom:20px;width:142px;height:142px;border-radius:50%!important}.steer:before,.steer:after{content:"";position:absolute;background:#ffffff18}.steer:before{left:50%;top:10px;bottom:10px;width:1px}.steer:after{top:50%;left:10px;right:10px;height:1px}.knob{position:absolute;width:52px;height:52px;border-radius:50%;background:#ffffff1b;left:44px;top:44px}.pedal{right:18px;width:70px;height:70px;border-radius:21px!important;font-size:10px;font-weight:950}.gas{bottom:20px;background:#153727dd!important;border-color:#3d8d65!important}.brake{bottom:98px;background:#3b1d22dd!important;border-color:#914655!important}.drift{right:98px;bottom:20px;width:58px;height:58px;border-radius:18px!important;font-size:9px;font-weight:950}.menuBtn{right:18px;top:70px;width:48px;height:48px;border-radius:15px!important;font-weight:950}
@@ -23,12 +23,30 @@
 @media(max-width:760px){.careerHero,.mapWrap{grid-template-columns:1fr}.chapterGrid{grid-template-columns:1fr 1fr}.tuningGrid{grid-template-columns:1fr}.careerSide{grid-template-columns:repeat(2,1fr)}}
 
 .secretPad{position:fixed;inset:0;z-index:90;display:none;place-items:center;background:#02060ac7;backdrop-filter:blur(8px)}.secretPad.show{display:grid}.secretPadBox{width:min(300px,86vw);padding:18px;border:1px solid #34475b;border-radius:18px;background:#0b131d;box-shadow:0 24px 80px #000b}.secretDisplay{height:52px;display:grid;place-items:center;margin-bottom:12px;border:1px solid #2c4054;border-radius:11px;background:#050a10;color:#7ef0b0;font:900 25px ui-monospace,monospace;letter-spacing:10px}.secretKeys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.secretKeys button{border:1px solid #30465b;border-radius:11px;padding:14px;background:#142231;color:#fff;font-weight:950}.secretKeys .secretEnter{background:#174c37}.secretKeys .secretClear{background:#49252b}.secretClose{width:100%;margin-top:9px;border:0;border-radius:10px;padding:10px;background:#253445;color:#c9d5e2;font-weight:900}
+
+/* ND 3.0 Challenge HUD */
+.nd3-open{position:absolute;right:12px;top:80px;z-index:60;pointer-events:auto!important;border:1px solid #5bdfff;background:#182a45;color:#d8faff;border-radius:11px;padding:10px 13px;font:950 11px system-ui;cursor:pointer}
+.nd3-open.active{border-color:#ffd875;color:#ffe3ad}
+.nd3-mask{position:fixed;inset:0;z-index:160;display:grid;place-items:center;background:#040915de;backdrop-filter:blur(12px);padding:15px;pointer-events:auto}
+.nd3-mask[hidden]{display:none}
+.nd3-box{width:min(690px,100%);max-height:92vh;overflow:auto;background:linear-gradient(145deg,#16273f,#111625);border:1px solid #41617f;border-radius:20px;padding:23px;box-shadow:0 25px 100px #000b;color:#e2faff;font-family:system-ui}
+.nd3-box h2{font-size:32px;font-weight:1000;margin:0 0 8px}
+.nd3-box p{font-size:12px;color:#adc1d2;line-height:1.5}
+.nd3-head{display:flex;justify-content:space-between;gap:15px}
+.nd3-box button{border:1px solid #3d6280;color:#051c2e;background:linear-gradient(90deg,#5adfff,#70eab7);border-radius:10px;padding:10px 13px;font-weight:1000;cursor:pointer}
+.nd3-head button{height:40px;color:#eaf8ff;background:#16293a}
+.nd3-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin:15px 0}
+.nd3-card{display:flex;flex-direction:column;gap:9px;background:#0b1a2a;border:1px solid #334c6b;border-radius:14px;padding:14px;min-height:175px}
+.nd3-card strong{font-size:14px}.nd3-card span{font-size:11px;line-height:1.45;color:#9bb6c6}.nd3-card small{font-size:10px;color:#73eaba;font-weight:900}.nd3-card button{margin-top:auto}
+.nd3-readout{border:1px solid #304c64;border-radius:10px;padding:12px;background:#0c1829;font-size:12px;font-weight:900}
+@media(max-width:780px){.nd3-open{top:auto;bottom:291px;right:10px}.nd3-cards{grid-template-columns:1fr}.nd3-card{min-height:100px}.nd3-box h2{font-size:26px}}
 </style>
 </head>
 <body>
 <div class="game">
 <canvas id="c"></canvas>
 <div class="hud">
+ <button type="button" id="nd3Open" class="nd3-open">🏆 DRIVER TRIALS</button>
  <div class="topbar"><a class="pill back" href="index.html">← Arcade</a><div class="pill brand">🏙️ <span>Arcade City 3D</span></div><div class="pill rep">REP <b id="rep">0</b></div><div class="pill wanted" id="wanted">WANTED ☆☆☆</div><div class="pill clock" id="clock">12:00</div><div class="pill weather" id="weather">☀ CLEAR</div><div class="pill condition" id="condition">CAR 100%</div><div class="pill zone" id="zone">DOWNTOWN</div><div class="pill travelHud" id="travelMode">DRIVING · E EXIT</div><div class="pill mpHud" id="mpHud">SOLO</div><div class="pill wallet"><b id="money">$2,500</b><span id="carName">STREET 86</span></div></div>
  <div class="pill mission"><small id="missionType">FREE ROAM</small><h2 id="missionTitle">Build your reputation</h2><p id="missionText">Blue = races · Yellow = drift · Red = speed trap · Green/Purple = garage & dealer</p><div class="bar"><i id="missionBar"></i></div></div>
  <div class="pill speed"><strong id="speed">0</strong><span id="speedUnit">MPH</span></div>
@@ -48,15 +66,19 @@
  <button class="menuBtn" id="mobileMenu">☰</button><button class="exitVehicle" id="exitVehicle">EXIT CAR</button>
 </div>
 
+<section id="nd3Mask" class="nd3-mask" role="dialog" aria-modal="true" aria-label="Driver Trials" hidden>
+<div class="nd3-box"><div class="nd3-head"><div><h2>🏆 Driver Trials</h2><p>Win timed driving challenges. Each first clear pays cash and REP, with personal-best records.</p></div><button id="nd3Close">✕ CLOSE</button></div>
+<div id="nd3Cards" class="nd3-cards"></div><div id="nd3Readout" class="nd3-readout">Pick a challenge.</div>
+</div></section>
 <div class="menuShade" id="menuShade"><div class="menu">
- <div class="releaseTag">VERSION 3.3 · MEGA MOTORSPORTS</div>
+ <div class="releaseTag">NEON DISTRICT 3.0 · MEGA MOTORSPORTS</div>
  <h1 class="logo">ARCADE<br><span>CITY 3D</span></h1>
  <p>Choose how you want to enter Arcade City. Open World joins the live public city with everyone online. Solo keeps the same career and world offline. Version 3.3 turns Motorsports Park into a map-scale complex with a 2,100+ unit Neon Dragway and a giant 900×750 Drift Yard, plus seamless neighborhoods, shops, homes, and buyable property.</p>
  <div class="menuBtns">
   <button class="primary" id="driveBtn">OPEN WORLD<small>Join the live public city</small></button>
   <button id="soloBtn">SOLO<small>Play by yourself · no connection needed</small></button>
   <button id="garageBtn">GARAGE & DEALER<small>Buy and switch cars</small></button>
-  <button id="careerBtn">CAREER<small>Crews, chapters, championship progress</small></button>
+  <button id="careerBtn">CAREER<small>Crews, chapters, championship progress</small></button><button id="nd3MenuBtn">🏆 DRIVER TRIALS<small>New 3.0 speed, touring and cruising challenges</small></button>
   <button id="mapBtn">MAP & GPS<small>Explore events, discoveries, and districts</small></button>
   <button id="settingsBtn">SETTINGS & RECOVERY<small>Performance, traffic, recover car</small></button>
  </div>
@@ -1479,7 +1501,7 @@ function drawMini(){const ap=activePos(),ah=activeHeading(),ctx=$('minimap').get
 ctx.font='1000 8px system-ui';ctx.textAlign='center';ctx.fillStyle='#65e7ff';ctx.fillText('DRAG',w/2-450*sc,h/2+1350*sc);ctx.fillStyle='#ffd15c';ctx.fillText('DRIFT',w/2+1250*sc,h/2+1350*sc);
 for(const p of police){ctx.fillStyle='#ff6677';ctx.beginPath();ctx.arc(w/2+p.mesh.position.x*sc,h/2+p.mesh.position.z*sc,3.5,0,Math.PI*2);ctx.fill()}for(const r of rivals){if(r.finished)continue;ctx.fillStyle='#ffbf4d';ctx.beginPath();ctx.arc(w/2+r.mesh.position.x*sc,h/2+r.mesh.position.z*sc,3.5,0,Math.PI*2);ctx.fill()}for(const rp of remotePlayers.values()){ctx.fillStyle='#67e6ff';ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.beginPath();ctx.arc(w/2+rp.mesh.position.x*sc,h/2+rp.mesh.position.z*sc,4.2,0,Math.PI*2);ctx.fill();ctx.stroke()}if(gpsTarget&&!activeRace){const gx=gpsTarget.x===undefined?ap.x:gpsTarget.x,gz=gpsTarget.z===undefined?ap.z:gpsTarget.z;ctx.strokeStyle='#64e8ff';ctx.lineWidth=2;ctx.setLineDash([6,5]);ctx.beginPath();ctx.moveTo(w/2+ap.x*sc,h/2+ap.z*sc);ctx.lineTo(w/2+gx*sc,h/2+ap.z*sc);ctx.lineTo(w/2+gx*sc,h/2+gz*sc);ctx.stroke();ctx.setLineDash([])}ctx.save();ctx.translate(w/2+ap.x*sc,h/2+ap.z*sc);ctx.rotate(-ah);ctx.fillStyle='#fff';ctx.beginPath();ctx.moveTo(0,-7);ctx.lineTo(5,6);ctx.lineTo(-5,6);ctx.closePath();ctx.fill();ctx.restore()}
 function updateDayNight(dt){worldClock=(worldClock+dt/210)%1;const sunWave=Math.sin(worldClock*Math.PI*2-Math.PI/2),day=clamp((sunWave+.28)/.75,0,1),night=1-day,weatherDim=weatherState==='RAIN'?.68:weatherState==='OVERCAST'?.82:1;skyColor.copy(nightColor).lerp(dayColor,day);scene.background.copy(skyColor);scene.fog.color.copy(skyColor);sun.intensity=(.12+day*2.05)*weatherDim;hemi.intensity=(.35+day*1.2)*weatherDim;renderer.toneMappingExposure=(.72+day*.38)*(weatherState==='RAIN'?.88:weatherState==='OVERCAST'?.94:1);scene.fog.far=weatherState==='RAIN'?1250:weatherState==='OVERCAST'?2000:2600;sun.position.set(Math.cos(worldClock*Math.PI*2)*170,Math.max(14,Math.sin(worldClock*Math.PI*2)*170),85);streetLights.forEach(l=>l.material.emissiveIntensity=.35+night*5.4);streetLightSources.forEach(l=>l.intensity=night*28);buildingGlassMat.emissiveIntensity=.10+night*.95;neonMaterials.forEach((m,i)=>m.emissiveIntensity=.35+night*(2.2+(i%3)*.35));animatedSigns.forEach((m,i)=>m.emissiveIntensity=.35+night*1.5+Math.sin(performance.now()/450+i)*.22);player.mesh.traverse(o=>{if(o.isSpotLight&&o.userData.headlight)o.intensity=night*(PERF_MOBILE?55:82)});const totalMin=Math.floor(worldClock*24*60),hh=Math.floor(totalMin/60)%24,mm=totalMin%60,clockText=String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0');if(clockText!==lastClockText){$('clock').textContent=clockText;lastClockText=clockText}}
-let visualAccum=0;function loop(now){requestAnimationFrame(loop);const dt=Math.min(.04,(now-last)/1000);last=now;visualAccum+=dt;uiTimer+=dt;mapTimer+=dt;missionTimer+=dt;lightTimer+=dt;resize();updateAdaptivePerformance(dt);if(running){updateRaceState();updatePlayer(dt);updateCharacter(dt);updateJump(dt);updateSmoke(dt);if(!currentInterior){updateTraffic(dt);updateScenicTraffic(dt);updatePedestrians(dt);updateRivals(dt);updatePolice(dt);updateMultiplayer(dt)}updateEvents(dt);updateWalkInBuildings();updateCamera(dt);if(missionTimer>.12){updateMission();missionTimer=0}if(uiTimer>.1){renderHUD();updateGPSLabel();updateEngineAudio();uiTimer=0}if(mapTimer>.12){drawMini();mapTimer=0}}else updateSmoke(dt);updateWeather(dt);if(lightTimer>.08){updateDayNight(lightTimer);lightTimer=0}if(visualAccum>.05){markers.forEach(m=>m.mesh.rotation.y+=visualAccum*.65);visualAccum=0}renderer.render(scene,camera)}requestAnimationFrame(loop);
+let visualAccum=0;function loop(now){requestAnimationFrame(loop);const dt=Math.min(.04,(now-last)/1000);last=now;visualAccum+=dt;uiTimer+=dt;mapTimer+=dt;missionTimer+=dt;lightTimer+=dt;resize();updateAdaptivePerformance(dt);if(running){updateRaceState();updatePlayer(dt);updateCharacter(dt);updateJump(dt);updateSmoke(dt);nd3Tick(dt);if(!currentInterior){updateTraffic(dt);updateScenicTraffic(dt);updatePedestrians(dt);updateRivals(dt);updatePolice(dt);updateMultiplayer(dt)}updateEvents(dt);updateWalkInBuildings();updateCamera(dt);if(missionTimer>.12){updateMission();missionTimer=0}if(uiTimer>.1){renderHUD();updateGPSLabel();updateEngineAudio();uiTimer=0}if(mapTimer>.12){drawMini();mapTimer=0}}else updateSmoke(dt);updateWeather(dt);if(lightTimer>.08){updateDayNight(lightTimer);lightTimer=0}if(visualAccum>.05){markers.forEach(m=>m.mesh.rotation.y+=visualAccum*.65);visualAccum=0}renderer.render(scene,camera)}requestAnimationFrame(loop);
 
 function renderGarage(){
  const cg=$('customGrid'),cu=currentCustom(),d=currentDamage(),repairCost=Math.max(250,Math.ceil(d*42));cg.innerHTML='';
@@ -1595,6 +1617,73 @@ for(const pair of [['gas','up'],['brake','down'],['driftBtn','hand']]){const el=
 $('exitVehicle').onclick=()=>currentInterior?exitBuilding():(travelMode==='car'?exitCar():enterCar());
 const steer=$('steer'),knob=$('knob');function steerMove(e){const r=steer.getBoundingClientRect(),x=e.clientX-(r.left+r.width/2),y=e.clientY-(r.top+r.height/2),rad=r.width*.34,len=Math.min(rad,Math.hypot(x,y)),a=Math.atan2(y,x),kx=Math.cos(a)*len,ky=Math.sin(a)*len;knob.style.transform='translate('+kx+'px,'+ky+'px)';steerTouch=clamp(x/rad,-1,1)}
 steer.addEventListener('pointerdown',e=>{e.preventDefault();touchSteer=true;steer.setPointerCapture?.(e.pointerId);steerMove(e)});steer.addEventListener('pointermove',e=>{if(touchSteer)steerMove(e)});['pointerup','pointercancel'].forEach(t=>steer.addEventListener(t,()=>{touchSteer=false;steerTouch=0;knob.style.transform=''}));
+
+
+// Neon District 3.0: Driver Trials
+const nd3Quests={
+ speed:{name:'⚡ Speed Run',help:'Reach 75 MPH within 60 seconds.',target:75,limit:60,cash:450,rep:65,unit:'MPH'},
+ cruise:{name:'🛣️ Road Trip',help:'Drive 1,500 meters in 150 seconds.',target:1500,limit:150,cash:850,rep:110,unit:'METERS'},
+ tour:{name:'🗺️ City Explorer',help:'Visit four unique districts in 180 seconds.',target:4,limit:180,cash:1000,rep:140,unit:'DISTRICTS'}
+};
+if(!state.nd3Records||typeof state.nd3Records!=='object')state.nd3Records={};
+let nd3Active=null,nd3WasPlaying=false,nd3Timer=0;
+function nd3Display(){
+ const el=$('nd3Readout'),btn=$('nd3Open');
+ if(!nd3Active){el.textContent='Pick a Driver Trial — first clears earn cash + REP.';btn.textContent='🏆 DRIVER TRIALS';btn.classList.remove('active');return}
+ const q=nd3Quests[nd3Active.key],n=Math.floor(nd3Active.value),remaining=Math.max(0,Math.ceil(q.limit-nd3Active.elapsed));
+ el.textContent=q.name+' · '+n+'/'+q.target+' '+q.unit+' · '+remaining+'s remaining';
+ btn.textContent='🏆 '+remaining+'s · '+n+'/'+q.target;btn.classList.add('active')
+}
+function nd3PaintCards(){
+ $('nd3Cards').innerHTML=Object.entries(nd3Quests).map(([id,q])=>{
+  const rec=state.nd3Records[id];
+  const status=rec?.cleared?'✓ CLEARED · BEST '+rec.best.toFixed(1)+'s':'FIRST REWARD: $'+q.cash+' + '+q.rep+' REP';
+  return '<article class="nd3-card"><strong>'+q.name+'</strong><span>'+q.help+'</span><small>'+status+'</small><button data-quest="'+id+'">START CHALLENGE</button></article>'
+ }).join('')
+}
+function nd3OpenPanel(){nd3WasPlaying=running;resetMoveKeys();$('menuShade').style.display='none';$('nd3Mask').hidden=false;nd3PaintCards();nd3Display();$('nd3Close').focus()}
+function nd3ClosePanel(){$('nd3Mask').hidden=true;if(!hasDriven)$('menuShade').style.display='flex';else if(nd3WasPlaying)last=performance.now();$('nd3Open').focus()}
+function nd3Begin(key){
+ const q=nd3Quests[key];if(!q)return;
+ if(activeRace||activeJob){popup('Finish your current event before starting a trial');return}
+ if(!hasDriven)enterSolo();
+ const p=activePos();
+ nd3Active={key,elapsed:0,value:0,x:p.x,z:p.z,visited:new Set([districtName()])};
+ nd3WasPlaying=true;nd3ClosePanel();nd3Display();popup(q.name+' STARTED')
+}
+function nd3Finish(win){
+ if(!nd3Active)return;
+ const r=nd3Active,q=nd3Quests[r.key];nd3Active=null;
+ if(win){
+  const old=state.nd3Records[r.key]||{},first=!old.cleared;
+  state.nd3Records[r.key]={cleared:true,best:Math.min(old.best??Infinity,r.elapsed)};
+  if(first)reward(q.cash,q.rep);
+  save();popup(first?'TRIAL COMPLETE! +$'+q.cash+' +'+q.rep+' REP':'NEW FINISH · '+r.elapsed.toFixed(1)+'s')
+ }else popup('TRIAL ENDED · TRY AGAIN');
+ nd3Display()
+}
+function nd3Tick(dt){
+ if(!nd3Active||!running||!$('nd3Mask').hidden)return;
+ if(activeRace||activeJob){nd3Finish(false);return}
+ const r=nd3Active,q=nd3Quests[r.key],p=activePos();
+ if(r.key==='speed'){
+  if(travelMode!=='car'){nd3Finish(false);return}
+  r.value=Math.max(r.value,Math.abs(player.speed)*2.23694)
+ }
+ if(r.key==='cruise'){
+  if(travelMode!=='car'){nd3Finish(false);return}
+  const d=Math.hypot(p.x-r.x,p.z-r.z);if(d<60)r.value+=d
+ }
+ if(r.key==='tour'){r.visited.add(districtName());r.value=r.visited.size}
+ r.x=p.x;r.z=p.z;r.elapsed+=dt;
+ if(r.value>=q.target){nd3Finish(true);return}
+ if(r.elapsed>=q.limit){nd3Finish(false);return}
+ nd3Timer+=dt;if(nd3Timer>.17){nd3Timer=0;nd3Display()}
+}
+$('nd3Open').onclick=nd3OpenPanel;
+$('nd3MenuBtn').onclick=nd3OpenPanel;
+$('nd3Close').onclick=nd3ClosePanel;
+$('nd3Cards').onclick=e=>{const b=e.target.closest('[data-quest]');if(b)nd3Begin(b.dataset.quest)};
 
 mp.name=localStorage.getItem('arcade_city_mp_name')||'Driver';mp.server=defaultMpServer();applyCar();updateTravelUI();updateDriveButton();updateMission();renderHUD();setMpStatus('SOLO','Choose OPEN WORLD or SOLO from the main menu.');camera.position.set(player.pos.x,6,player.pos.z-12);camera.lookAt(player.mesh.position);save();
 </script>
