@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test:multiplayer": "node tests/multiplayer.cjs"
+    "test:multiplayer": "node tests/multiplayer.cjs",
+    "test:arcade": "node tests/arcade-integrity.cjs"
   },
   "engines": {
     "node": ">=20"
@@ -16,4 +17,3 @@
     "ws": "^8.18.0"
   }
 }
-
