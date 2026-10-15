@@ -6,6 +6,7 @@ export const PIN_LAYOUT=Object.freeze([
  [-1.65,-14.1],[-.55,-14.1],[.55,-14.1],[1.65,-14.1]
 ]);
 export const BALL_RADIUS=.42,PIN_RADIUS=.245,STEP=1/120;
+export const BALL_PRESETS=Object.freeze({control:{speed:.94,curve:1.22,transfer:.9},pro:{speed:1,curve:1,transfer:1},power:{speed:.96,curve:.79,transfer:1.12}});
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const damp=(v,k,dt)=>v*Math.exp(-k*dt);
 export function createRack(mask=Array(10).fill(true)){
@@ -14,11 +15,12 @@ export function createRack(mask=Array(10).fill(true)){
   vx:0,vz:0,tip:0,tipX:0,tipZ:0,wobble:0,impact:0,contacts:0,
  }));
 }
-export function createShot({x=0,aim=0,hook=0,power=.65,oil=0}={}){
- const speed=14.5+clamp(power,0,1)*7.3,angle=clamp(aim,-1,1)*.19;
+export function createShot({x=0,aim=0,hook=0,power=.65,oil=0,ballType='pro'}={}){
+ const preset=BALL_PRESETS[ballType]||BALL_PRESETS.pro;
+ const speed=(14.5+clamp(power,0,1)*7.3)*preset.speed,angle=clamp(aim,-1,1)*.19;
  return {x:clamp(x,-2.35,2.35),z:10.9,y:.52,
   vx:Math.sin(angle)*speed,vz:-Math.cos(angle)*speed,
-  spin:clamp(hook,-1,1),oil:clamp(oil,-.14,.14),
+  spin:clamp(hook,-1,1)*preset.curve,oil:clamp(oil,-.14,.14),ballType,transfer:preset.transfer,
   power:clamp(power,0,1),speed,t:0,travel:0,gutter:false,finished:false,
   contactCount:0,hitIds:new Set(),maxSpeed:0
  };
@@ -71,7 +73,7 @@ export function stepPhysics(shot,pins,dt=STEP){
     const normalSpeed=(shot.vx-pin.vx)*nx+(shot.vz-pin.vz)*nz;
     if(normalSpeed<=.05)continue;
     // Ball ~7x the mass of a pin; collision uses speed and incidence angle.
-    const transfer=normalSpeed*(.95+shot.power*.12);
+    const transfer=normalSpeed*(.95+shot.power*.12)*shot.transfer;
     impulsePin(pin,transfer,nx,nz,events,'ball');
     const impulse=transfer*.10;
     shot.vx-=nx*impulse;shot.vz-=nz*impulse;
