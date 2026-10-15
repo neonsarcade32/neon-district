@@ -8,7 +8,8 @@
     "start": "node server.js",
     "test:multiplayer": "node tests/multiplayer.cjs",
     "test:arcade": "node tests/arcade-integrity.cjs",
-    "test:browser": "node tests/arcade-browser.cjs"
+    "test:browser": "node tests/arcade-browser.cjs",
+    "test:gameplay": "node tests/arcade-gameplay.cjs"
   },
   "engines": {
     "node": ">=20"
