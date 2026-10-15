@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#091523">
+<meta name="description" content="Play Pixel Hop Twins on Neon District. An original MIT-licensed two-level pixel platformer by stm1978 with arcade touch controls.">
+<title>Pixel Hop Twins · Open Source Edition · Neon District</title>
+<link rel="stylesheet" href="open-platformer-theme.css?v=1">
+</head>
+<body>
+<nav class="nd-import-nav" aria-label="Game navigation">
+ <a class="brand" href="index.html"><span class="mark">ND</span>NEON DISTRICT</a>
+ <span class="badge">COMMUNITY BUILT · MIT LICENSE</span>
+ <a href="index.html#discover">← ALL GAMES</a>
+</nav>
+<main class="nd-import-main">
+ <header class="intro">
+  <span class="eyebrow">02 / OPEN SOURCE ARCADE COLLECTION</span>
+  <h1>PIXEL <span>HOP TWINS.</span></h1>
+  <p>A full side-scrolling platform game with two handcrafted levels, moving enemies, gems, real platforming physics, and a double-jump crystal. Original game by stm1978, adapted for Neon District.</p>
+ </header>
+ <section class="platformWrap" aria-label="Pixel Hop Twins game">
+  <div class="frameTop"><strong><span class="led"></span> 8-BIT PLATFORMER · 2 ORIGINAL LEVELS</strong><small>COLLECT GEMS · REACH THE FLAG · KEEP 3 LIVES</small></div>
+  <div id="container"><canvas id="gameCanvas" width="640" height="400" aria-label="Pixel Hop Twins platformer. Use left, right, and jump to play." tabindex="0"></canvas></div>
+ </section>
+ <div class="mobileControls" aria-label="Touch movement controls">
+  <div class="cluster">
+   <button type="button" data-platform-hold="ArrowLeft" aria-label="Hold to move left">◀</button>
+   <button type="button" data-platform-hold="ArrowRight" aria-label="Hold to move right">▶</button>
+  </div>
+  <button class="jump" type="button" data-platform-hold="Space" aria-label="Jump or double jump">JUMP ↥</button>
+ </div>
+ <div class="nd-import-hud">
+  <span class="tag">KEYBOARD <b>← →</b> TO MOVE · <b>SPACE</b> TO JUMP · <b>P</b> PAUSE</span>
+  <div class="buttons"><button type="button" data-platform-tap="KeyP">⏸ PAUSE</button><button type="button" data-platform-tap="Enter">↻ RESTART</button></div>
+ </div>
+ <footer class="nd-footer">Imported original pixel-art game by <a href="https://github.com/stm1978/retro-platformer" target="_blank" rel="noopener noreferrer">stm1978 · Pixel Hop Twins source</a>. Original code used under the <a href="https://github.com/stm1978/retro-platformer/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT license</a>; the upstream art and level design are CC0. <br>NEON DISTRICT <b>3.0</b> / OPEN SOURCE GAME STATION.</footer>
+</main>
+<script>
+/* Neon District touch adapter; does not modify upstream platformer physics. */
+(()=>{
+ const holding=new Map();
+ const emit=(type,code)=>window.dispatchEvent(new KeyboardEvent(type,{bubbles:true,cancelable:true,code,key:code==='Space'?' ':code==='Enter'?'Enter':code.replace(/^Arrow/,'')}));
+ const release=(button)=>{const code=holding.get(button);if(!code)return;holding.delete(button);button.classList.remove('pressed');emit('keyup',code)};
+ document.querySelectorAll('[data-platform-hold]').forEach(b=>{
+  b.addEventListener('pointerdown',e=>{e.preventDefault();if(holding.has(b))return;b.setPointerCapture(e.pointerId);holding.set(b,b.dataset.platformHold);b.classList.add('pressed');emit('keydown',b.dataset.platformHold)});
+  ['pointerup','pointercancel','lostpointercapture'].forEach(name=>b.addEventListener(name,()=>release(b)))
+ });
+ document.querySelectorAll('[data-platform-tap]').forEach(b=>b.addEventListener('click',()=>{const code=b.dataset.platformTap;emit('keydown',code);setTimeout(()=>emit('keyup',code),110)}));
+ window.addEventListener('blur',()=>[...holding.keys()].forEach(release));
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)[...holding.keys()].forEach(release)});
+})();
+</script>
+<script type="module" src="open-platformer-main.js?v=1"></script>
+</body>
+</html>
