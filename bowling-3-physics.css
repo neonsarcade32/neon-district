@@ -42,3 +42,9 @@
 .nd3-bowling .ballLoadout button:hover{border-color:#8eefff}
 .nd3-bowling .oilHud span{color:#d6fcff}
 @media(max-width:680px){.nd3-bowling .ballLoadout{gap:5px;margin:9px 0}.nd3-bowling .ballLoadout>button{padding:7px;font-size:9px;min-height:51px}.nd3-bowling .ballLoadout button small{font-size:8px}}
+
+.nd3-bowling .strikeBurst{position:absolute;z-index:14;left:50%;top:41%;pointer-events:none;width:0;height:0;overflow:visible}
+.nd3-bowling .strikeBurst>i{position:absolute;left:-4px;top:-4px;width:8px;height:16px;border-radius:3px;background:var(--particle,#dfff86);transform:translate(0,0) rotate(0);opacity:0;box-shadow:0 0 14px var(--particle,#dfff86)}
+.nd3-bowling .strikeBurst.show>i{animation:bowling31Burst .96s cubic-bezier(.21,.87,.33,1) var(--delay,0s) both}
+@keyframes bowling31Burst{0%{opacity:1;transform:translate(0,0) rotate(0) scale(1.2)}68%{opacity:1}100%{opacity:0;transform:translate(var(--tx),var(--ty)) rotate(530deg) scale(.55)}}
+@media(prefers-reduced-motion:reduce){.nd3-bowling .strikeBurst>i{display:none}}
