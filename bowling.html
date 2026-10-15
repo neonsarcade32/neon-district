@@ -364,8 +364,9 @@ function recordRoll(pinCount){
   queueRackReset(true);return
  }
  const r=frames[frameIndex].rolls;r.push(pinCount);
- const wasStrike=r.length===1&&pinCount===10;
- const wasSpare=r.length===2&&r[0]!==10&&r[0]+r[1]===10;
+ const wasStrike=pinCount===10&&(r.length===1||frameIndex===9);
+ const wasSpare=(r.length===2&&r[0]!==10&&r[0]+r[1]===10)||
+  (frameIndex===9&&r.length===3&&r[0]===10&&r[1]!==10&&r[1]+r[2]===10);
  if(wasStrike){strikes++;call('STRIKE!','NEW RACK · BACK TO CENTER');sfx('strike')}
  else if(wasSpare){spares++;call('SPARE!','CLEANED IT UP');sfx('spare')}
  else toast(pinCount+' PINS');
