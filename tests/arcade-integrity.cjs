@@ -27,6 +27,12 @@ expect(index.includes('href="neon-browser.html"'),'Browser Lab not linked from h
 const browserLab=read('neon-browser.html');
 expect(browserLab.includes('CLOUD BROWSER: UNDER DEVELOPMENT'),'Browser Lab must label cloud service as unavailable');
 expect(!browserLab.includes('app.github.dev'),'Browser Lab must not share private Codespaces ports');
+expect(browserLab.includes('id="own-browser"'),'Browser Lab must have in-page setup guide');
+expect(browserLab.includes('https://github.com/neonsarcade32/neon-district'),'Browser Lab setup should link to repository');
+expect(browserLab.includes('bash browser-lab/start.sh'),'Browser Lab guide missing startup command');
+expect(browserLab.includes('Keep visibility <strong>Private</strong>'),'Browser Lab guide must keep proxy port private');
+expect(browserLab.includes('docker stop nd-personal-browser'),'Browser Lab guide must include stop command');
+expect(browserLab.includes('each person starts their own cloud browser'),'Browser Lab must accurately describe session separation');
 expect(entries.length===38,'Expected 38 games in catalog; found '+entries.length);
 expect(new Set(entries.map(x=>x.id)).size===entries.length,'Duplicate game catalog ID');
 expect(new Set(entries.map(x=>x.file)).size===entries.length,'Duplicate game catalog path');

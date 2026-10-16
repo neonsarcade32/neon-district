@@ -45,6 +45,38 @@ h2{font-size:24px;letter-spacing:-.03em;margin:30px 0 13px}
 .info ul{padding-left:18px;margin-bottom:0}
 .status{display:inline-block;border-radius:9px;padding:7px 10px;background:#3b2d19;color:#f7d19b;font-size:11px;font-weight:900}
 .status.good{background:#133d33;color:#9cead4}
+
+/* Standalone, self-service Codespaces setup flow */
+.own-intro{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(210px,.7fr);align-items:center;gap:28px;margin:25px 0 32px;padding:30px;border:1px solid #51748c;border-radius:25px;background:radial-gradient(circle at 83% 18%,#51439a6e,transparent 43%),linear-gradient(120deg,#142940,#181731);box-shadow:0 18px 60px #0005}
+.own-intro small{font-size:11px;color:#8af3f7;font-weight:950;letter-spacing:.1em}.own-intro h2{font-size:clamp(26px,4vw,40px);margin:10px 0;line-height:1.1}.own-intro p{font-size:14px;line-height:1.65;color:#becde4;margin:0 0 18px}
+.own-intro .own-actions{display:flex;flex-wrap:wrap;gap:10px}
+.cta{display:inline-flex;align-items:center;justify-content:center;min-height:47px;text-decoration:none;background:linear-gradient(115deg,#76ebfb,#83f7bc);color:#081523;border-radius:12px;font-size:12px;font-weight:1000;padding:12px 18px;text-align:center}
+.cta.outline{background:#17233a;color:#d5f8ff;border:1px solid #47738a}
+.own-benefits{display:grid;gap:12px;margin:0;padding:0;list-style:none}.own-benefits li{background:#0b1424b5;border:1px solid #435c7e;border-radius:15px;padding:13px 15px;font-size:13px;color:#d6e9fa;font-weight:800}
+.own-benefits li span{display:block;color:#93a9c5;font-weight:500;font-size:11px;margin-top:4px}
+.guide{scroll-margin-top:24px;margin:34px 0 35px}
+.guide-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:18px}
+.guide-heading h2{font-size:clamp(25px,5vw,37px);margin:6px 0 0}.guide-heading p{font-size:13px;color:#aebfdb;max-width:600px;line-height:1.6;margin:6px 0 0}
+.steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;counter-reset:how}
+.setup-step{position:relative;min-width:0;background:linear-gradient(150deg,#142138,#0d1524);border:1px solid #364c6b;border-radius:21px;padding:22px 22px 24px}
+.setup-step .num{height:38px;width:38px;border:1px solid #669fbc;border-radius:12px;background:#17415a;color:#aaf2ff;font-weight:1000;display:grid;place-items:center;font-size:17px}
+.setup-step h3{font-size:20px;line-height:1.2;margin:16px 0 9px;letter-spacing:-.03em}.setup-step p{font-size:13px;line-height:1.65;color:#b5c5de;margin:0 0 14px}
+.setup-step p:last-child{margin-bottom:0}
+.setup-step .tiny{color:#8ea9c8;font-size:11px}.setup-step strong{color:#f0f7ff}
+.setup-step a:not(.cta){color:#92efff}
+.setup-step.wide{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.command{display:flex;align-items:center;gap:8px;background:#070e1a;border:1px solid #455a80;border-radius:13px;padding:10px;margin:12px 0}
+.command code{flex:1;min-width:0;overflow-x:auto;white-space:nowrap;padding:7px 8px;color:#a5ffd0;font-size:12px}
+.copy{border:1px solid #477085;border-radius:9px;background:#17344b;color:#c4f6ff;min-height:37px;padding:7px 12px;font-size:11px;font-weight:950;white-space:nowrap}
+.copy:focus-visible,.cta:focus-visible{outline:3px solid #a1edff;outline-offset:2px}
+.full-note{display:flex;align-items:flex-start;gap:12px;margin-top:16px;padding:17px;border:1px solid #49627d;border-radius:16px;background:#112039;color:#bdcfe8;font-size:12px;line-height:1.6}
+.full-note strong{color:#fff}
+.faq details{border:1px solid #334862;background:#101b2d;border-radius:14px;margin:10px 0;padding:16px 18px}
+.faq summary{cursor:pointer;font-weight:850;font-size:14px}
+.faq details p{color:#a9bed6;font-size:13px;line-height:1.65;margin:11px 0 0}
+.faq a{color:#87ebfa}
+@media(max-width:700px){.own-intro{grid-template-columns:1fr;padding:23px}.steps{grid-template-columns:1fr}.setup-step.wide{display:block}.own-benefits{grid-template-columns:1fr}.guide-heading h2{font-size:29px}}
 footer{margin-top:45px;border-top:1px solid #2a3850;color:#8b9ab3;font-size:12px;padding-top:20px}
 footer a{color:#bce8f5}
 @media(max-width:700px){.top{padding:0 15px;height:64px}.wrap{padding:22px 15px 50px}.site-grid{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}.launch{flex-direction:column}.launch input,.launch button{width:100%}h1{font-size:50px}}
@@ -55,7 +87,13 @@ footer a{color:#bce8f5}
 <main class="wrap">
 <span class="eyebrow"><i class="dot"></i> CLOUD BROWSER: UNDER DEVELOPMENT</span>
 <h1>MEET THE<br><span>NEON BROWSER.</span></h1>
-<p class="intro">One place to launch the real web. Your links open independently on your own device today. Free personal remote browsers are an optional GitHub Codespaces setup, while a public one-click streaming service remains a future goal — not a shared public copy of somebody's desktop.</p>
+<p class="intro">Want to watch the real web through a cloud browser on your iPad? You can start <strong>your own private Chromium</strong> using your GitHub account and its available free Codespaces allowance. No apps on your iPad, and no shared browser with strangers.</p>
+<section class="own-intro" aria-label="Run your own browser">
+  <div><small>YOUR BROWSER. YOUR ACCOUNT. YOUR CONTROL.</small><h2>One setup. A browser that belongs to you.</h2><p>Instead of everyone using the same computer, each person starts their own cloud browser. That means your own session, no shared scrolling, and Neon District doesn't have to host everybody's videos.</p>
+    <div class="own-actions"><a class="cta" href="#own-browser">SHOW ME HOW ↘</a><a class="cta outline" href="https://github.com/neonsarcade32/neon-district" target="_blank" rel="noopener noreferrer">OPEN GITHUB ↗</a></div>
+  </div>
+  <ul class="own-benefits"><li>📱 No iPad apps <span>Use Safari and GitHub's website.</span></li><li>👤 Your own session <span>Not connected to the creator's browser.</span></li><li>☁️ Uses your free quota <span>GitHub provides the cloud computer; usage is limited.</span></li></ul>
+</section>
 <section class="panel" aria-label="Launch a website">
 <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><b>NEON BROWSER / WEB LAUNCHER</b></div>
 <form id="launch-form" class="launch">
@@ -73,9 +111,28 @@ footer a{color:#bce8f5}
 <a class="site" href="https://duckduckgo.com/" target="_blank" rel="noopener noreferrer"><span>🔎</span><strong>DuckDuckGo</strong><small>Search the web ↗</small></a>
 <a class="site" href="https://www.wikipedia.org/" target="_blank" rel="noopener noreferrer"><span>🌎</span><strong>Wikipedia</strong><small>Explore articles ↗</small></a>
 </section>
+<section class="guide" id="own-browser" aria-labelledby="guide-title">
+<div class="guide-heading"><div><span class="eyebrow">FREE-QUOTA SETUP · NO APP INSTALL</span><h2 id="guide-title">MAKE YOUR OWN BROWSER 🚀</h2><p>Follow these steps once to get a private remote Chromium browser. You don't need to know coding — copy one command, then open your personal link.</p></div><a class="cta" href="https://github.com/neonsarcade32/neon-district" target="_blank" rel="noopener noreferrer">START ON GITHUB ↗</a></div>
+<div class="steps">
+ <article class="setup-step"><span class="num" aria-label="Step 1">01</span><h3>Get your GitHub account</h3><p><a href="https://github.com/signup" target="_blank" rel="noopener noreferrer">Sign up free</a> or sign in to your own account. This account owns your cloud computer — nobody needs the Neon District creator's login.</p><p class="tiny">GitHub account eligibility and terms apply. If you already have an account, skip this step.</p></article>
+ <article class="setup-step"><span class="num" aria-label="Step 2">02</span><h3>Create your Codespace</h3><p><a href="https://github.com/neonsarcade32/neon-district" target="_blank" rel="noopener noreferrer">Open the Neon District GitHub repository</a>. Tap <strong>Code → Codespaces → Create codespace on main</strong>. Wait for the editor to load.</p><p class="tiny">Check the GitHub message about who pays. Use your own included allowance; don't enable paid usage.</p></article>
+ <article class="setup-step wide"><div><span class="num" aria-label="Step 3">03</span><h3>Paste one command</h3><p>In Codespaces, open <strong>Terminal</strong>. Paste this command, then press Enter. The first run downloads Chromium, so it may take a few minutes.</p><p class="tiny">This starts a real Chromium browser in your own Codespace — not in Neon District's public site.</p></div><div><div class="command"><code id="setup-command">bash browser-lab/start.sh</code><button class="copy" type="button" id="copy-setup" aria-label="Copy browser setup command">COPY</button></div><p class="tiny" id="copy-feedback" role="status">Tap COPY, then paste it into GitHub's terminal.</p></div></article>
+ <article class="setup-step"><span class="num" aria-label="Step 4">04</span><h3>Open YOUR browser link</h3><p>In the bottom panel, tap <strong>Ports</strong>. Find <strong>3200</strong> (or choose <strong>Forward a Port</strong> and enter 3200). Keep visibility <strong>Private</strong>, then tap the globe/open icon.</p><p class="tiny">Your own Chromium should open in Safari. TikTok is set as the starting website, but playback and sound aren't guaranteed.</p></article>
+ <article class="setup-step"><span class="num" aria-label="Step 5">05</span><h3>Stop it when you're finished</h3><p>In Codespaces Terminal, run <strong>docker stop nd-personal-browser</strong> to stop Chromium. Then visit <a href="https://github.com/codespaces" target="_blank" rel="noopener noreferrer">Your Codespaces</a> and stop your Codespace to avoid using more cloud hours.</p><p class="tiny">Closing the Safari tab alone doesn't necessarily stop your Codespace.</p></article>
+</div>
+<div class="full-note"><span aria-hidden="true">🔐</span><span><strong>Important:</strong> Every visitor must use their <strong>own GitHub account and Codespace</strong>. Neon District only provides instructions and a starter script; GitHub runs each person's cloud computer. Keep port 3200 <strong>Private</strong> and never share that forwarded link. Free Codespaces time and storage are limited, so check your <a href="https://github.com/settings/billing" target="_blank" rel="noopener noreferrer" style="color:#a2eeff">GitHub usage</a> before starting.</span></div>
+<div class="faq" aria-label="Setup questions"><h2>Questions? We got you.</h2>
+ <details><summary>💸 Is it actually free?</summary><p>GitHub Free personal accounts include a limited monthly Codespaces allowance. Using those included hours can cost $0, but it's <strong>not unlimited</strong>. If GitHub asks you to add billing or enable paid usage, you can stop instead. Check usage in your GitHub account.</p></details>
+ <details><summary>👥 Can my friend and I use it at the same time?</summary><p>Yes — if you're each eligible for Codespaces and you each start a Codespace on your own GitHub account. You won't control the same browser or use the Neon District creator's session.</p></details>
+ <details><summary>🌐 Is this directly inside the Neon District website?</summary><p>Not yet. The free setup opens your private streamed Chromium in a separate GitHub Codespaces link. The regular Neon Browser launcher above opens websites in Safari. An embedded one-click cloud browser for everyone would require additional hosting.</p></details>
+ <details><summary>🎵 Does TikTok, scrolling, video, and audio work?</summary><p>The starter launches real Chromium with TikTok as the home page. Touch, video, audio, and access to individual websites depend on GitHub cloud performance, Safari, and each website. They may lag, be muted, or be restricted.</p></details>
+ <details><summary>🛠️ What if I get a white screen or “Connecting…”?</summary><p>Give Chromium a minute to start, then reload the private port 3200 tab. In Codespaces Terminal, run <code>docker ps --filter name=nd-personal-browser</code> to see if it is running. If needed, check <code>docker logs --tail 30 nd-personal-browser</code>. Don't switch the port to Public to fix loading issues.</p></details>
+ <details><summary>📴 Does closing Safari stop the browser?</summary><p>No. Stop your Codespace from your GitHub account to avoid spending more free minutes. For the Chromium container alone, use <code>docker stop nd-personal-browser</code>.</p></details>
+</div>
+</section>
 <div class="split">
 <section class="info"><small>WORKING RIGHT NOW</small><h3>Independent web launch</h3><span class="status good">AVAILABLE</span><p>Each visitor opens websites in their own browser. No shared login, remote controls, downloads, or proxy are exposed to other visitors.</p></section>
-<section class="info"><small>FREE PERSONAL REMOTE BROWSER</small><h3>Your own Chromium on GitHub</h3><span class="status good">OPTIONAL · LIMITED FREE QUOTA</span><p>Have your own GitHub account? You can start your own private Chromium instance from this project's Codespace. It doesn't require an iPad app, but each visitor must set up their own session and stay within GitHub's free hours.</p><p><a href="https://github.com/neonsarcade32/neon-district" target="_blank" rel="noopener noreferrer" style="color:#85e9fa">Open Neon District on GitHub ↗</a></p><p><strong>Codespaces terminal:</strong></p><p><code style="display:block;overflow-x:auto;padding:12px;border:1px solid #46627f;border-radius:10px;background:#050d1c;color:#9bf8c5">bash browser-lab/start.sh</code></p><p>Then open <strong>private port 3200</strong>. Never make it public. <a href="https://github.com/neonsarcade32/neon-district/blob/main/browser-lab/README.md" target="_blank" rel="noopener noreferrer" style="color:#85e9fa">Full setup notes ↗</a></p></section>
+<section class="info"><small>FREE PERSONAL REMOTE BROWSER</small><h3>Your own Chromium on GitHub</h3><span class="status good">OPTIONAL · LIMITED FREE QUOTA</span><p>Use the five-step guide above to set up an independent remote browser. Each visitor starts a Codespace on their <strong>own</strong> GitHub account, so nobody shares the same desktop or relies on Neon District to pay for their cloud computer.</p><p><a href="#own-browser" style="color:#85e9fa;font-weight:900">Go to setup guide ↑</a> · <a href="https://github.com/neonsarcade32/neon-district/blob/main/browser-lab/README.md" target="_blank" rel="noopener noreferrer" style="color:#85e9fa">Full technical notes ↗</a></p></section>
 </div>
 <section class="info" style="margin-top:16px"><small>FULL CLOUD BROWSER FOR EVERYONE</small><h3>Why it isn't live yet</h3><span class="status">NOT DEPLOYED</span><p>A one-click, fully interactive remote browser for every visitor can't realistically be supported by GitHub Pages or unlimited free cloud computing. Each live Chromium browser consumes CPU and memory; a shared remote desktop would expose other visitors' sessions. We're preserving the free launcher and optional personal setup while keeping this larger goal on the roadmap.</p></section>
 <footer>Neon District 3.0 · Experimental Browser Lab · <a href="index.html">Return to games</a> · No browsing history is recorded by this page.</footer>
@@ -100,6 +157,22 @@ footer a{color:#bce8f5}
     }
     return 'https://duckduckgo.com/?q='+encodeURIComponent(value);
   }
+  const copyButton=document.getElementById('copy-setup');
+  const copyFeedback=document.getElementById('copy-feedback');
+  copyButton.addEventListener('click',async function(){
+    const command=document.getElementById('setup-command').textContent.trim();
+    try{
+      if(!navigator.clipboard || !window.isSecureContext)throw new Error('Clipboard unavailable');
+      await navigator.clipboard.writeText(command);
+      copyButton.textContent='COPIED ✓';
+      copyFeedback.textContent='Copied! Switch to GitHub Codespaces and paste it into Terminal.';
+      setTimeout(()=>{copyButton.textContent='COPY'},2500);
+    }catch(_){
+      copyFeedback.textContent='Copy this command manually: '+command;
+      const range=document.createRange();range.selectNodeContents(document.getElementById('setup-command'));
+      const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);
+    }
+  });
   form.addEventListener('submit',function(event){
     event.preventDefault();
     const url=destination(field.value);
