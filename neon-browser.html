@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090e1c">
+<meta name="description" content="Neon Browser Lab — an independent web launcher and a preview of the future Neon District cloud browser.">
+<title>Neon Browser Lab · Neon District 3.0</title>
+<style>
+:root{color-scheme:dark;--bg:#080b14;--panel:#111928;--line:#30415f;--muted:#9aaac4;--text:#edf7ff;--cyan:#5de5fa;--purple:#a78bfa}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:radial-gradient(ellipse at 14% 0,#183967 0,transparent 38%),radial-gradient(ellipse at 90% 5%,#3d205d 0,transparent 33%),var(--bg)}
+button,input,a{font:inherit}a{color:inherit}button{cursor:pointer}
+.top{height:74px;display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:1160px;padding:0 22px;margin:auto}
+.brand{text-decoration:none;display:flex;align-items:center;gap:12px;font-weight:950;letter-spacing:.04em;font-size:13px}
+.mark{display:grid;place-items:center;height:37px;width:37px;border-radius:12px;background:linear-gradient(125deg,#7771ff,#44eddd);color:#061322;font-weight:1000}
+.back{border:1px solid #405173;border-radius:12px;text-decoration:none;padding:10px 14px;color:#b8cbe4;font-size:12px;font-weight:900;background:#131c2a}
+.wrap{width:min(1120px,100%);margin:auto;padding:35px 22px 70px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid #41677d;border-radius:50px;color:#9eeefe;background:#12273a;padding:7px 11px;font-size:10px;letter-spacing:.12em;font-weight:900}
+.dot{height:7px;width:7px;border-radius:99px;background:#d5b15d}
+h1{font-size:clamp(43px,8vw,84px);line-height:.94;letter-spacing:-.06em;margin:22px 0 18px;font-weight:1000}
+h1 span{background:linear-gradient(105deg,#61e6fa,#b19aff);background-clip:text;color:transparent}
+.intro{max-width:690px;color:#a8b8d0;line-height:1.7;margin:0 0 24px;font-size:15px}
+.panel{padding:15px;border:1px solid #344765;border-radius:24px;background:linear-gradient(155deg,#19243a,#0d1424);box-shadow:0 22px 65px #0007}
+.chrome{display:flex;align-items:center;gap:7px;margin:1px 3px 13px}
+.chrome i{width:9px;height:9px;border-radius:50%;background:#ff6d88}.chrome i:nth-child(2){background:#f8ca70}.chrome i:nth-child(3){background:#68dfb1}
+.chrome b{margin-left:10px;color:#8193b2;font-size:10px;letter-spacing:.13em}
+.launch{display:flex;gap:10px;align-items:center}
+.launch input{min-width:0;flex:1;height:54px;border-radius:13px;background:#090f1d;border:1px solid #3c5070;color:#e8f7ff;font-size:15px;padding:0 17px;outline:none}
+.launch input:focus{border-color:#6ae8fb;box-shadow:0 0 0 3px #6ae8fb20}
+.launch button{border:0;border-radius:13px;height:54px;padding:0 22px;font-weight:1000;font-size:12px;color:#071425;background:linear-gradient(110deg,#62eafb,#86f6b4)}
+.launch-note{font-size:12px;color:#98abc4;line-height:1.6;margin:12px 5px 0}
+.launch-note a{color:#90eafd}
+.warning{margin:22px 0;border:1px solid #5c4f32;background:#292313bd;border-radius:16px;padding:15px 18px;color:#e5cfa6;font-size:12px;line-height:1.6}
+h2{font-size:24px;letter-spacing:-.03em;margin:30px 0 13px}
+.site-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.site{display:flex;flex-direction:column;gap:8px;text-decoration:none;min-height:131px;border:1px solid #354660;border-radius:18px;background:#121c2d;padding:19px;transition:.15s}
+.site:hover,.site:focus-visible{border-color:#76dfec;transform:translateY(-2px)}
+.site span{font-size:27px}.site strong{font-size:15px}.site small{color:#899eb8}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:27px}
+.info{background:#101826;border:1px solid #2d3e59;border-radius:21px;padding:23px}
+.info small{color:#7bcaed;letter-spacing:.12em;font-size:10px;font-weight:1000}
+.info h3{font-size:19px;margin:12px 0}
+.info p,.info li{line-height:1.65;color:#a3b5cd;font-size:13px}
+.info ul{padding-left:18px;margin-bottom:0}
+.status{display:inline-block;border-radius:9px;padding:7px 10px;background:#3b2d19;color:#f7d19b;font-size:11px;font-weight:900}
+.status.good{background:#133d33;color:#9cead4}
+footer{margin-top:45px;border-top:1px solid #2a3850;color:#8b9ab3;font-size:12px;padding-top:20px}
+footer a{color:#bce8f5}
+@media(max-width:700px){.top{padding:0 15px;height:64px}.wrap{padding:22px 15px 50px}.site-grid{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}.launch{flex-direction:column}.launch input,.launch button{width:100%}h1{font-size:50px}}
+</style>
+</head>
+<body>
+<header class="top"><a href="index.html" class="brand"><span class="mark">ND</span><span>NEON DISTRICT <br><span style="font-size:10px;color:#8da6bc">BROWSER LAB · 3.0</span></span></a><a class="back" href="index.html">← Back to arcade</a></header>
+<main class="wrap">
+<span class="eyebrow"><i class="dot"></i> CLOUD BROWSER: UNDER DEVELOPMENT</span>
+<h1>MEET THE<br><span>NEON BROWSER.</span></h1>
+<p class="intro">One place to launch the real web. Your links open independently on your own device today. We're designing separate, secure cloud-browser sessions for visitors later — not a shared public copy of somebody's desktop.</p>
+<section class="panel" aria-label="Launch a website">
+<div class="chrome" aria-hidden="true"><i></i><i></i><i></i><b>NEON BROWSER / WEB LAUNCHER</b></div>
+<form id="launch-form" class="launch">
+<label for="destination" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Website address or search</label>
+<input id="destination" type="text" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Search or enter a website (like tiktok.com)" required>
+<button type="submit">OPEN WEBSITE ↗</button>
+</form>
+<p class="launch-note" id="launch-note" role="status">Real websites open in a separate Safari tab. This does <strong>not</strong> route traffic through a proxy or run a remote browser yet. <a id="fallback" href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" hidden>Open last website manually ↗</a></p>
+</section>
+<div class="warning"><strong>Cloud streaming isn't public yet.</strong> Your current Codespaces Chromium session is private and must not be embedded in a public arcade or shared without protection. This page does not access anyone's account or browsing history.</div>
+<h2>Quick launch</h2>
+<section class="site-grid" aria-label="Popular websites">
+<a class="site" href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer"><span>🎵</span><strong>TikTok</strong><small>Official website ↗</small></a>
+<a class="site" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer"><span>▶️</span><strong>YouTube</strong><small>Official website ↗</small></a>
+<a class="site" href="https://duckduckgo.com/" target="_blank" rel="noopener noreferrer"><span>🔎</span><strong>DuckDuckGo</strong><small>Search the web ↗</small></a>
+<a class="site" href="https://www.wikipedia.org/" target="_blank" rel="noopener noreferrer"><span>🌎</span><strong>Wikipedia</strong><small>Explore articles ↗</small></a>
+</section>
+<div class="split">
+<section class="info"><small>WORKING RIGHT NOW</small><h3>Independent web launch</h3><span class="status good">AVAILABLE</span><p>Each visitor opens websites in their own browser. No shared login, remote controls, downloads, or proxy are exposed to other visitors.</p></section>
+<section class="info"><small>THE BIGGER UPGRADE</small><h3>Independent cloud sessions</h3><span class="status">NOT DEPLOYED</span><p>To put a full remote browser inside Neon District for everyone, we need a separate always-on server, isolated sessions, authentication, limits, and protection against misuse. GitHub Pages alone can't run it.</p></section>
+</div>
+<footer>Neon District 3.0 · Experimental Browser Lab · <a href="index.html">Return to games</a> · No browsing history is recorded by this page.</footer>
+</main>
+<script>
+(function(){
+  'use strict';
+  const form=document.getElementById('launch-form');
+  const field=document.getElementById('destination');
+  const note=document.getElementById('launch-note');
+  const fallback=document.getElementById('fallback');
+  function destination(raw){
+    const value=raw.trim();
+    if(!value)return null;
+    if(/^https?:\/\//i.test(value)){
+      try{const url=new URL(value);if(url.protocol==='https:'||url.protocol==='http:')return url.href}catch(_){}
+      return null;
+    }
+    if(/^[a-z][a-z0-9+.-]*:/i.test(value))return null;
+    if(/^[^\s./]+(?:\.[^\s./]+)+(?:\/[^\s]*)?$/i.test(value)){
+      try{return new URL('https://'+value).href}catch(_){}
+    }
+    return 'https://duckduckgo.com/?q='+encodeURIComponent(value);
+  }
+  form.addEventListener('submit',function(event){
+    event.preventDefault();
+    const url=destination(field.value);
+    if(!url){note.textContent='Please enter an HTTP(S) website or normal search words.';return;}
+    fallback.href=url;fallback.hidden=false;
+    window.open(url,'_blank','noopener,noreferrer');
+  });
+})();
+</script>
+</body>
+</html>
