@@ -29,3 +29,11 @@ GitHub Pages only hosts static files. A true streamed Chromium experience (video
 - The current page does not store searches, tokens, history or cookies.
 - Existing arcade game list, favorites, leaderboards, multiplayer and saves are unchanged.
 - Future cloud feature remains explicitly marked **not deployed** until backend isolation, abuse prevention, security review and costs are addressed.
+
+## Free-first direction selected (October 2026)
+
+The site will remain **$0 to host** on GitHub Pages. The live public feature is the independent website launcher. For users who want real remote Chromium, `browser-lab/start.sh` provides an optional Codespaces setup with each person's **own** GitHub account and quota, on private port 3200.
+
+**Do not confuse this with a true public, one-click streamed browser:** that is not deployable at unlimited scale free of charge, and this project will not publish the owner's existing port 3100 or silently run a public proxy. No recurring cost, paid account, or payment card is required for the static launcher. For personal Codespaces, free quota and account eligibility apply; do not opt into billable overages.
+
+Cloudflare Browser Run's Workers Free plan supplies only 10 browser-minutes per day (shared across visitors) and up to 3 concurrent sessions; the browser timeout is 60 seconds. This is not sufficient for long interactive TikTok sessions. Render's free web instance is limited to 512 MB RAM and 0.1 CPU, and sleeps when idle. Neither is an unlimited cloud desktop host.
