@@ -34,12 +34,19 @@
 .passportProgress i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#4ad8ff,#66e5af,#f7db7d);transition:width .4s}
 .passportRight button{width:100%;padding:11px 12px;border:1px solid #5ecdfb;border-radius:11px;background:#17435a;color:#e0f8ff;font-size:10px;font-weight:1000;cursor:pointer}
 @media(max-width:680px){.passportRibbon{flex-direction:column;align-items:stretch;padding:16px}.passportRight{width:100%}.passportRibbon h2{font-size:21px}}
+.browserPromo{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:22px 0;padding:22px 26px;border:1px solid #4b6381;border-radius:22px;background:radial-gradient(circle at 75% 15%,#5b3c8954,transparent 45%),linear-gradient(115deg,#11263a,#14172e);box-shadow:0 18px 40px #0003}
+.browserPromo small{font-size:10px;color:#8beaf3;font-weight:1000;letter-spacing:1px}
+.browserPromo h2{font-size:28px;letter-spacing:-1.1px;margin:7px 0}
+.browserPromo h2 span{color:#9e9cff}
+.browserPromo p{margin:0;color:#9dafc8;font-size:12px;line-height:1.5;max-width:520px}
+.browserPromo a{flex-shrink:0;display:inline-block;text-decoration:none;font-size:11px;font-weight:1000;border-radius:12px;padding:14px 18px;color:#0b1421;background:linear-gradient(90deg,#73edfb,#8cf6b8)}
+@media(max-width:650px){.browserPromo{flex-direction:column;align-items:stretch;padding:19px}.browserPromo a{text-align:center}.browserPromo h2{font-size:24px}}
 </style>
 <link rel="stylesheet" href="nd3-home.css?v=3.0.1">
 <link rel="stylesheet" href="nd3-community.css?v=1">
 </head>
 <body class="nd3-home">
-<header class="topbar"><nav class="nav"><a class="brand" href="index.html"><span class="brandmark">ND</span><span>NEON DISTRICT<small>VERSION 3.0 · REBUILT</small></span></a><div class="navActions"><button class="navBtn" id="favoritesJump">★ Favorites</button><a class="navBtn hideMobile" href="#discover">ALL GAMES ↗</a><a class="navBtn hideMobile" href="https://github.com/neonsarcade32/neon-district" target="_blank" rel="noopener">SOURCE</a><div class="nd3-themebar" aria-label="Color theme"><button data-theme="volt" title="Electric theme" aria-label="Electric theme" aria-pressed="true"></button><button data-theme="ember" title="Sunset theme" aria-label="Sunset theme" aria-pressed="false"></button><button data-theme="arctic" title="Arctic theme" aria-label="Arctic theme" aria-pressed="false"></button></div></div></nav></header>
+<header class="topbar"><nav class="nav"><a class="brand" href="index.html"><span class="brandmark">ND</span><span>NEON DISTRICT<small>VERSION 3.0 · REBUILT</small></span></a><div class="navActions"><a class="navBtn hideMobile" href="neon-browser.html" aria-label="Open Neon Browser Lab">🌐 BROWSER LAB</a><button class="navBtn" id="favoritesJump">★ Favorites</button><a class="navBtn hideMobile" href="#discover">ALL GAMES ↗</a><a class="navBtn hideMobile" href="https://github.com/neonsarcade32/neon-district" target="_blank" rel="noopener">SOURCE</a><div class="nd3-themebar" aria-label="Color theme"><button data-theme="volt" title="Electric theme" aria-label="Electric theme" aria-pressed="true"></button><button data-theme="ember" title="Sunset theme" aria-label="Sunset theme" aria-pressed="false"></button><button data-theme="arctic" title="Arctic theme" aria-label="Arctic theme" aria-pressed="false"></button></div></div></nav></header>
 <main class="wrap"><div class="nd3-ribbon"><span><span class="dot"></span><b>NEON DISTRICT 3.0</b> · THE REBUILT ARCADE · 37 PLAYABLE GAMES</span><span class="right">NEW LOOK / NEW GAME ART / SAME SAVED PROGRESS</span></div>
 <section class="hero">
 <a class="feature" href="arcade-city.html?v=nd3visual" data-launch="Arcade City 3D">
@@ -55,6 +62,10 @@
 
 <div class="stats"><div class="stat"><span>GAMES</span><strong id="gameCount">38</strong></div><div class="stat"><span>FAVORITES</span><strong id="favCount">0</strong></div><div class="stat"><span>RECENTLY PLAYED</span><strong id="playedCount">0</strong></div><div class="stat"><span>EXPLORATION PASSPORT</span><strong id="passportCount" style="color:#8addff">0/38</strong></div></div>
 
+<section class="browserPromo" aria-label="Neon Browser Lab">
+  <div><small>NEW EXPERIMENT · THE WEB, NEON-STYLE</small><h2>NEON BROWSER <span>LAB</span></h2><p>Launch real websites now. Separate in-arcade cloud browsing for everyone is being built and is not live yet.</p></div>
+  <a href="neon-browser.html">EXPLORE BROWSER LAB ↗</a>
+</section>
 <section class="passportRibbon" aria-labelledby="passportTitle"><div><small>NEON DISTRICT 3.0 · YOUR ARCADE JOURNEY</small><h2 id="passportTitle">🏅 Arcade Passport <span id="passportTier">ROOKIE</span></h2><p>Explore games across the whole arcade. Your high scores and existing saves stay exactly where they are.</p></div><div class="passportRight"><strong id="passportInfo">0 / 38 EXPLORED</strong><div class="passportProgress"><i id="passportBar"></i></div><button id="passportExplore">DISCOVER A NEW GAME →</button></div></section>
 <section class="nd3-community" aria-label="Open-source arcade games" id="communityGames">
  <div class="nd3-community-head"><div><small>NEW / THE 3D GAME DROP</small><h2>GO BIGGER.<br><em>PLAY THE WHOLE WORLD.</em></h2><p>A deeper game, not another basic mini-game: fully explorable 3D landscapes with a genuine physics engine. Original developer credited.</p></div><span class="nd3-community-counter">FEATURED / 3D</span></div>
