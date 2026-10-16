@@ -8,7 +8,7 @@ const root=path.resolve(__dirname,'..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const files=fs.readdirSync(root);
 const pages=files.filter(x=>x.endsWith('.html'));
-const gamePages=pages.filter(x=>!['index.html','search.html','mp-bridge.html'].includes(x));
+const gamePages=pages.filter(x=>!['index.html','search.html','mp-bridge.html','neon-browser.html'].includes(x));
 const index=read('index.html');
 const entries=[...index.matchAll(/\bid:'([^']+)',name:'([^']+)',file:'([^']+)'/g)].map(m=>({id:m[1],name:m[2],file:m[3].split('?')[0]}));
 let checked=0;
@@ -23,6 +23,10 @@ function checkSyntax(code,mod,label){
     checked++;
   }catch(err){problems.push(label+': '+err.message)}
 }
+expect(index.includes('href="neon-browser.html"'),'Browser Lab not linked from homepage');
+const browserLab=read('neon-browser.html');
+expect(browserLab.includes('CLOUD BROWSER: UNDER DEVELOPMENT'),'Browser Lab must label cloud service as unavailable');
+expect(!browserLab.includes('app.github.dev'),'Browser Lab must not share private Codespaces ports');
 expect(entries.length===38,'Expected 38 games in catalog; found '+entries.length);
 expect(new Set(entries.map(x=>x.id)).size===entries.length,'Duplicate game catalog ID');
 expect(new Set(entries.map(x=>x.file)).size===entries.length,'Duplicate game catalog path');
