@@ -1,4 +1,47 @@
-<!DOCTYPE html><html lang="en"><head><script type="importmap" id="nd-cork7-cachefix-importmap">{"imports":{"https://neonsarcade32.github.io/neon-district/cork7-assets/_next/static/chunks/index-CYh2aJIu.js":"https://neonsarcade32.github.io/neon-district/cork7-assets/_next/static/chunks/index-ND-preload-20261022.js","https://neonsarcade32.github.io/neon-district/cork7-assets/_next/static/chunks/game-client-DUZ8oxMk.js":"https://neonsarcade32.github.io/neon-district/cork7-assets/_next/static/chunks/game-client-ND-preload-20261022.js"}}</script><script id="nd-cork7-diag">(function(){if(window.__ndCork7Log)return;var log=window.__ndCork7Log=[];function save(msg){try{log.push(String(msg).slice(0,280));if(log.length>12)log.shift()}catch(e){}}window.addEventListener('error',function(e){save('ERROR: '+(e.message||'Resource load failed')+' '+(e.filename||e.target?.src||e.target?.href||''))},true);window.addEventListener('unhandledrejection',function(e){save('PROMISE: '+String(e.reason?.stack||e.reason||'rejected'))});document.addEventListener('webglcontextlost',function(e){save('WEBGL CONTEXT LOST');},true);var originalError=console.error;console.error=function(){try{save('CONSOLE: '+Array.from(arguments).map(function(a){return a instanceof Error?a.message:String(a)}).join(' ').slice(0,200))}catch(e){}return originalError.apply(console,arguments)}})();</script><script id="nd-cork7-error-panel-v2">(function(){
+<!DOCTYPE html><html lang="en"><head><script type="importmap" id="nd-cork7-cachefix-importmap">{"imports":{"https://neonsarcade32.github.io/neon-district/cork7-assets/_next/static/chunks/index-CYh2aJIu.js":"https://neonsarcade32.github.io/neon-district/cork7-assets/_next/static/chunks/index-ND-preload-20261022.js","https://neonsarcade32.github.io/neon-district/cork7-assets/_next/static/chunks/game-client-DUZ8oxMk.js":"https://neonsarcade32.github.io/neon-district/cork7-assets/_next/static/chunks/game-client-ND-preload-20261022.js"}}</script><script id="nd-cork7-model-paths">(function(){
+  'use strict';
+  // Keep original Cork7 game code intact; route its first-party 3D resources to
+  // the model files hosted by Neon District, rather than /models at domain root.
+  if(window.__ndCork7AssetRoutes)return;
+  var projectRoot=new URL('cork7-assets/',location.href).pathname;
+  var savedFetch=window.fetch;
+  function localAsset(input){
+    try{
+      var u=new URL(input,document.baseURI);
+      if(u.origin!==location.origin&&u.origin!=='https://cork7.com')return null;
+      if(!/^\/(models|textures)\//.test(u.pathname))return null;
+      return location.origin+projectRoot+u.pathname.slice(1)+u.search;
+    }catch(e){return null}
+  }
+  window.__ndCork7AssetRoutes={assetRoot:projectRoot,translate:localAsset};
+  window.fetch=function(input,options){
+    var target=localAsset(input instanceof Request?input.url:input);
+    if(target){
+      try{if(window.__ndCork7Log)window.__ndCork7Log.push('LOCAL ASSET: '+new URL(target).pathname)}catch(e){}
+      input=input instanceof Request?new Request(target,input):target;
+    }
+    return savedFetch.call(this,input,options);
+  };
+  if(window.XMLHttpRequest){
+    var open=XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open=function(method,url){
+      var target=localAsset(url);
+      var args=Array.prototype.slice.call(arguments);
+      if(target)args[1]=target;
+      return open.apply(this,args);
+    };
+  }
+  if(window.HTMLImageElement){
+    var descriptor=Object.getOwnPropertyDescriptor(HTMLImageElement.prototype,'src');
+    if(descriptor&&descriptor.configurable&&descriptor.set&&descriptor.get){
+      Object.defineProperty(HTMLImageElement.prototype,'src',{
+        configurable:true,enumerable:descriptor.enumerable,
+        get:function(){return descriptor.get.call(this)},
+        set:function(url){return descriptor.set.call(this,localAsset(url)||url)}
+      });
+    }
+  }
+})();</script><script id="nd-cork7-diag">(function(){if(window.__ndCork7Log)return;var log=window.__ndCork7Log=[];function save(msg){try{log.push(String(msg).slice(0,280));if(log.length>12)log.shift()}catch(e){}}window.addEventListener('error',function(e){save('ERROR: '+(e.message||'Resource load failed')+' '+(e.filename||e.target?.src||e.target?.href||''))},true);window.addEventListener('unhandledrejection',function(e){save('PROMISE: '+String(e.reason?.stack||e.reason||'rejected'))});document.addEventListener('webglcontextlost',function(e){save('WEBGL CONTEXT LOST');},true);var originalError=console.error;console.error=function(){try{save('CONSOLE: '+Array.from(arguments).map(function(a){return a instanceof Error?a.message:String(a)}).join(' ').slice(0,200))}catch(e){}return originalError.apply(console,arguments)}})();</script><script id="nd-cork7-error-panel-v2">(function(){
   if(window.__ndCork7PanelInstalled)return;
   window.__ndCork7PanelInstalled=true;
   var logs=window.__ndCork7Log||[];
