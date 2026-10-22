@@ -1,7 +1,7 @@
 'use strict';
 const {chromium}=require('playwright');
 const assert=require('node:assert/strict');
-const url=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8776';
+const url=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8080';
 (async()=>{
  const browser=await chromium.launch({channel:'msedge',headless:true,args:['--use-angle=swiftshader','--enable-webgl','--disable-web-security']});
  const page=await browser.newPage({viewport:{width:1280,height:800}});
