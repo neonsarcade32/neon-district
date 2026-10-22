@@ -30,5 +30,17 @@ jobs:
           git add cork7-assets/_next/static/chunks/
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Build first-party Cork7 React game without Vinext hydration"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          # Other Cork7 asset-sync jobs may write main at the same time.
+          # Refetch and rebase before each push so an ordinary race does not
+          # leave the built game bundle out of sync with its build script.
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Concurrent update detected; retrying ($attempt/4)"
+            sleep 2
+          done
+          echo "Failed to publish rebuilt game bundle after retries"
+          exit 1
