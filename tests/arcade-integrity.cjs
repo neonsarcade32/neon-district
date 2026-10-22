@@ -60,6 +60,8 @@ for(const html of pages){
   for(const ref of refs){
     const raw=ref[2];
     if(/^(?:https?:|\/\/|data:)/i.test(raw))continue;
+    // The licensed Cork7 client uses an explicit remote <base>; root-relative assets resolve to cork7.com.
+    if(html==='cork7.html' && src.includes('<base href="https://cork7.com/">') && raw.startsWith('/'))continue;
     const file=raw.split(/[?#]/)[0];
     if(!file)continue;
     expect(fs.existsSync(path.join(root,file)),html+': missing static asset '+file);
@@ -67,6 +69,8 @@ for(const html of pages){
   }
   for(const [n,script] of [...src.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].entries()){
     if(!script[2].trim())continue;
+    // Structured-data JSON is not executable JavaScript.
+    if(/\btype=["'](?:application\/ld\+json|application\/json)["']/i.test(script[1]))continue;
     if(/\btype=["']importmap["']/i.test(script[1])) {
       try{const data=JSON.parse(script[2]);expect(data&&typeof data.imports==='object',html+' invalid module importmap')}
       catch(e){problems.push(html+' bad importmap: '+e.message)}
