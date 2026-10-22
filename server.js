@@ -92,7 +92,8 @@ app.use((req, res, next) => {
   const asset = req.path.slice(1);
   const isPageOrStyle = /^\/[^/]+\.(html|css|png|jpg|svg|ico)$/.test(req.path);
   const safeGameData = asset === 'open-platformer-level1.json' || asset === 'open-platformer-level2.json';
-  if (req.path !== '/' && !isPageOrStyle && !PUBLIC_GAME_SCRIPTS.has(asset) && !safeGameData) {
+  const authorizedCork7Asset = /^cork7-assets\/_next\/static\/(?:css\/[A-Za-z0-9_.-]+\.css|chunks\/[A-Za-z0-9_.-]+\.js)$/.test(asset);
+  if (req.path !== '/' && !isPageOrStyle && !PUBLIC_GAME_SCRIPTS.has(asset) && !safeGameData && !authorizedCork7Asset) {
     return res.sendStatus(404);
   }
   next();
