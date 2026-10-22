@@ -11,6 +11,16 @@
   };
  }
  document.addEventListener('click',event=>{
+  // If third-party hydration does not attach a Ride handler (common in restrictive iPad browsers),
+  // provide a native solo route instead of leaving the button apparently inert.
+  if(event.target.closest?.('button.bc-start.rd-start')){
+   setTimeout(()=>{
+    if(document.querySelector('.mountain-selector') || location.search.includes('park='))return;
+    const direct=new URL(location.href);direct.searchParams.set('park','nordryggen');direct.searchParams.set('mode','solo');
+    location.assign(direct.href);
+   },1600);
+   return;
+  }
   const button=event.target.closest?.('button.mountain-ride.is-ride');
   if(!button||!button.textContent.includes('RIDE SOLO'))return;
   const card=document.querySelector('.mountain-card');
