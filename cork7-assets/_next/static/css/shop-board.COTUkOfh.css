@@ -1,0 +1,6 @@
+/* Neon District compatibility shim for Cork7's shop styles.
+   This local file prevents the game shell from failing preload checks when
+   the shop CSS is referenced. It requests the original authorized styles
+   from the upstream game when the browser allows the stylesheet load.
+   Gameplay and park physics do not depend on shop styling. */
+@import url("https://cork7.com/_next/static/css/shop-board.COTUkOfh.css");
