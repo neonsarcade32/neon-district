@@ -33,7 +33,11 @@ expect(browserLab.includes('bash browser-lab/start.sh'),'Browser Lab guide missi
 expect(browserLab.includes('Keep visibility <strong>Private</strong>'),'Browser Lab guide must keep proxy port private');
 expect(browserLab.includes('docker stop nd-personal-browser'),'Browser Lab guide must include stop command');
 expect(browserLab.includes('each person starts their own cloud browser'),'Browser Lab must accurately describe session separation');
-expect(entries.length===38,'Expected 38 games in catalog; found '+entries.length);
+expect(entries.length===39,'Expected 39 games in catalog; found '+entries.length);
+expect(index.includes("id:'cork7',name:'Cork7',file:'cork7.html'"),'Cork7 must appear in game catalog');
+const cork7=read('cork7.html');
+expect(cork7.includes('src="https://cork7.com/"'),'Cork7 launcher must use the official game URL');
+expect(cork7.includes('OPEN FULL GAME'),'Cork7 launcher must provide direct-play fallback');
 expect(new Set(entries.map(x=>x.id)).size===entries.length,'Duplicate game catalog ID');
 expect(new Set(entries.map(x=>x.file)).size===entries.length,'Duplicate game catalog path');
 for(const e of entries)expect(fs.existsSync(path.join(root,e.file)),'Missing game page '+e.name+': '+e.file);
