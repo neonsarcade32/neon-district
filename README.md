@@ -35,3 +35,7 @@ The original Cork7 HTML referenced resources on a different origin, producing an
 #### Cork7 WebKit module completeness
 
 The mirrored client now includes the complete transitive JavaScript chunk dependency graph (39 chunks), including the missing `meshopt_decoder.module-rFMdj35V.js` and park-collision modules. Without the decoder, selecting a park could reach 100% on the loading screen without initializing the mountain. `tests/arcade-integrity.cjs` checks every referenced relative JavaScript chunk to catch omissions. The original audio, image, texture, and non-JS external resources may still be fetched from cork7.com; this remains an authorized integration, not a fully independent server or authenticated multiplayer backend.
+
+#### iPad Web Audio crash fix
+
+An iPad/WebKit test reproduced the game's own **This page couldn’t load** error after the mountain loading screen. Its original audio engine used an unconditional `new AudioContext`, but that constructor is not available in every browser environment. The local Cork7 client now uses standard `AudioContext` or legacy `webkitAudioContext` and skips optional sound initialization if neither exists, allowing the skiing simulation to continue. This does not modify Cork7's upstream backend or bypass browser media permissions.
