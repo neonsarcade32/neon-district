@@ -21,7 +21,8 @@ for file in chunks.glob('*.js'):
     if 'from"./index-CYh2aJIu.js"' not in text:
         continue
     if extra_index_import not in text:
-        raise RuntimeError('Unexpected Vinext module import in '+file.name)
+        print('SKIP NON-GAME VINEXT MODULE',file.name)
+        continue
     updated=text.replace(extra_index_import,'import{t as e}from"./nd-standalone-vite-preload.js"')
     if 'from"./index-CYh2aJIu.js"' in updated:
         raise RuntimeError('Vinext dependency remains in '+file.name)
