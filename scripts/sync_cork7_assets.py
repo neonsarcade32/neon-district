@@ -16,8 +16,8 @@ ROOT = Path(__file__).resolve().parents[1]
 BUNDLE = ROOT / "cork7-assets"
 ORIGIN = "https://cork7.com"
 PREFIX = "/neon-district/cork7-assets"
-DIRECTORIES = ("models", "textures", "items", "images", "onboarding", "music", "brand", "fonts", "sounds", "audio")
-MANDATORY = ("/models/rider-v20.glb",)
+DIRECTORIES = ("models", "textures", "items", "images", "onboarding", "music", "brand", "fonts", "sounds", "audio", "updates")
+MANDATORY = ("/models/rider-v20.glb", "/updates/snowfall.webp")
 SECONDARY = (
     "/models/lift-v1.glb",
     "/models/venue-v1.glb",
@@ -25,8 +25,8 @@ SECONDARY = (
     "/models/powder-finish-v1.glb",
     "/textures/rail-painted-steel-v1.webp",
 )
-ASSET_RE = re.compile(r"/(?:models|textures|items|images|onboarding|music|brand|fonts|sounds|audio)/[a-zA-Z0-9_./-]+\.(?:glb|webp|png|jpg|jpeg|svg|woff2|woff|mp3|ogg|m4a|opus)(?:\?v=\d+)?", re.I)
-URL_RE = re.compile(r"(?<![A-Za-z0-9._/-])/(models|textures|items|images|onboarding|music|brand|fonts|sounds|audio)/")
+ASSET_RE = re.compile(r"/(?:models|textures|items|images|onboarding|music|brand|fonts|sounds|audio|updates)/[a-zA-Z0-9_./-]+\.(?:glb|webp|png|jpg|jpeg|svg|woff2|woff|mp3|ogg|m4a|opus)(?:\?v=\d+)?", re.I)
+URL_RE = re.compile(r"(?<![A-Za-z0-9._/-])/(models|textures|items|images|onboarding|music|brand|fonts|sounds|audio|updates)/")
 MAX_FILE_BYTES = 95 * 1024 * 1024
 MAX_TOTAL_BYTES = 300 * 1024 * 1024
 
