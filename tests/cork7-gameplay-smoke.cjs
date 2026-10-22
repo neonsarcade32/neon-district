@@ -28,6 +28,7 @@ const {chromium}=require('playwright');
     try{
       const handle=await page.waitForFunction(()=>{
         const text=document.body?.innerText||'';
+        if(document.querySelector('#__next_error__'))return 'react-error';
         if(text.includes('The rider could not load.'))return 'rider-error';
         if(text.includes('The game engine could not load.'))return 'engine-error';
         if(text.includes('The 3D game could not start.'))return 'renderer-error';
@@ -38,7 +39,7 @@ const {chromium}=require('playwright');
       result=await handle.jsonValue();
     }catch(e){issues.push('Readiness timeout '+e.message.slice(0,150));}
     await page.screenshot({path:path.join(dest,'cork7-gameplay-smoke.png'),fullPage:true}).catch(()=>{});
-    const summary={url,screen:result,rider,canvasCount:await page.locator('canvas').count(),lastText:(await page.locator('body').innerText()).slice(-550),issues:issues.slice(-28)};
+    const summary={url,screen:result,rider,canvasCount:await page.locator('canvas').count(),lastText:(await page.locator('body').innerText()).slice(-1500),issues:issues.slice(-28)};
     console.log(JSON.stringify(summary,null,2));
     assert(rider.some(x=>x.status===200&&x.url.includes('/neon-district/cork7-assets/models/')),'Rider GLB must load from Neon District at HTTP 200');
     assert.equal(result,'canvas-ready','Cork7 must reach a rendered gameplay canvas after the model loads');
