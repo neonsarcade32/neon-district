@@ -11,7 +11,12 @@ dest=chunks/'game-client-ND-standalone.js'
 source=original.read_text()
 needle='import{t as i}from"./index-CYh2aJIu.js"'
 assert source.count(needle)==1,'GameClient Vite preload import changed upstream'
-dest.write_text(source.replace(needle,'import{t as i}from"./nd-standalone-vite-preload.js"'))
+# Keep the first-party Ride destination in the GitHub Pages project root.
+client=source.replace(needle,'import{t as i}from"./nd-standalone-vite-preload.js"')
+park_import='from"./parks-DyCWeej6.js"'
+assert client.count(park_import)==1, 'Missing Cork7 park route dependency'
+client=client.replace(park_import,'from"./parks-DyCWeej6.js?nd-ridefix=20261022"')
+dest.write_text(client)
 (chunks/'nd-standalone-vite-preload.js').write_text('export function t(load, deps){return load()}\n')
 extra_index_import = 'import{t as e}from"./index-CYh2aJIu.js"'
 for file in chunks.glob('*.js'):
