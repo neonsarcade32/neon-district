@@ -69,7 +69,7 @@
     try{
       var body=document.body;
       if(!body)return;
-      var errorScreen=document.getElementById('__next_error__')||/This page couldn.t load/i.test(body.innerText.slice(0,1200));
+      var errorScreen=document.getElementById('__next_error__');
       if(!errorScreen)return;
       var box=document.getElementById('nd-cork7-diagnostic-card-v2');
       if(!box){
@@ -108,7 +108,7 @@
 <link rel="stylesheet" href="cork7-assets/_next/static/css/index.DBvX0VVq.css">
 <link rel="stylesheet" href="cork7-assets/_next/static/css/game-client.Dazi9g4y.css">
 
-<link rel="modulepreload" href="cork7-assets/_next/static/chunks/game-client-ND-preload-20261022.js">
+<link rel="modulepreload" href="cork7-assets/_next/static/chunks/game-client-ND-standalone.js?nd-ridefix=20261022-v2">
 <style>
 html,body{margin:0;width:100%;min-height:100%;background:#081b25;color:#effcff}
 #cork7-root{min-height:100dvh;width:100%}
