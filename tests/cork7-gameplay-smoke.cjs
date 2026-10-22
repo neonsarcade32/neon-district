@@ -13,7 +13,22 @@ const {chromium}=require('playwright');
  const dest=path.join(__dirname,'..','test-artifacts');
  fs.mkdirSync(dest,{recursive:true});
  const url=process.env.CORK7_SMOKE_URL||'https://neonsarcade32.github.io/neon-district/cork7.html?park=nordryggen&mode=solo';
- const page=await browser.newPage({viewport:{width:1180,height:760}});
+ const context=await browser.newContext({viewport:{width:1180,height:760}});
+ if(process.env.CORK7_TEST_REMOTE!=='1'){
+   const project=path.resolve(__dirname,'..');
+   const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.glb':'model/gltf-binary','.webp':'image/webp','.png':'image/png','.jpg':'image/jpeg','.woff2':'font/woff2','.json':'application/json'};
+   await context.route('https://neonsarcade32.github.io/neon-district/**',async route=>{
+     const pathname=decodeURIComponent(new URL(route.request().url()).pathname);
+     const relative=pathname.slice('/neon-district/'.length);
+     const local=path.resolve(project,relative);
+     if(!local.startsWith(project+path.sep)||!fs.existsSync(local)||!fs.statSync(local).isFile()){
+       return route.fulfill({status:404,contentType:'text/plain',body:'Not found in checked-out Neon District'});
+     }
+     return route.fulfill({status:200,path:local,contentType:types[path.extname(local)]||'application/octet-stream',headers:{'Cache-Control':'no-store','Access-Control-Allow-Origin':'*'}});
+   });
+   console.log('Testing checked-out Cork7 files using real GitHub Pages URLs in Chromium.');
+ }
+ const page=await context.newPage();
  const issues=[],rider=[];
  page.on('pageerror',e=>issues.push('JS '+e.message));
  page.on('console',m=>{if(m.type()==='error')issues.push('Console '+m.text().slice(0,200))});
