@@ -26,13 +26,21 @@ h1{font-size:clamp(34px,5vw,64px);line-height:1;letter-spacing:-2px;margin:7px 0
 .btnPrimary{background:linear-gradient(105deg,#67ddff,#a1f3c9);color:#071623}
 .btnSecondary{background:#142436;color:#ecf8ff;border:1px solid #38556f}
 .frameWrap{position:relative;overflow:hidden;border:1px solid #4a6b83;border-radius:18px;background:radial-gradient(circle at 50% 40%,#14324e,#081320 70%);box-shadow:0 24px 70px #0008}
-.frameWrap iframe{display:block;width:100%;height:max(540px,calc(100dvh - 225px));border:0;background:#091521}
+.launchScene{position:relative;isolation:isolate;display:flex;align-items:end;min-height:clamp(400px,65vh,690px);padding:clamp(22px,6vw,75px);overflow:hidden;background:radial-gradient(circle at 76% 15%,#7dd5ff55,transparent 28%),linear-gradient(155deg,#235777 0%,#133654 40%,#091d30 95%)}
+.launchScene:before{position:absolute;content:"";inset:10% -3% -10%;background:linear-gradient(155deg,#e9f7ff,#8bbdd4 60%,#325d7a);clip-path:polygon(0 87%,24% 28%,36% 49%,58% 4%,85% 66%,100% 35%,100% 100%,0 100%);opacity:.75;z-index:-2}
+.launchScene:after{position:absolute;content:"";inset:23% -4% -5%;background:linear-gradient(175deg,#d1f7ff,#346b89 65%,#102b43);clip-path:polygon(0 85%,24% 58%,43% 77%,67% 18%,100% 78%,100% 100%,0 100%);opacity:.9;z-index:-1}
+.launchContent{max-width:640px;padding:clamp(20px,3vw,36px);border:1px solid #c5f0ff45;border-radius:22px;background:#091a2bdc;backdrop-filter:blur(15px);box-shadow:0 22px 80px #0006}
+.launchContent .eyebrow{color:#9ff5db}
+.launchContent h2{margin:10px 0 12px;font-size:clamp(28px,4vw,52px);line-height:1.04;letter-spacing:-1.8px}
+.launchContent p{margin:0 0 22px;color:#bdd7e9;line-height:1.65;font-size:13px}
+.launchContent .btn{width:fit-content}
+
 .frameHint{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px 16px;background:#0e1b2b;border-top:1px solid #2a435b;font-size:11px;color:#bbd2e5;line-height:1.6}
 .frameHint a{color:#9feaff;font-weight:900;text-decoration:underline;text-underline-offset:3px}
 .details{display:flex;gap:18px;flex-wrap:wrap;margin-top:15px;color:#b1c3d5;font-size:11px}
 .details strong{color:#e8fbff}
 footer{margin-top:18px;font-size:11px;line-height:1.6;color:#849caf}
-@media(max-width:680px){.topbar{padding:10px 13px}.heading{align-items:flex-start}.actions{width:100%}.btn{flex:1}.frameWrap{border-radius:12px}.frameWrap iframe{height:70dvh;min-height:420px}.frameHint{align-items:flex-start}}
+@media(max-width:680px){.topbar{padding:10px 13px}.heading{align-items:flex-start}.actions{width:100%}.btn{flex:1}.frameWrap{border-radius:12px}.launchScene{min-height:65dvh;padding:16px}.launchContent .btn{width:100%}.frameHint{align-items:flex-start}}
 </style>
 </head>
 <body>
@@ -52,11 +60,18 @@ footer{margin-top:18px;font-size:11px;line-height:1.6;color:#849caf}
    <a class="btn btnSecondary" href="https://cork7.com/how-to-play" target="_blank" rel="noopener noreferrer">CONTROLS ↗</a>
   </div>
  </div>
- <section class="frameWrap" aria-label="Cork7 game">
-  <iframe title="Official Cork7 browser game" src="https://cork7.com/" allow="fullscreen; gamepad; autoplay" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+ <section class="frameWrap" aria-label="Launch the official Cork7 game">
+  <div class="launchScene">
+   <div class="launchContent">
+    <div class="eyebrow">CORK7 · ORIGINAL BROWSER GAME</div>
+    <h2>YOUR MOUNTAIN.<br>YOUR LINE.</h2>
+    <p>Play the real Cork7 3D skiing game with its original parks, physics, tricks, leaderboards, and multiplayer. The official game opens in a new tab.</p>
+    <a class="btn btnPrimary" href="https://cork7.com/" target="_blank" rel="noopener noreferrer">PLAY CORK7 ↗</a>
+   </div>
+  </div>
   <div class="frameHint">
-   <span>Game not appearing? Some websites block embedded play. Neon District cannot override that restriction.</span>
-   <a href="https://cork7.com/" target="_blank" rel="noopener noreferrer">Play directly on Cork7 ↗</a>
+   <span>Cork7 prevents other websites from embedding its game, so Neon District provides a direct official launch instead.</span>
+   <a href="https://cork7.com/" target="_blank" rel="noopener noreferrer">Open official website ↗</a>
   </div>
  </section>
  <div class="details">
