@@ -1,88 +1,18 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#080e19">
-<meta name="description" content="Launch the official Cork7 skiing game from Neon District.">
-<title>Cork7 | Neon District</title>
-<style>
-:root{color-scheme:dark;--bg:#080e19;--panel:#121e30;--line:#2a435b;--text:#f4faff;--muted:#a6bed3;--ice:#75eaff;--green:#a3f3d0}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:radial-gradient(circle at 70% -20%,#174063 0,transparent 50%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-a{color:inherit;text-decoration:none}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px clamp(15px,3vw,36px);border-bottom:1px solid #ffffff19;background:#09131f;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:12px;font-weight:950;font-size:14px;letter-spacing:.6px}
-.brandmark{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:linear-gradient(125deg,#8d75ff,#52def4);color:#0c1420}
-.back{font-size:12px;font-weight:800;color:#c8e2f2;border:1px solid #395069;padding:10px 13px;border-radius:11px}
-.back:hover,.btnSecondary:hover{border-color:#6cabc7}
-main{max-width:1520px;margin:0 auto;padding:20px clamp(12px,2.5vw,34px) 38px}
-.heading{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:16px}
-.eyebrow{font-size:10px;letter-spacing:1.7px;color:var(--ice);font-weight:950}
-h1{font-size:clamp(34px,5vw,64px);line-height:1;letter-spacing:-2px;margin:7px 0 8px}
-.description{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
-.actions{display:flex;gap:10px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:43px;padding:11px 17px;border-radius:12px;font-weight:900;font-size:12px}
-.btnPrimary{background:linear-gradient(105deg,#67ddff,#a1f3c9);color:#071623}
-.btnSecondary{background:#142436;color:#ecf8ff;border:1px solid #38556f}
-.frameWrap{position:relative;overflow:hidden;border:1px solid #4a6b83;border-radius:18px;background:radial-gradient(circle at 50% 40%,#14324e,#081320 70%);box-shadow:0 24px 70px #0008}
-.launchScene{position:relative;isolation:isolate;display:flex;align-items:end;min-height:clamp(400px,65vh,690px);padding:clamp(22px,6vw,75px);overflow:hidden;background:radial-gradient(circle at 76% 15%,#7dd5ff55,transparent 28%),linear-gradient(155deg,#235777 0%,#133654 40%,#091d30 95%)}
-.launchScene:before{position:absolute;content:"";inset:10% -3% -10%;background:linear-gradient(155deg,#e9f7ff,#8bbdd4 60%,#325d7a);clip-path:polygon(0 87%,24% 28%,36% 49%,58% 4%,85% 66%,100% 35%,100% 100%,0 100%);opacity:.75;z-index:-2}
-.launchScene:after{position:absolute;content:"";inset:23% -4% -5%;background:linear-gradient(175deg,#d1f7ff,#346b89 65%,#102b43);clip-path:polygon(0 85%,24% 58%,43% 77%,67% 18%,100% 78%,100% 100%,0 100%);opacity:.9;z-index:-1}
-.launchContent{max-width:640px;padding:clamp(20px,3vw,36px);border:1px solid #c5f0ff45;border-radius:22px;background:#091a2bdc;backdrop-filter:blur(15px);box-shadow:0 22px 80px #0006}
-.launchContent .eyebrow{color:#9ff5db}
-.launchContent h2{margin:10px 0 12px;font-size:clamp(28px,4vw,52px);line-height:1.04;letter-spacing:-1.8px}
-.launchContent p{margin:0 0 22px;color:#bdd7e9;line-height:1.65;font-size:13px}
-.launchContent .btn{width:fit-content}
-
-.frameHint{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px 16px;background:#0e1b2b;border-top:1px solid #2a435b;font-size:11px;color:#bbd2e5;line-height:1.6}
-.frameHint a{color:#9feaff;font-weight:900;text-decoration:underline;text-underline-offset:3px}
-.details{display:flex;gap:18px;flex-wrap:wrap;margin-top:15px;color:#b1c3d5;font-size:11px}
-.details strong{color:#e8fbff}
-footer{margin-top:18px;font-size:11px;line-height:1.6;color:#849caf}
-@media(max-width:680px){.topbar{padding:10px 13px}.heading{align-items:flex-start}.actions{width:100%}.btn{flex:1}.frameWrap{border-radius:12px}.launchScene{min-height:65dvh;padding:16px}.launchContent .btn{width:100%}.frameHint{align-items:flex-start}}
-</style>
-</head>
-<body>
-<header class="topbar">
- <a class="brand" href="index.html" aria-label="Neon District home"><span class="brandmark">ND</span><span>NEON DISTRICT <span style="color:#89a8c0;font-weight:600">/ GAMES</span></span></a>
- <a class="back" href="index.html#discover">← ALL GAMES</a>
-</header>
-<main>
- <div class="heading">
-  <div>
-   <div class="eyebrow">SPORTS · 3D SKIING · OFFICIAL EXTERNAL GAME</div>
-   <h1>🎿 CORK7</h1>
-   <p class="description">Ski mountain parks, land tricks, and ride with friends. Play via the official Cork7 website.</p>
-  </div>
-  <div class="actions">
-   <a class="btn btnPrimary" href="neon-freeski.html">PLAY SKIING IN NEON DISTRICT ↗</a>
-   <a class="btn btnSecondary" href="https://cork7.com/" target="_blank" rel="noopener noreferrer">PLAY ORIGINAL CORK7 ↗</a>
-   <a class="btn btnSecondary" href="https://cork7.com/how-to-play" target="_blank" rel="noopener noreferrer">CONTROLS ↗</a>
-  </div>
- </div>
- <section class="frameWrap" aria-label="Launch the official Cork7 game">
-  <div class="launchScene">
-   <div class="launchContent">
-    <div class="eyebrow">CORK7 · ORIGINAL BROWSER GAME</div>
-    <h2>YOUR MOUNTAIN.<br>YOUR LINE.</h2>
-    <p>This page links to two different games: the original Cork7 on its own website, or Neon Freeski 3D, our independently built skiing game that plays inside Neon District.</p>
-    <a class="btn btnPrimary" href="neon-freeski.html">PLAY NEON FREESKI IN-SITE ↗</a>
-    <a class="btn btnSecondary" href="https://cork7.com/" target="_blank" rel="noopener noreferrer" style="margin-left:8px">ORIGINAL CORK7 ↗</a>
-   </div>
-  </div>
-  <div class="frameHint">
-   <span>The official Cork7 game cannot be embedded here. Neon Freeski 3D is our own playable skiing game; the original Cork7 opens separately.</span>
-   <a href="https://cork7.com/" target="_blank" rel="noopener noreferrer">Open official website ↗</a>
-  </div>
- </section>
- <div class="details">
-  <span><strong>STEER / SPIN:</strong> A · D</span>
-  <span><strong>JUMP:</strong> Hold and release Space</span>
-  <span><strong>SKIP LIFT:</strong> F</span>
-  <span><strong>PAUSE:</strong> Esc / P</span>
- </div>
- <footer>Cork7 is an independent game operated by its own creators. Neon District does not host, copy, or modify its game files. Accounts, saves, multiplayer, and connectivity are managed by Cork7.</footer>
-</main>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Cork7 · Neon District</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#102b35;color:white;font-family:system-ui}main{text-align:center;padding:24px}a{color:#99e2ff}</style></head><body><main id="fallback"><h1>Loading Cork7…</h1><p>Loading the original skiing game inside Neon District.</p></main><script>
+(async()=>{
+ try{
+  const url='https://cork7.com/';
+  const response=await fetch(url,{mode:'cors',credentials:'omit',cache:'no-cache'});
+  if(!response.ok)throw new Error('Cork7 responded with HTTP '+response.status);
+  let html=await response.text();
+  if(!html.includes('<head>')||!html.includes('</html>'))throw new Error('Unexpected game response');
+  const bridgeUrl=new URL('cork7-bridge.js',location.href).href;
+  const bootstrap='<base href="https://cork7.com/"><scr'+'ipt src="'+bridgeUrl+'"></scr'+'ipt>';
+  html=html.replace('<head>','<head>'+bootstrap);
+  document.open();document.write(html);document.close();
+ }catch(err){
+  console.error('Neon District Cork7 loader:',err);
+  document.getElementById('fallback').innerHTML='<h1>Cork7 could not load</h1><p>The game is temporarily unavailable through this page.</p><p><a href="https://cork7.com/" rel="noopener noreferrer" target="_blank">Open Cork7 directly ↗</a></p>';
+ }
+})();
+</script></body></html>
