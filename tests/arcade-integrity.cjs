@@ -71,7 +71,7 @@ for(const html of pages){
 }
 for(const js of files.filter(x=>x.endsWith('.js'))){
   if(js==='server.js')continue;
-  checkSyntax(read(js),js.startsWith('open-platformer-'),js);
+  checkSyntax(read(js),js.startsWith('open-platformer-')||js==='neon-freeski.js',js);
 }
 // Check exact imported MIT code and data references (no missing level files).
 for(const game of ['open-2048','open-platformer','open-offroad']){
