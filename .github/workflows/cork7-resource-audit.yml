@@ -9,6 +9,7 @@ on:
       - .github/workflows/cork7-resource-audit.yml
       - cork7.html
       - cork7-standalone.js
+      - cork7-assets/_next/static/chunks/game-client-ND-standalone.js
       - cork7-bridge.js
       - cork7-assets/music/**
       - cork7-assets/updates/**
