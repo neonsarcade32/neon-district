@@ -2,7 +2,7 @@
 const { chromium } = require('playwright');
 const fs = require('node:fs');
 const assert = require('node:assert/strict');
-const URL = 'https://neonsarcade32.github.io/neon-district/cork7-standalone.html?park=nordryggen&mode=solo&nd_smoke=standalone';
+const URL = 'https://neonsarcade32.github.io/neon-district/cork7-standalone.html?park=nordryggen&mode=solo&nd_smoke=after-preload-routing';
 
 (async () => {
  const browser = await chromium.launch({headless:true,args:[
