@@ -43,6 +43,12 @@ expect(read('cork7.html').includes('id="nd-cork7-mobile-entry"'),'iPad must use 
 const cork7=read('cork7.html');
 expect(cork7.includes('<base href="https://cork7.com/">'),'Cork7 must resolve licensed source assets');
 expect(cork7.includes('id="nd-cork7-bridge"'),'Cork7 must include inline same-origin navigation bridge');
+expect(cork7.includes('id="nd-cork7-diag"'),'Cork7 must capture browser crash diagnostics');
+const cork7Runtime=read('cork7-assets/_next/static/chunks/index-CYh2aJIu.js');
+expect(cork7Runtime.includes('Crash diagnostics — screenshot this section'),'Cork7 must reveal underlying runtime failure on error screen');
+expect(cork7Runtime.includes('Choose another mountain'),'Cork7 must offer recovery to park launcher');
+checkSyntax(cork7Runtime,true,'Cork7 Next.js error boundary module');
+
 expect(cork7.includes('game-client-'),'Cork7 must include the original game bootstrap');
 expect(cork7.includes('mountain-ride.is-ride'),'Cork7 must support solo park launch');
 expect(cork7.includes('button.bc-start.rd-start'),'Cork7 must include iPad Ride button recovery');
