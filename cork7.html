@@ -1,4 +1,54 @@
-<!DOCTYPE html><html lang="en"><head><script id="nd-cork7-diag">(function(){if(window.__ndCork7Log)return;var log=window.__ndCork7Log=[];function save(msg){try{log.push(String(msg).slice(0,280));if(log.length>12)log.shift()}catch(e){}}window.addEventListener('error',function(e){save('ERROR: '+(e.message||'Resource load failed')+' '+(e.filename||e.target?.src||e.target?.href||''))},true);window.addEventListener('unhandledrejection',function(e){save('PROMISE: '+String(e.reason?.stack||e.reason||'rejected'))});document.addEventListener('webglcontextlost',function(e){save('WEBGL CONTEXT LOST');},true);var originalError=console.error;console.error=function(){try{save('CONSOLE: '+Array.from(arguments).map(function(a){return a instanceof Error?a.message:String(a)}).join(' ').slice(0,200))}catch(e){}return originalError.apply(console,arguments)}})();</script><script id="nd-cork7-mobile-entry">(function(){try{var i=/iPad|iPhone|iPod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);if(i&&!new URL(location.href).searchParams.has("park")){location.replace(new URL("cork7-start.html",location.href).href)}}catch(e){}})();</script><base href="https://cork7.com/"><style id="nd-cork7-fallback-css">body{margin:0;min-height:100vh;background:#091821}.cork7-mark{max-width:min(94vw,540px);height:auto}</style><script id="nd-cork7-bridge">/* Cork7 integration bridge for Neon District — uses the official client at runtime. */
+<!DOCTYPE html><html lang="en"><head><script id="nd-cork7-diag">(function(){if(window.__ndCork7Log)return;var log=window.__ndCork7Log=[];function save(msg){try{log.push(String(msg).slice(0,280));if(log.length>12)log.shift()}catch(e){}}window.addEventListener('error',function(e){save('ERROR: '+(e.message||'Resource load failed')+' '+(e.filename||e.target?.src||e.target?.href||''))},true);window.addEventListener('unhandledrejection',function(e){save('PROMISE: '+String(e.reason?.stack||e.reason||'rejected'))});document.addEventListener('webglcontextlost',function(e){save('WEBGL CONTEXT LOST');},true);var originalError=console.error;console.error=function(){try{save('CONSOLE: '+Array.from(arguments).map(function(a){return a instanceof Error?a.message:String(a)}).join(' ').slice(0,200))}catch(e){}return originalError.apply(console,arguments)}})();</script><script id="nd-cork7-error-panel-v2">(function(){
+  if(window.__ndCork7PanelInstalled)return;
+  window.__ndCork7PanelInstalled=true;
+  var logs=window.__ndCork7Log||[];
+  window.__ndCork7Log=logs;
+  var started=Date.now();
+  function save(x){try{logs.push(String(x).slice(0,450));if(logs.length>22)logs.shift()}catch(_){}}
+  save('Cork7 diagnostics v2 activated');
+  window.addEventListener('error',function(e){save('JS / RESOURCE: '+(e.message||'load error')+' '+(e.filename||e.target&&e.target.src||''))},true);
+  window.addEventListener('unhandledrejection',function(e){save('PROMISE: '+String(e.reason&&e.reason.stack||e.reason))});
+  document.addEventListener('webglcontextlost',function(){save('WEBGL CONTEXT LOST')},true);
+  function update(){
+    try{
+      var body=document.body;
+      if(!body)return;
+      var errorScreen=document.getElementById('__next_error__')||/This page couldn.t load/i.test(body.innerText.slice(0,1200));
+      if(!errorScreen)return;
+      var box=document.getElementById('nd-cork7-diagnostic-card-v2');
+      if(!box){
+        box=document.createElement('section');
+        box.id='nd-cork7-diagnostic-card-v2';
+        box.setAttribute('aria-label','Cork7 crash diagnostics');
+        box.style.cssText='box-sizing:border-box;position:fixed;bottom:12px;left:12px;right:12px;z-index:2147483647;background:#103044;color:#e7faff;border:2px solid #65d7ed;border-radius:12px;box-shadow:0 8px 35px #000e;padding:12px;max-height:40dvh;overflow:auto;font:12px/1.5 system-ui,-apple-system,sans-serif;text-align:left';
+        var title=document.createElement('strong');
+        title.textContent='CORK7 CRASH DIAGNOSTICS · V2';
+        title.style.cssText='display:block;color:#8ff5de;font-size:14px;margin-bottom:6px';
+        var detail=document.createElement('pre');
+        detail.id='nd-cork7-diagnostic-message-v2';
+        detail.style.cssText='white-space:pre-wrap;overflow-wrap:anywhere;margin:4px 0 10px;max-height:16dvh;overflow:auto;font:11px/1.45 ui-monospace,monospace';
+        var back=document.createElement('a');
+        back.textContent='Choose another mountain ↗';
+        back.href='https://neonsarcade32.github.io/neon-district/cork7-start.html';
+        back.style.cssText='display:inline-block;padding:7px 11px;background:#93e7f7;color:#052437;text-decoration:none;border-radius:8px;font-weight:800;margin-right:10px';
+        var copy=document.createElement('button');
+        copy.textContent='Copy diagnostics';
+        copy.style.cssText='padding:8px 11px;border:1px solid #94c9e1;border-radius:8px;background:#153a54;color:white;font:inherit;cursor:pointer';
+        copy.addEventListener('click',function(){var value=detail.textContent||'';if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(value).then(function(){copy.textContent='Copied!'}).catch(function(){copy.textContent='Screenshot this instead'})}else{copy.textContent='Screenshot this instead'}});
+        box.appendChild(title);box.appendChild(detail);box.appendChild(back);box.appendChild(copy);body.appendChild(box);
+      }
+      var pre=box.querySelector('#nd-cork7-diagnostic-message-v2');
+      if(pre){
+        var out='URL: '+location.pathname+location.search+'\nUser agent: '+navigator.userAgent.slice(0,110)+'\nTime since page loaded: '+Math.round((Date.now()-started)/1000)+' seconds\n';
+        out+='RECENT ERRORS:\n'+(logs.length?logs.slice(-9).join('\n'):'No browser error captured — the underlying exception may have been handled by React.');
+        if(pre.textContent!==out)pre.textContent=out;
+      }
+    }catch(_){}
+  }
+  setInterval(update,550);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',update);
+  update();
+})();</script><script id="nd-cork7-mobile-entry">(function(){try{var i=/iPad|iPhone|iPod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);if(i&&!new URL(location.href).searchParams.has("park")){location.replace(new URL("cork7-start.html",location.href).href)}}catch(e){}})();</script><base href="https://cork7.com/"><style id="nd-cork7-fallback-css">body{margin:0;min-height:100vh;background:#091821}.cork7-mark{max-width:min(94vw,540px);height:auto}</style><script id="nd-cork7-bridge">/* Cork7 integration bridge for Neon District — uses the official client at runtime. */
 (()=>{'use strict';
  for(const name of ['pushState','replaceState']){
   const original=History.prototype[name];
