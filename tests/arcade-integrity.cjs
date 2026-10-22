@@ -36,9 +36,11 @@ expect(browserLab.includes('each person starts their own cloud browser'),'Browse
 expect(entries.length===40,'Expected 40 games in catalog; found '+entries.length);
 expect(index.includes("id:'cork7',name:'Cork7',file:'cork7.html'"),'Cork7 must appear in game catalog');
 const cork7=read('cork7.html');
-expect(cork7.includes('href="https://cork7.com/"'),'Cork7 launcher must use the official game URL');
-expect(cork7.includes('ORIGINAL CORK7'),'Cork7 launcher must provide the official game link');
-expect(!cork7.includes('<iframe'),'Cork7 disallows third-party embedding; do not display a broken frame');
+expect(cork7.includes('id="nd-cork7-bridge"'),'Cork7 self-hosted client must include navigation bridge');
+expect(cork7.includes('<base href="https://cork7.com/">'),'Cork7 client must resolve licensed original assets');
+expect(cork7.includes('mountain-ride.is-ride'),'Cork7 client must keep solo gameplay on Neon District origin');
+expect(cork7.includes('https://cork7.com/_next/static/'),'Cork7 client must load real game bundles');
+expect(!cork7.includes('<iframe'),'Cork7 must load as a real client and not in a blocked iframe');
 expect(index.includes("id:'neonfreeski',name:'Neon Freeski 3D',file:'neon-freeski.html'"),'Neon Freeski must appear in catalog');
 expect(read('neon-freeski.html').includes('neon-freeski.js'),'Native ski game must load its own source');
 expect(read('neon-freeski.js').includes('function updateInput'),'Native ski game movement and physics logic missing');
