@@ -31,6 +31,8 @@ jobs:
       - name: Install headless Chromium
         run: npx playwright install --with-deps chromium
       - name: Test live Cork7 model request and gameplay startup
+        env:
+          CORK7_TEST_REMOTE: '1'
         run: node tests/cork7-gameplay-smoke.cjs
       - name: Upload actual startup screenshot
         if: always()
