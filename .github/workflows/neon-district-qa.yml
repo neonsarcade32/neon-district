@@ -30,6 +30,8 @@ jobs:
         run: npm run test:bowlingPhysics
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
+      - name: Cork7 iPad crash overlay regression
+        run: node tests/cork7-crash-diagnostics.cjs
       - name: Start arcade test server
         run: |
           node server.js > /tmp/neon-district-server.log 2>&1 &
