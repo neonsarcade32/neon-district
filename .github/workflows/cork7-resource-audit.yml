@@ -1,0 +1,41 @@
+name: Cork7 iPad resource and performance audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - tests/cork7-resource-audit.cjs
+      - .github/workflows/cork7-resource-audit.yml
+      - cork7.html
+      - cork7-standalone.js
+      - cork7-bridge.js
+      - cork7-assets/music/**
+      - cork7-assets/models/**
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install test runtime
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Audit two mountain game sessions and missing game assets
+        run: node tests/cork7-resource-audit.cjs
+      - name: Keep visual audit screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cork7-resource-audit
+          path: test-artifacts/cork7-audit-*.png
+          if-no-files-found: ignore
+          retention-days: 5
