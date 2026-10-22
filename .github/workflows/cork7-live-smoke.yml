@@ -1,0 +1,36 @@
+name: Cork7 live first-party gameplay smoke test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/cork7-live-smoke.yml
+      - tests/cork7-live-smoke.cjs
+
+permissions:
+  contents: read
+
+jobs:
+  launch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test dependencies
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Launch deployed Cork7, load rider and verify game is ready
+        run: node tests/cork7-live-smoke.cjs
+      - name: Save live game screenshot for debugging
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cork7-live-browser
+          path: test-artifacts/cork7-live-smoke.png
+          if-no-files-found: ignore
+          retention-days: 7
