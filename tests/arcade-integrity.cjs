@@ -36,8 +36,9 @@ expect(browserLab.includes('each person starts their own cloud browser'),'Browse
 expect(entries.length===39,'Expected 39 games in catalog; found '+entries.length);
 expect(index.includes("id:'cork7',name:'Cork7',file:'cork7.html'"),'Cork7 must appear in game catalog');
 const cork7=read('cork7.html');
-expect(cork7.includes('src="https://cork7.com/"'),'Cork7 launcher must use the official game URL');
-expect(cork7.includes('OPEN FULL GAME'),'Cork7 launcher must provide direct-play fallback');
+expect(cork7.includes('href="https://cork7.com/"'),'Cork7 launcher must use the official game URL');
+expect(cork7.includes('PLAY CORK7'),'Cork7 launcher must provide direct-play link');
+expect(!cork7.includes('<iframe'),'Cork7 disallows third-party embedding; do not display a broken frame');
 expect(new Set(entries.map(x=>x.id)).size===entries.length,'Duplicate game catalog ID');
 expect(new Set(entries.map(x=>x.file)).size===entries.length,'Duplicate game catalog path');
 for(const e of entries)expect(fs.existsSync(path.join(root,e.file)),'Missing game page '+e.name+': '+e.file);
