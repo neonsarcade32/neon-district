@@ -31,7 +31,9 @@ for(const origin of roots){
 }
 const html=fs.readFileSync(path.join(root,'cork7.html'),'utf8');
 assert(html.includes('id="nd-cork7-cachefix-importmap"'),'Cork7 must remap cached original imports');
-assert(html.includes('index-ND-preload-20261022.js'),'Cork7 must load its fresh runtime');
-assert(html.includes('game-client-ND-preload-20261022.js'),'Cork7 must load its fresh game module');
+assert(html.includes('cork7-standalone.js'),'Cork7 must start its native first-party game runtime');
+const nativeBoot=fs.readFileSync(path.join(root,'cork7-standalone.js'),'utf8');
+assert(nativeBoot.includes('game-client-ND-standalone.js'),'Cork7 must load its standalone original game module');
+assert(fs.existsSync(path.join(root,'cork7-assets/_next/static/chunks/game-client-ND-standalone.js')),'Cork7 native game bundle must exist');
 assert(!html.includes('index-CYh2aJIu.js?v=neon-preload-fix-1022'),'Old Vite preload cache URL must not remain in the launch HTML');
-console.log('PASS Cork7 preloads '+resources.length+' original JS/CSS dependencies from Neon District on '+roots.length+' origins with cache-busted game modules.');
+console.log('PASS Cork7 mirrors '+resources.length+' CSS/JS dependencies on '+roots.length+' origins, and uses its native standalone original game bundle.');
