@@ -49,6 +49,14 @@ for(const m of originalCSS)expect(fs.existsSync(path.join(root,m[1])),'Missing m
 const originalJS=[...cork7.matchAll(/(?:src|href)="https:\/\/neonsarcade32\.github\.io\/neon-district\/(cork7-assets\/_next\/static\/chunks\/[^"]+)"/g)];
 expect(originalJS.length>=20,'Cork7 first-party JS assets missing');
 for(const m of originalJS)expect(fs.existsSync(path.join(root,m[1])),'Missing mirrored Cork7 runtime '+m[1]);
+const cork7ChunksDir=path.join(root,'cork7-assets','_next','static','chunks');
+const cork7Chunks=fs.readdirSync(cork7ChunksDir).filter(name=>name.endsWith('.js'));
+expect(cork7Chunks.length>=39,'Incomplete Cork7 client module mirror');
+for(const chunk of cork7Chunks){
+ const source=fs.readFileSync(path.join(cork7ChunksDir,chunk),'utf8');
+ const references=[...source.matchAll(/\.\/([\w.-]+\.js)/g)].map(m=>m[1]);
+ for(const ref of references)expect(fs.existsSync(path.join(cork7ChunksDir,ref)),'Missing Cork7 module '+ref+' imported by '+chunk);
+}
 expect(!cork7.includes("fetch(url,{mode:'cors'"),'Cork7 must not dynamically fetch the upstream HTML at runtime');
 expect(!cork7.includes('<iframe'),'Cork7 must not rely on a blocked iframe');
 const cork7Bridge=read('cork7-bridge.js');
