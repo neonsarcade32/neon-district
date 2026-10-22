@@ -34,7 +34,7 @@ const {chromium}=require('playwright');
         const canvas=document.querySelector('canvas');
         if(canvas&&canvas.width>100&&canvas.height>100&&!document.querySelector('.bc-load-content'))return 'canvas-ready';
         return false;
-      },{timeout:75000,polling:700});
+      },undefined,{timeout:75000,polling:700});
       result=await handle.jsonValue();
     }catch(e){issues.push('Readiness timeout '+e.message.slice(0,150));}
     await page.screenshot({path:path.join(dest,'cork7-gameplay-smoke.png'),fullPage:true}).catch(()=>{});
