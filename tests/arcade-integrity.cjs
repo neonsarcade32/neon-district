@@ -33,12 +33,15 @@ expect(browserLab.includes('bash browser-lab/start.sh'),'Browser Lab guide missi
 expect(browserLab.includes('Keep visibility <strong>Private</strong>'),'Browser Lab guide must keep proxy port private');
 expect(browserLab.includes('docker stop nd-personal-browser'),'Browser Lab guide must include stop command');
 expect(browserLab.includes('each person starts their own cloud browser'),'Browser Lab must accurately describe session separation');
-expect(entries.length===39,'Expected 39 games in catalog; found '+entries.length);
+expect(entries.length===40,'Expected 40 games in catalog; found '+entries.length);
 expect(index.includes("id:'cork7',name:'Cork7',file:'cork7.html'"),'Cork7 must appear in game catalog');
 const cork7=read('cork7.html');
 expect(cork7.includes('href="https://cork7.com/"'),'Cork7 launcher must use the official game URL');
-expect(cork7.includes('PLAY CORK7'),'Cork7 launcher must provide direct-play link');
+expect(cork7.includes('ORIGINAL CORK7'),'Cork7 launcher must provide the official game link');
 expect(!cork7.includes('<iframe'),'Cork7 disallows third-party embedding; do not display a broken frame');
+expect(index.includes("id:'neonfreeski',name:'Neon Freeski 3D',file:'neon-freeski.html'"),'Neon Freeski must appear in catalog');
+expect(read('neon-freeski.html').includes('neon-freeski.js'),'Native ski game must load its own source');
+expect(read('neon-freeski.js').includes('function updateInput'),'Native ski game movement and physics logic missing');
 expect(new Set(entries.map(x=>x.id)).size===entries.length,'Duplicate game catalog ID');
 expect(new Set(entries.map(x=>x.file)).size===entries.length,'Duplicate game catalog path');
 for(const e of entries)expect(fs.existsSync(path.join(root,e.file)),'Missing game page '+e.name+': '+e.file);
@@ -68,7 +71,7 @@ for(const html of pages){
 }
 for(const js of files.filter(x=>x.endsWith('.js'))){
   if(js==='server.js')continue;
-  checkSyntax(read(js),js.startsWith('open-platformer-'),js);
+  checkSyntax(read(js),js.startsWith('open-platformer-')||js==='neon-freeski.js',js);
 }
 // Check exact imported MIT code and data references (no missing level files).
 for(const game of ['open-2048','open-platformer','open-offroad']){
