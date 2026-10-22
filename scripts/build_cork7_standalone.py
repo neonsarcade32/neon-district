@@ -16,6 +16,11 @@ client=source.replace(needle,'import{t as i}from"./nd-standalone-vite-preload.js
 park_import='from"./parks-DyCWeej6.js"'
 assert client.count(park_import)==1, 'Missing Cork7 park route dependency'
 client=client.replace(park_import,'from"./parks-DyCWeej6.js?nd-ridefix=20261022"')
+# This static mirror includes MP4 tracks, not OGG. Avoid a failed OGG probe
+# and an additional audio request before playback begins on Chromium.
+music_choice='this.format=typeof e.canPlayType==`function`&&e.canPlayType(`audio/ogg; codecs=opus`)?`ogg`:`mp4`'
+assert client.count(music_choice)==1, 'Music format selector changed upstream'
+client=client.replace(music_choice,'this.format=`mp4`')
 dest.write_text(client)
 (chunks/'nd-standalone-vite-preload.js').write_text('export function t(load, deps){return load()}\n')
 extra_index_import = 'import{t as e}from"./index-CYh2aJIu.js"'
