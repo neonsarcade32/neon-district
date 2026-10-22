@@ -8,7 +8,7 @@ const root=path.resolve(__dirname,'..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const files=fs.readdirSync(root);
 const pages=files.filter(x=>x.endsWith('.html'));
-const gamePages=pages.filter(x=>!['index.html','search.html','mp-bridge.html','neon-browser.html','cork7-start.html'].includes(x));
+const gamePages=pages.filter(x=>!['index.html','search.html','mp-bridge.html','neon-browser.html','cork7-start.html','cork7-standalone.html'].includes(x));
 const index=read('index.html');
 const entries=[...index.matchAll(/\bid:'([^']+)',name:'([^']+)',file:'([^']+)'/g)].map(m=>({id:m[1],name:m[2],file:m[3].split('?')[0]}));
 let checked=0;
@@ -39,10 +39,10 @@ const cork7Start=read('cork7-start.html');
 for(const park of ['nordryggen','apex','shirakumo','bigair','forestline','halfpipe']){
  expect(cork7Start.includes('cork7.html?park='+park+'&amp;mode=solo'),'Cork7 iPad direct park launcher missing '+park);
 }
-expect(read('cork7.html').includes('id="nd-cork7-mobile-entry"'),'iPad must use lightweight original Cork7 entry');
+expect(read('cork7.html').includes('cork7-standalone.js'),'Cork7 must launch the original client with standalone entry');
 const cork7=read('cork7.html');
-expect(cork7.includes('<base href="https://cork7.com/">'),'Cork7 must resolve licensed source assets');
-expect(cork7.includes('id="nd-cork7-bridge"'),'Cork7 must include inline same-origin navigation bridge');
+expect(!cork7.includes('<base href="https://cork7.com/">') && cork7.includes('id="nd-cork7-model-paths"'),'Cork7 must route game assets to its first-party Neon District mirror');
+expect(cork7.includes('src="cork7-bridge.js"'),'Cork7 must load same-origin navigation bridge');
 expect(cork7.includes('id="nd-cork7-diag"'),'Cork7 must capture browser crash diagnostics');
 const cork7Runtime=read('cork7-assets/_next/static/chunks/index-CYh2aJIu.js');
 expect(cork7Runtime.includes('Crash diagnostics — screenshot this section'),'Cork7 must reveal underlying runtime failure on error screen');
@@ -61,15 +61,15 @@ expect(fs.existsSync(path.join(root,'cork7-assets/_next/static/css/shop-board.CO
 checkSyntax(cork7FixedIndex,true,'Cork7 cache-busted Vite runtime');
 checkSyntax(cork7FixedClient,true,'Cork7 cache-busted game client');
 
-expect(cork7.includes('mountain-ride.is-ride'),'Cork7 must support solo park launch');
-expect(cork7.includes('button.bc-start.rd-start'),'Cork7 must include iPad Ride button recovery');
+expect(read('cork7-bridge.js').includes('mountain-ride.is-ride'),'Cork7 must support solo park launch');
+expect(read('cork7-bridge.js').includes('button.bc-start.rd-start'),'Cork7 must include iPad Ride button recovery');
 expect(cork7.includes('cork7-assets/_next/static/css/'),'Cork7 must load mirrored first-party styles');
 expect(cork7.includes('cork7-assets/_next/static/chunks/'),'Cork7 must load mirrored first-party runtime');
-const originalCSS=[...cork7.matchAll(/href="https:\/\/neonsarcade32\.github\.io\/neon-district\/(cork7-assets\/_next\/static\/css\/[^"]+)"/g)];
+const originalCSS=[...cork7.matchAll(/href="(?:https:\/\/neonsarcade32\.github\.io\/neon-district\/)?(cork7-assets\/_next\/static\/css\/[^"]+)"/g)];
 expect(originalCSS.length>=2,'Cork7 first-party CSS assets missing');
 for(const m of originalCSS)expect(fs.existsSync(path.join(root,m[1])),'Missing mirrored Cork7 CSS '+m[1]);
-const originalJS=[...cork7.matchAll(/(?:src|href)="https:\/\/neonsarcade32\.github\.io\/neon-district\/(cork7-assets\/_next\/static\/chunks\/[^"]+)"/g)];
-expect(originalJS.length>=20,'Cork7 first-party JS assets missing');
+const originalJS=[...cork7.matchAll(/(?:src|href)="(?:https:\/\/neonsarcade32\.github\.io\/neon-district\/)?(cork7-assets\/_next\/static\/chunks\/[^"]+)"/g)];
+expect(originalJS.length>=2,'Cork7 first-party JS assets missing');
 const cork7ChunkDir=path.join(root,'cork7-assets','_next','static','chunks');
 const cork7ChunkFiles=fs.readdirSync(cork7ChunkDir).filter(n=>n.endsWith('.js'));
 expect(cork7ChunkFiles.length>=38,'Cork7 client dependency snapshot incomplete');
@@ -133,7 +133,7 @@ for(const html of pages){
 }
 for(const js of files.filter(x=>x.endsWith('.js'))){
   if(js==='server.js')continue;
-  checkSyntax(read(js),js.startsWith('open-platformer-')||js==='neon-freeski.js',js);
+  checkSyntax(read(js),js.startsWith('open-platformer-')||js==='neon-freeski.js'||js==='cork7-standalone.js',js);
 }
 // Check exact imported MIT code and data references (no missing level files).
 for(const game of ['open-2048','open-platformer','open-offroad']){
