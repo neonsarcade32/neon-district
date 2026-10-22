@@ -7,6 +7,9 @@ on:
     paths:
       - .github/workflows/cork7-gameplay-smoke.yml
       - tests/cork7-gameplay-smoke.cjs
+      - cork7.html
+      - cork7-assets/_next/static/chunks/**
+      - cork7-assets/models/**
 
 permissions:
   contents: read
