@@ -8,6 +8,9 @@ on:
       - .github/workflows/cork7-gameplay-smoke.yml
       - tests/cork7-gameplay-smoke.cjs
       - cork7.html
+      - cork7-standalone.js
+      - cork7-assets/_next/static/chunks/index-ND-preload-20261022.js
+      - cork7.html
       - cork7-assets/_next/static/chunks/**
       - cork7-assets/models/**
 
