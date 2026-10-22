@@ -66,7 +66,7 @@ async function audit(browser,park,viewport){
    missing:[...missing].sort(),critical,failedMusic:music,errors:errors.slice(0,12),text};
   console.log('CORK7 AUDIT '+JSON.stringify(summary,null,2));
   fs.mkdirSync(path.join(project,'test-artifacts'),{recursive:true});
-  await page.screenshot({path:path.join(project,'test-artifacts','cork7-audit-'+park+'.png')}).catch(()=>{});
+  await page.screenshot({path:path.join(project,'test-artifacts','cork7-audit-'+park+'.png'),animations:'disabled',timeout:7500}).catch(e=>console.warn('Optional screenshot unavailable:',e.message.slice(0,110)));
   assert.equal(state,'ready','Cork7 '+park+' must initialize real gameplay');
   assert.equal(summary.riderHttp,200,'Skier model must be loaded locally on '+park);
   assert.equal(critical.length,0,'Missing critical 3D/script/style assets for '+park+': '+critical.join('; '));
