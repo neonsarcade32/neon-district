@@ -40,6 +40,15 @@ expect(cork7.includes('<base href="https://cork7.com/">'),'Cork7 must resolve li
 expect(cork7.includes('id="nd-cork7-bridge"'),'Cork7 must include inline same-origin navigation bridge');
 expect(cork7.includes('game-client-'),'Cork7 must include the original game bootstrap');
 expect(cork7.includes('mountain-ride.is-ride'),'Cork7 must support solo park launch');
+expect(cork7.includes('button.bc-start.rd-start'),'Cork7 must include iPad Ride button recovery');
+expect(cork7.includes('cork7-assets/_next/static/css/'),'Cork7 must load mirrored first-party styles');
+expect(cork7.includes('cork7-assets/_next/static/chunks/'),'Cork7 must load mirrored first-party runtime');
+const originalCSS=[...cork7.matchAll(/href="https:\/\/neonsarcade32\.github\.io\/neon-district\/(cork7-assets\/_next\/static\/css\/[^"]+)"/g)];
+expect(originalCSS.length>=2,'Cork7 first-party CSS assets missing');
+for(const m of originalCSS)expect(fs.existsSync(path.join(root,m[1])),'Missing mirrored Cork7 CSS '+m[1]);
+const originalJS=[...cork7.matchAll(/(?:src|href)="https:\/\/neonsarcade32\.github\.io\/neon-district\/(cork7-assets\/_next\/static\/chunks\/[^"]+)"/g)];
+expect(originalJS.length>=20,'Cork7 first-party JS assets missing');
+for(const m of originalJS)expect(fs.existsSync(path.join(root,m[1])),'Missing mirrored Cork7 runtime '+m[1]);
 expect(!cork7.includes("fetch(url,{mode:'cors'"),'Cork7 must not dynamically fetch the upstream HTML at runtime');
 expect(!cork7.includes('<iframe'),'Cork7 must not rely on a blocked iframe');
 const cork7Bridge=read('cork7-bridge.js');
