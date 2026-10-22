@@ -36,9 +36,11 @@ expect(browserLab.includes('each person starts their own cloud browser'),'Browse
 expect(entries.length===40,'Expected 40 games in catalog; found '+entries.length);
 expect(index.includes("id:'cork7',name:'Cork7',file:'cork7.html'"),'Cork7 must appear in game catalog');
 const cork7=read('cork7.html');
-expect(cork7.includes("fetch(url,{mode:'cors'"),'Cork7 must load the original game client');
-expect(cork7.includes('cork7-bridge.js'),'Cork7 must install Neon District navigation bridge');
-expect(cork7.includes('https://cork7.com/'),'Cork7 must retain upstream source origin');
+expect(cork7.includes('<base href="https://cork7.com/">'),'Cork7 must resolve licensed source assets');
+expect(cork7.includes('id="nd-cork7-bridge"'),'Cork7 must include inline same-origin navigation bridge');
+expect(cork7.includes('game-client-'),'Cork7 must include the original game bootstrap');
+expect(cork7.includes('mountain-ride.is-ride'),'Cork7 must support solo park launch');
+expect(!cork7.includes("fetch(url,{mode:'cors'"),'Cork7 must not dynamically fetch the upstream HTML at runtime');
 expect(!cork7.includes('<iframe'),'Cork7 must not rely on a blocked iframe');
 const cork7Bridge=read('cork7-bridge.js');
 expect(cork7Bridge.includes('History.prototype'),'Navigation bridge must keep game on Neon District origin');
@@ -58,6 +60,8 @@ for(const html of pages){
   for(const ref of refs){
     const raw=ref[2];
     if(/^(?:https?:|\/\/|data:)/i.test(raw))continue;
+    // The licensed Cork7 client uses an explicit remote <base>; root-relative assets resolve to cork7.com.
+    if(html==='cork7.html' && src.includes('<base href="https://cork7.com/">') && raw.startsWith('/'))continue;
     const file=raw.split(/[?#]/)[0];
     if(!file)continue;
     expect(fs.existsSync(path.join(root,file)),html+': missing static asset '+file);
@@ -65,6 +69,8 @@ for(const html of pages){
   }
   for(const [n,script] of [...src.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].entries()){
     if(!script[2].trim())continue;
+    // Structured-data JSON is not executable JavaScript.
+    if(/\btype=["'](?:application\/ld\+json|application\/json)["']/i.test(script[1]))continue;
     if(/\btype=["']importmap["']/i.test(script[1])) {
       try{const data=JSON.parse(script[2]);expect(data&&typeof data.imports==='object',html+' invalid module importmap')}
       catch(e){problems.push(html+' bad importmap: '+e.message)}
