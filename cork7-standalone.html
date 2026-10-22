@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a1e2e">
+<title>Cork7 — Play inside Neon District</title>
+<meta name="description" content="Cork7 original freeski game, hosted with permission inside Neon District.">
+<link rel="stylesheet" href="cork7-assets/_next/static/css/index.DBvX0VVq.css">
+<link rel="stylesheet" href="cork7-assets/_next/static/css/game-client.Dazi9g4y.css">
+<style>
+html,body,#nd-cork7-native-root{margin:0;width:100%;min-height:100%;height:100%;overflow:hidden;background:#081b2b;color:#f6fbff;font-family:system-ui,sans-serif}
+#nd-cork7-fatal{position:fixed;inset:auto 12px 12px;z-index:2147483600;padding:14px;border:1px solid #97dff0;border-radius:12px;background:#123249;color:white;display:none;white-space:pre-wrap;overflow-wrap:anywhere;max-height:50vh;overflow:auto;font-size:12px}
+#nd-cork7-fatal a{color:#a2f1ff}
+</style>
+</head>
+<body>
+<div id="nd-cork7-native-root"></div>
+<div id="nd-cork7-fatal" role="alert"></div>
+<script>
+window.__CORK7_ART__ = {shot:0,saveData:false};
+var __corkErrs = [];
+function ndCatchError(s){__corkErrs.push(String(s));if(__corkErrs.length>12)__corkErrs.shift();}
+addEventListener("error", e=>ndCatchError(e.message||e.target?.src||e.target?.href||"Resource failed"),true);
+addEventListener("unhandledrejection", e=>ndCatchError(e.reason?.stack||e.reason||"rejection"));
+window.__ndCork7Crash=function(reason){
+ const el=document.getElementById('nd-cork7-fatal');
+ el.style.display='block';
+ el.textContent="CORK7 LOADING ERROR\n"+String(reason)+"\n"+__corkErrs.slice(-8).join("\n");
+ const br=document.createElement('div');
+ const a=document.createElement('a');a.href="cork7-start.html";a.textContent="Back to mountains";br.appendChild(a);el.appendChild(br);
+};
+</script>
+<script type="module">
+try {
+ const [f,g] = await Promise.all([
+   import('./cork7-assets/_next/static/chunks/framework-D_rUT4EX.js'),
+   import('./cork7-assets/_next/static/chunks/game-client-ND-standalone.js')
+ ]);
+ const React = f.i();
+ const ReactDOM = f.t();
+ const GameClient = g.default;
+ if(!React?.createElement || !ReactDOM?.createRoot || !GameClient)throw new Error('React game entry could not initialize');
+ const root = ReactDOM.createRoot(document.getElementById('nd-cork7-native-root'));
+ root.render(React.createElement(GameClient));
+ window.__ndCork7StandaloneStarted = true;
+} catch(error) {
+ console.error('Cork7 native bootstrap failed',error);
+ window.__ndCork7Crash(error.stack||error.message||error);
+}
+</script>
+</body></html>
