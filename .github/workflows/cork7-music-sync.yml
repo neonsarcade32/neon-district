@@ -1,0 +1,37 @@
+name: Sync Cork7 licensed game music
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/sync_cork7_music.py
+      - .github/workflows/cork7-music-sync.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cork7-music-sync
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 13
+    steps:
+      - uses: actions/checkout@v4
+      - name: Mirror game soundtrack with existing Creative Commons attribution
+        run: python3 scripts/sync_cork7_music.py
+      - name: Commit validated audio assets to the arcade
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cork7-assets/music/
+          if git diff --cached --quiet; then
+            echo "No soundtrack changes"
+            exit 0
+          fi
+          git commit -m "Host original Cork7 CC-attributed music inside Neon District"
+          git pull --rebase origin main
+          git push origin HEAD:main
