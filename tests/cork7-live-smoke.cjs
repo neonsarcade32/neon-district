@@ -2,7 +2,7 @@
 const { chromium } = require('playwright');
 const fs = require('node:fs');
 const assert = require('node:assert/strict');
-const URL = 'https://neonsarcade32.github.io/neon-district/cork7.html?park=nordryggen&mode=solo&nd_smoke=20261022';
+const URL = 'https://neonsarcade32.github.io/neon-district/cork7-standalone.html?park=nordryggen&mode=solo&nd_smoke=standalone';
 
 (async () => {
  const browser = await chromium.launch({headless:true,args:[
@@ -46,7 +46,7 @@ const URL = 'https://neonsarcade32.github.io/neon-district/cork7.html?park=nordr
   await page.screenshot({path:'test-artifacts/cork7-live-smoke.png',fullPage:false}).catch(console.warn);
   assert(!state.fatal,'Cork7 has a visible startup failure: '+state.fatal);
   assert(models.some(x=>x.status===200),'Original rider GLB was not successfully loaded from Neon District');
-  assert.equal(state.path,'/neon-district/cork7.html','The user must remain on the embedded Neon District game URL');
+  assert.equal(state.path,'/neon-district/cork7-standalone.html','The user must remain on the embedded Neon District game URL');
   assert(ready && state.ready,'Cork7 did not finish loading 3D rider on a real browser');
   console.log('PASS: Cork7 rider asset 200, React game ready, local URL preserved.');
  }finally {await browser.close();}
