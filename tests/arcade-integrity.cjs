@@ -72,7 +72,7 @@ expect(cork7ChunkFiles.includes('meshopt_decoder.module-rFMdj35V.js'),'Cork7 3D 
 const cork7Engine=fs.readFileSync(path.join(cork7ChunkDir,'engine-mtSWjbmj.js'),'utf8');
 expect(cork7Engine.includes('globalThis.AudioContext||globalThis.webkitAudioContext'),'Cork7 audio startup must support WebKit and handle missing Web Audio');
 expect(cork7ChunkFiles.includes('park-collisions-CMcAqrzs.js'),'Cork7 park collision geometry must be mirrored');
-for(const m of originalJS)expect(fs.existsSync(path.join(root,m[1])),'Missing mirrored Cork7 runtime '+m[1]);
+for(const m of originalJS)expect(fs.existsSync(path.join(root,m[1].split('?')[0])),'Missing mirrored Cork7 runtime '+m[1]);
 const cork7ChunksDir=path.join(root,'cork7-assets','_next','static','chunks');
 const cork7Chunks=fs.readdirSync(cork7ChunksDir).filter(name=>name.endsWith('.js'));
 expect(cork7Chunks.length>=39,'Incomplete Cork7 client module mirror');
