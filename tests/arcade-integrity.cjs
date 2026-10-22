@@ -8,7 +8,7 @@ const root=path.resolve(__dirname,'..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const files=fs.readdirSync(root);
 const pages=files.filter(x=>x.endsWith('.html'));
-const gamePages=pages.filter(x=>!['index.html','search.html','mp-bridge.html','neon-browser.html'].includes(x));
+const gamePages=pages.filter(x=>!['index.html','search.html','mp-bridge.html','neon-browser.html','cork7-start.html'].includes(x));
 const index=read('index.html');
 const entries=[...index.matchAll(/\bid:'([^']+)',name:'([^']+)',file:'([^']+)'/g)].map(m=>({id:m[1],name:m[2],file:m[3].split('?')[0]}));
 let checked=0;
@@ -35,6 +35,11 @@ expect(browserLab.includes('docker stop nd-personal-browser'),'Browser Lab guide
 expect(browserLab.includes('each person starts their own cloud browser'),'Browser Lab must accurately describe session separation');
 expect(entries.length===40,'Expected 40 games in catalog; found '+entries.length);
 expect(index.includes("id:'cork7',name:'Cork7',file:'cork7.html'"),'Cork7 must appear in game catalog');
+const cork7Start=read('cork7-start.html');
+for(const park of ['nordryggen','apex','shirakumo','bigair','forestline','halfpipe']){
+ expect(cork7Start.includes('cork7.html?park='+park+'&amp;mode=solo'),'Cork7 iPad direct park launcher missing '+park);
+}
+expect(read('cork7.html').includes('id="nd-cork7-mobile-entry"'),'iPad must use lightweight original Cork7 entry');
 const cork7=read('cork7.html');
 expect(cork7.includes('<base href="https://cork7.com/">'),'Cork7 must resolve licensed source assets');
 expect(cork7.includes('id="nd-cork7-bridge"'),'Cork7 must include inline same-origin navigation bridge');
