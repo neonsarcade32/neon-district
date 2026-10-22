@@ -50,6 +50,17 @@ expect(cork7Runtime.includes('Choose another mountain'),'Cork7 must offer recove
 checkSyntax(cork7Runtime,true,'Cork7 Next.js error boundary module');
 
 expect(cork7.includes('game-client-'),'Cork7 must include the original game bootstrap');
+
+const cork7FixedIndex=read('cork7-assets/_next/static/chunks/index-ND-preload-20261022.js');
+const cork7FixedClient=read('cork7-assets/_next/static/chunks/game-client-ND-preload-20261022.js');
+expect(cork7FixedIndex.includes('Tl=function(e){return new URL(`../../../`+e,import.meta.url).href}'),'Cork7 runtime must resolve lazy-loaded CSS and scripts from mirrored module URL');
+expect(cork7.includes('id="nd-cork7-cachefix-importmap"'),'Cork7 bootstrap must map stale module imports to the corrected client');
+expect(cork7.includes('index-ND-preload-20261022.js'),'Cork7 must load a fresh Vite runtime');
+expect(cork7.includes('game-client-ND-preload-20261022.js'),'Cork7 must load a fresh game module');
+expect(fs.existsSync(path.join(root,'cork7-assets/_next/static/css/shop-board.COTUkOfh.css')),'Cork7 shop CSS preload must be available locally');
+checkSyntax(cork7FixedIndex,true,'Cork7 cache-busted Vite runtime');
+checkSyntax(cork7FixedClient,true,'Cork7 cache-busted game client');
+
 expect(cork7.includes('mountain-ride.is-ride'),'Cork7 must support solo park launch');
 expect(cork7.includes('button.bc-start.rd-start'),'Cork7 must include iPad Ride button recovery');
 expect(cork7.includes('cork7-assets/_next/static/css/'),'Cork7 must load mirrored first-party styles');
