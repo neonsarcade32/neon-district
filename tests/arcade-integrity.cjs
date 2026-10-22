@@ -55,7 +55,7 @@ const cork7FixedIndex=read('cork7-assets/_next/static/chunks/index-ND-preload-20
 const cork7FixedClient=read('cork7-assets/_next/static/chunks/game-client-ND-preload-20261022.js');
 expect(cork7FixedIndex.includes('Tl=function(e){return new URL(`../../../`+e,import.meta.url).href}'),'Cork7 runtime must resolve lazy-loaded CSS and scripts from mirrored module URL');
 expect(cork7.includes('id="nd-cork7-cachefix-importmap"'),'Cork7 bootstrap must map stale module imports to the corrected client');
-expect(cork7.includes('index-ND-preload-20261022.js'),'Cork7 must load a fresh Vite runtime');
+expect(cork7.includes('cork7-standalone.js'),'Cork7 must load its direct first-party game runtime');
 expect(cork7.includes('game-client-ND-preload-20261022.js'),'Cork7 must load a fresh game module');
 expect(fs.existsSync(path.join(root,'cork7-assets/_next/static/css/shop-board.COTUkOfh.css')),'Cork7 shop CSS preload must be available locally');
 checkSyntax(cork7FixedIndex,true,'Cork7 cache-busted Vite runtime');
@@ -69,7 +69,7 @@ const originalCSS=[...cork7.matchAll(/href="(?:https:\/\/neonsarcade32\.github\.
 expect(originalCSS.length>=2,'Cork7 first-party CSS assets missing');
 for(const m of originalCSS)expect(fs.existsSync(path.join(root,m[1])),'Missing mirrored Cork7 CSS '+m[1]);
 const originalJS=[...cork7.matchAll(/(?:src|href)="(?:https:\/\/neonsarcade32\.github\.io\/neon-district\/)?(cork7-assets\/_next\/static\/chunks\/[^"]+)"/g)];
-expect(originalJS.length>=2,'Cork7 first-party JS assets missing');
+expect(originalJS.length>=1 && cork7.includes('cork7-standalone.js'),'Cork7 first-party JS assets missing');
 const cork7ChunkDir=path.join(root,'cork7-assets','_next','static','chunks');
 const cork7ChunkFiles=fs.readdirSync(cork7ChunkDir).filter(n=>n.endsWith('.js'));
 expect(cork7ChunkFiles.length>=38,'Cork7 client dependency snapshot incomplete');
