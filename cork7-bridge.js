@@ -23,7 +23,7 @@
   }
   const button=event.target.closest?.('button.mountain-ride.is-ride');
   if(!button||!button.textContent.includes('RIDE SOLO'))return;
-  const card=document.querySelector('.mountain-card');
+  const card=button.closest('.mountain-card') || document.querySelector('.mountain-card');
   const park=card?.className.match(/card-([a-z0-9-]+)/i)?.[1];
   if(!park)return;
   event.preventDefault();event.stopImmediatePropagation();
