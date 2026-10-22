@@ -13,16 +13,18 @@ needle='import{t as i}from"./index-CYh2aJIu.js"'
 assert source.count(needle)==1,'GameClient Vite preload import changed upstream'
 dest.write_text(source.replace(needle,'import{t as i}from"./nd-standalone-vite-preload.js"'))
 (chunks/'nd-standalone-vite-preload.js').write_text('export function t(load, deps){return load()}\n')
-preload_pattern = re.compile(r'import\\{t as ([A-Za-z_$][A-Za-z0-9_$]*)\\}from"\\./index-CYh2aJIu\\.js"')
+extra_index_import = 'import{t as e}from"./index-CYh2aJIu.js"'
 for file in chunks.glob('*.js'):
     if file.name.startswith('index-') or file.name.startswith('game-client-') or file.name.startswith('nd-'):
         continue
     text=file.read_text()
     if 'from"./index-CYh2aJIu.js"' not in text:
         continue
-    modified,count=preload_pattern.subn(lambda m: 'import{t as '+m.group(1)+'}from"./nd-standalone-vite-preload.js"',text)
-    if count==0 or 'from"./index-CYh2aJIu.js"' in modified:
-        raise RuntimeError('Unrecognized Vinext import in '+file.name)
-    file.write_text(modified)
+    if extra_index_import not in text:
+        raise RuntimeError('Unexpected Vinext module import in '+file.name)
+    updated=text.replace(extra_index_import,'import{t as e}from"./nd-standalone-vite-preload.js"')
+    if 'from"./index-CYh2aJIu.js"' in updated:
+        raise RuntimeError('Vinext dependency remains in '+file.name)
+    file.write_text(updated)
     print('REMOVED VINEXT BOOTSTRAP FROM',file.name)
 print('PASS: game-client standalone module created',dest.stat().st_size)
