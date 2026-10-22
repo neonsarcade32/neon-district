@@ -31,3 +31,7 @@ The existing Cork7 Sports card launches the actual Cork7 browser client from `co
 #### iPad Safari loading fix (October 22, 2026)
 
 The original Cork7 HTML referenced resources on a different origin, producing an unstyled page with a nonresponsive Ride button for some iPad users. We now serve its primary CSS, JavaScript bundles, and game engine from the Neon District site. The inline entry bridge also provides a safe solo-route fallback when the Ride handler does not initialize. The game is tested in an emulated iPad browser, but real Safari/WebKit and account-dependent features require device verification. `cork7-assets` is a snapshot of the upstream game's client files; keep their rights/attribution and update matched hashes together if the upstream game changes.
+
+#### Cork7 WebKit module completeness
+
+The mirrored client now includes the complete transitive JavaScript chunk dependency graph (39 chunks), including the missing `meshopt_decoder.module-rFMdj35V.js` and park-collision modules. Without the decoder, selecting a park could reach 100% on the loading screen without initializing the mountain. `tests/arcade-integrity.cjs` checks every referenced relative JavaScript chunk to catch omissions. The original audio, image, texture, and non-JS external resources may still be fetched from cork7.com; this remains an authorized integration, not a fully independent server or authenticated multiplayer backend.
