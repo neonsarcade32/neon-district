@@ -454,7 +454,7 @@ document.addEventListener('keydown',e=>{
  const code=e.code;
  if(['Space','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(code))e.preventDefault();
  if(code==='KeyP'||code==='Escape'){togglePause();return}
- if(code==='KeyR'){if(started){screen.hidden=true;paused=false;over=false;reset();lastFrame=performance.now();requestAnimationFrame(frame)}return}
+ if(code==='KeyR'){if(started){const wasPaused=paused;screen.hidden=true;paused=false;over=false;reset();lastFrame=performance.now();if(wasPaused)requestAnimationFrame(frame)}return}
  if((code==='Space'||code==='Enter')&&!started&&screen.hidden===false){startGame();return}
  keys.add(code);
 });
