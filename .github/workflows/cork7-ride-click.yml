@@ -1,0 +1,35 @@
+name: Cork7 Ride click regression
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/cork7-ride-click.yml
+      - tests/cork7-ride-click.cjs
+
+permissions:
+  contents: read
+
+jobs:
+  click-ride:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Launch Cork7 lobby and click Ride
+        run: node tests/cork7-ride-click.cjs
+      - name: Save screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cork7-ride-navigation
+          path: test-artifacts/cork7-ride-click.png
+          if-no-files-found: ignore
