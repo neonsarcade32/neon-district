@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><base href="https://cork7.com/"><script type="importmap">{"imports":{"https://neonsarcade32.github.io/neon-district/cork7-assets/_next/static/chunks/park-collisions-CMcAqrzs.js":"https://cork7.com/_next/static/chunks/park-collisions-CMcAqrzs.js"}}</script><script id="nd-cork7-bridge">/* Cork7 integration bridge for Neon District — uses the official client at runtime. */
+<!DOCTYPE html><html lang="en"><head><base href="https://cork7.com/"><style id="nd-cork7-fallback-css">body{margin:0;min-height:100vh;background:#091821}.cork7-mark{max-width:min(94vw,540px);height:auto}</style><script type="importmap">{"imports":{"https://neonsarcade32.github.io/neon-district/cork7-assets/_next/static/chunks/park-collisions-CMcAqrzs.js":"https://cork7.com/_next/static/chunks/park-collisions-CMcAqrzs.js"}}</script><script id="nd-cork7-bridge">/* Cork7 integration bridge for Neon District — uses the official client at runtime. */
 (()=>{'use strict';
  for(const name of ['pushState','replaceState']){
   const original=History.prototype[name];
@@ -11,6 +11,16 @@
   };
  }
  document.addEventListener('click',event=>{
+  // If third-party hydration does not attach a Ride handler (common in restrictive iPad browsers),
+  // provide a native solo route instead of leaving the button apparently inert.
+  if(event.target.closest?.('button.bc-start.rd-start')){
+   setTimeout(()=>{
+    if(document.querySelector('.mountain-selector') || location.search.includes('park='))return;
+    const direct=new URL(location.href);direct.searchParams.set('park','nordryggen');direct.searchParams.set('mode','solo');
+    location.assign(direct.href);
+   },1600);
+   return;
+  }
   const button=event.target.closest?.('button.mountain-ride.is-ride');
   if(!button||!button.textContent.includes('RIDE SOLO'))return;
   const card=document.querySelector('.mountain-card');
