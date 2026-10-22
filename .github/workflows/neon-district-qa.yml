@@ -24,6 +24,8 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Static checks — every game, source file and asset
         run: npm run test:arcade
+      - name: Cork7 dynamic asset routing regression
+        run: node tests/cork7-preload-urls.cjs
       - name: 3D Bowling scoring rules
         run: npm run test:bowling
       - name: Bowling 3.1 honest physics, gutter and rack unit tests
