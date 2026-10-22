@@ -11,6 +11,7 @@ on:
       - cork7-standalone.js
       - cork7-bridge.js
       - cork7-assets/music/**
+      - cork7-assets/updates/**
       - cork7-assets/models/**
 
 permissions:
