@@ -82,7 +82,7 @@ app.get('/mp/jsonp', (req, res) => {
 });
 // Serve browser game scripts as well as pages; never serve server.js or dependencies.
 const PUBLIC_GAME_SCRIPTS = new Set([
-  'arcade-polish.js', 'nd3-art.js', 'neon-freeski.js', 'cork7-bridge.js', 'cork7-standalone.js', 'beat-tiles.js', 'bowling-2.js', 'bowling-physics.mjs',
+  'arcade-polish.js', 'nd3-art.js', 'neon-freeski.js', 'cork7-bridge.js', 'cork7-standalone.js', 'cork7-neon-friends.js', 'beat-tiles.js', 'bowling-2.js', 'bowling-physics.mjs',
   'circuit-hacker.js', 'claw-machine.js', 'color-dash-2.js',
   'game-pack-2.js', 'highway-2.js', 'laser-defender.js',
   'mini-pack.js', 'new-games.js', 'penalty-2.js', 'rooftop-run.js',
