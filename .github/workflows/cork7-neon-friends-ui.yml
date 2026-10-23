@@ -1,0 +1,26 @@
+name: Neon District Cork7 friends UI browser test
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - cork7-neon-friends.js
+      - cork7-neon-friends.css
+      - cork7.html
+      - tests/cork7-neon-friends-browser.cjs
+      - .github/workflows/cork7-neon-friends-ui.yml
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: Exercise signed-in and signed-out Neon friend panels
+        run: node tests/cork7-neon-friends-browser.cjs
