@@ -56,6 +56,7 @@ const cork7FixedClient=read('cork7-assets/_next/static/chunks/game-client-ND-pre
 expect(cork7FixedIndex.includes('Tl=function(e){return new URL(`../../../`+e,import.meta.url).href}'),'Cork7 runtime must resolve lazy-loaded CSS and scripts from mirrored module URL');
 expect(cork7.includes('id="nd-cork7-cachefix-importmap"'),'Cork7 bootstrap must map stale module imports to the corrected client');
 expect(cork7.includes('cork7-standalone.js'),'Cork7 must load its direct first-party game runtime');
+expect(cork7.includes('cork7-neon-friends.js')&&cork7.includes('cork7-neon-friends.css'),'Neon District Cork7 friends panel must be included');
 expect(cork7.includes('game-client-ND-preload-20261022.js'),'Cork7 must load a fresh game module');
 expect(fs.existsSync(path.join(root,'cork7-assets/_next/static/css/shop-board.COTUkOfh.css')),'Cork7 shop CSS preload must be available locally');
 checkSyntax(cork7FixedIndex,true,'Cork7 cache-busted Vite runtime');
@@ -133,7 +134,7 @@ for(const html of pages){
 }
 for(const js of files.filter(x=>x.endsWith('.js'))){
   if(js==='server.js')continue;
-  checkSyntax(read(js),js.startsWith('open-platformer-')||js==='neon-freeski.js'||js==='cork7-standalone.js',js);
+  checkSyntax(read(js),js.startsWith('open-platformer-')||js==='neon-freeski.js'||js==='cork7-standalone.js'||js==='cork7-neon-friends.js',js);
 }
 // Check exact imported MIT code and data references (no missing level files).
 for(const game of ['open-2048','open-platformer','open-offroad']){
