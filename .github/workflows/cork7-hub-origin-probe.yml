@@ -1,0 +1,23 @@
+name: Cork7 friends presence connectivity diagnosis
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - tests/cork7-hub-origin-probe.cjs
+      - .github/workflows/cork7-hub-origin-probe.yml
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install WebSocket dependency
+        run: npm ci --no-audit --no-fund
+      - name: Compare original-site and Neon District friend hub origins
+        run: node tests/cork7-hub-origin-probe.cjs
