@@ -57,6 +57,13 @@ async function run(){
  while(Date.now()<until&&!seen())await new Promise(resolve=>setTimeout(resolve,120));
  assert(seen(),'Second client must receive the first client presence record');
  console.log('PASS: two independent Neon District sessions see each other ONLINE through Supabase Realtime');
+ const invite={v:1,from:firstKey,to:secondKey,park:'apex',at:Date.now()};
+ a.socket.send(JSON.stringify(['1','3',topic,'broadcast',{type:'broadcast',event:'neon-mountain-invite',payload:invite}]));
+ const inviteReceived=()=>b.events.some(({event,payload})=>event==='broadcast'&&payload?.event==='neon-mountain-invite'&&payload?.payload?.from===firstKey&&payload?.payload?.to===secondKey);
+ const deliveryDeadline=Date.now()+8000;
+ while(Date.now()<deliveryDeadline&&!inviteReceived())await new Promise(resolve=>setTimeout(resolve,120));
+ assert(inviteReceived(),'Second client must receive a preset mountain invitation broadcast');
+ console.log('PASS: first client can send a mountain invitation and second client receives it');
 }
 run().catch(e=>{console.error('FAIL:',e.message);process.exitCode=1}).finally(()=>{
  for(const socket of clients){try{socket.terminate()}catch{}}
