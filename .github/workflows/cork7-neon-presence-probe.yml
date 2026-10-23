@@ -5,6 +5,10 @@ on:
     branches: [main]
     paths:
       - tests/cork7-neon-presence-probe.cjs
+      - tests/cork7-neon-presence-pair.cjs
+      - cork7-neon-friends.js
+      - cork7-neon-friends.css
+      - cork7.html
       - .github/workflows/cork7-neon-presence-probe.yml
 permissions:
   contents: read
@@ -18,5 +22,9 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-audit --no-fund
+      - name: Syntax-check independent friends module
+        run: node --check cork7-neon-friends.js
       - name: Verify available realtime presence channel
         run: node tests/cork7-neon-presence-probe.cjs
+      - name: Verify two online participants can see each other
+        run: node tests/cork7-neon-presence-pair.cjs
