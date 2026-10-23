@@ -1,0 +1,22 @@
+name: Neon District Cork7 independent presence probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - tests/cork7-neon-presence-probe.cjs
+      - .github/workflows/cork7-neon-presence-probe.yml
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - name: Verify available realtime presence channel
+        run: node tests/cork7-neon-presence-probe.cjs
