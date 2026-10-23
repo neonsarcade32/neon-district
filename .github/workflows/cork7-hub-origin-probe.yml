@@ -18,6 +18,6 @@ jobs:
         with:
           node-version: '22'
       - name: Install WebSocket dependency
-        run: npm ci --no-audit --no-fund
+        run: npm install --no-audit --no-fund
       - name: Compare original-site and Neon District friend hub origins
         run: node tests/cork7-hub-origin-probe.cjs
