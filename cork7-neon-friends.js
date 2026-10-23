@@ -231,7 +231,7 @@ async function stopChannel(){
 }
 async function startForSession(session){
  const uid=session?.user?.id||null;
- if(uid===state.userId&&((!uid)||state.channel))return;
+ if(uid===state.userId&&((uid&&state.channel)||(!uid&&state.status==='signed-out')))return;
  const generation=++state.generation;
  state.userId=uid;
  state.selfKey=null;
@@ -309,6 +309,7 @@ async function start(){
    if(state.authorized&&Date.now()-state.lastFriendRefresh>60000)void refreshFriends(state.generation);
   });
   window.addEventListener('online',()=>void publishPresence(state.generation));
+  window.addEventListener('pageshow',()=>void publishPresence(state.generation));
   window.addEventListener('pagehide',()=>{if(state.channel)void state.channel.untrack().catch(()=>{});});
  }catch(error){
   state.status='unavailable';
