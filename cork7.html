@@ -116,6 +116,90 @@ html,body{margin:0;width:100%;min-height:100%;background:#081b25;color:#effcff}
 #nd-cork7-startup-status{position:fixed;inset:0;display:grid;place-content:center;text-align:center;font:700 18px/1.5 system-ui,sans-serif;color:#9cecf2;background:#071824;z-index:40}
 #nd-cork7-startup-status span{font-size:12px;font-weight:400;color:#bbd1dc}
 </style>
+<script id="nd-cork7-offline-registration">
+(function(){
+  if (!('serviceWorker' in navigator) || location.protocol === 'file:') return;
+  var workerUrl = new URL('cork7-offline-sw.js', location.href);
+  var scopeUrl = new URL('./', location.href);
+  navigator.serviceWorker.register(workerUrl.href, {scope: scopeUrl.pathname})
+    .then(function(reg){
+      window.__ndCork7Offline = {registered:true, scope:reg.scope};
+      if (window.__ndCork7Log) window.__ndCork7Log.push('Offline asset cache registered; assets are saved as they load online.');
+    })
+    .catch(function(error){
+      window.__ndCork7Offline = {registered:false, error:String(error)};
+      if (window.__ndCork7Log) window.__ndCork7Log.push('Offline cache registration failed: '+String(error));
+    });
+})();
+</script>
+<script id="nd-cork7-offline-ready-ui">
+(function(){
+  'use strict';
+  function start(){
+    if(document.getElementById('nd-cork7-offline-ready'))return;
+    var panel=document.createElement('section');
+    panel.id='nd-cork7-offline-ready';
+    panel.setAttribute('aria-label','Cork7 offline readiness');
+    panel.style.cssText='position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);right:10px;z-index:2147483000;max-width:min(290px,calc(100vw - 20px));padding:9px 11px;border:1px solid #477387;border-radius:12px;background:rgba(5,24,36,.94);box-shadow:0 5px 22px #0008;color:#e9fbff;font:12px/1.4 system-ui,-apple-system,sans-serif;backdrop-filter:blur(8px)';
+    var line=document.createElement('div');
+    line.style.cssText='display:flex;align-items:center;gap:7px;font-weight:800';
+    var dot=document.createElement('span');
+    dot.style.cssText='display:inline-block;width:9px;height:9px;flex:0 0 9px;border-radius:50%;background:#e5b85c';
+    var title=document.createElement('span');title.textContent='Checking offline readiness…';
+    line.appendChild(dot);line.appendChild(title);
+    var detail=document.createElement('div');
+    detail.style.cssText='margin-top:4px;color:#bad2dc;font-weight:400';
+    detail.textContent='Checking cached game files';
+    var button=document.createElement('button');
+    button.type='button';button.textContent='Check again';
+    button.style.cssText='margin-top:7px;padding:5px 9px;border:1px solid #477387;border-radius:7px;background:#12384a;color:#effcff;font:inherit;font-weight:700;cursor:pointer';
+    panel.appendChild(line);panel.appendChild(detail);panel.appendChild(button);document.body.appendChild(panel);
+    var busy=false;
+    async function check(){
+      if(busy)return;busy=true;title.textContent='Checking offline readiness…';dot.style.background='#e5b85c';
+      try{
+        if(!('caches' in window)){title.textContent='Offline cache unavailable';detail.textContent='This browser does not support cached offline files.';return}
+        var names=await caches.keys(),cacheNames=names.filter(function(n){return n.indexOf('nd-cork7-static-')===0});
+        var keys=[],cacheCount=0;
+        for(var i=0;i<cacheNames.length;i++){
+          var c=await caches.open(cacheNames[i]),k=await c.keys();cacheCount+=k.length;keys=keys.concat(k.map(function(req){return new URL(req.url).pathname}));
+        }
+        function has(path){return keys.some(function(p){return p.endsWith(path)})}
+        var required=[
+          ['cork7.html','Cork7 game page'],
+          ['cork7-start.html','Mountain selection page'],
+          ['cork7-bridge.js','Game bridge'],
+          ['cork7-standalone.js','Standalone game loader'],
+          ['cork7-assets/_next/static/css/index.DBvX0VVq.css','Main game styles'],
+          ['cork7-assets/_next/static/chunks/game-client-ND-standalone.js','Game engine bundle']
+        ];
+        var missing=required.filter(function(item){return !has(item[0])}).map(function(item){return item[1]});
+        var controller=!!(navigator.serviceWorker&&navigator.serviceWorker.controller);
+        var online=navigator.onLine;
+        if(missing.length===0&&cacheCount>=required.length&&controller){
+          title.textContent=online?'Ready to try offline':'Offline cache available';
+          dot.style.background='#57e39a';
+          detail.textContent=cacheCount+' cached files. Core files found; a full offline run is not yet guaranteed.';
+        }else{
+          title.textContent=online?'Not ready for offline':'Offline files missing';
+          dot.style.background='#ff7979';
+          var reasons=[];
+          if(!controller)reasons.push('reload once to activate the offline worker');
+          if(missing.length)reasons.push('missing: '+missing.join(', '));
+          if(cacheCount<required.length)reasons.push('only '+cacheCount+' cached files found');
+          detail.textContent=reasons.join(' · ')||'Connect online, reload Cork7, then play a full run to cache more assets.';
+        }
+      }catch(e){title.textContent='Could not check cache';dot.style.background='#ff7979';detail.textContent='Browser cache access failed: '+String(e&&e.message||e)}
+      finally{busy=false}
+    }
+    button.addEventListener('click',check);
+    window.addEventListener('online',check);window.addEventListener('offline',check);
+    if(navigator.serviceWorker)navigator.serviceWorker.addEventListener('controllerchange',check);
+    check();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script>
 </head>
 <body>
 <div id="cork7-root"></div>
