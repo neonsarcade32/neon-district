@@ -6,7 +6,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
-const roots = ['cork7.html', 'cork7-bridge.js', 'cork7-assets'];
+const roots = ['cork7.html', 'cork7-offline-sw.js', 'cork7-bridge.js', 'cork7-assets'];
 const files = [];
 
 function walk(target) {
