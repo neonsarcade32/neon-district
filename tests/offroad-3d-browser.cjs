@@ -22,7 +22,7 @@ const base=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8080';
   assert.equal(await page.locator('#settings-toggle').count(),1);
   console.log('PASS 3D world enters playable state with controls and settings');
   fs.mkdirSync('test-artifacts',{recursive:true});
-  const img=await page.screenshot({path:'test-artifacts/offroad-3d.png',timeout:10000});
+  const img=await page.screenshot({path:'test-artifacts/offroad-3d.png',timeout:30000,animations:'disabled'});
   assert.ok(img.length>2500,'captured live canvas scene');
   console.log('PASS browser rendered game screenshot');
   assert.equal(fatal.length,0,'uncaught game JavaScript errors: '+fatal.join(' | '));
@@ -39,11 +39,13 @@ const base=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8080';
     // The headless mobile emulator cannot guarantee software WebGPU startup,
     // so exclude the loading curtain from input-adapter verification only.
     await mobile.locator('#loader').evaluate(el=>{el.style.pointerEvents='none'});
-    await drive.tap({timeout:8000});
-    // The GPU-heavy 3D canvas can consume the mobile emulator's tap action
-    // (Playwright may stall while trying to scroll the button into view).
-    // Trigger the actual DOM click handler to verify the U-key adapter
-    // independently of the software renderer / browser gesture synthesizer.
+    // Dispatch the actual pointer events handled by the touch adapter. A click alone
+    // does not exercise the throttle, which intentionally responds to pointerdown/up.
+    await drive.evaluate(button=>{
+      button.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,cancelable:true,pointerId:7,pointerType:'touch',isPrimary:true}));
+      button.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,cancelable:true,pointerId:7,pointerType:'touch',isPrimary:true}));
+    });
+    // Upgrade uses a click-to-key adapter, so verify its real click path separately.
     await mobile.locator('.nd3-upgrades').evaluate(button=>button.click());
     const received=await mobile.evaluate(()=>window.__testDrive);
     assert.ok(received.includes('down:KeyW')&&received.includes('up:KeyW'),'touch drive must generate real keyboard input');

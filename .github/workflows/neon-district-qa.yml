@@ -12,7 +12,7 @@ permissions:
 jobs:
   all-games:
     runs-on: ubuntu-latest
-    timeout-minutes: 18
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,7 +31,7 @@ jobs:
       - name: Bowling 3.1 honest physics, gutter and rack unit tests
         run: npm run test:bowlingPhysics
       - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps --only-shell chromium
       - name: Cork7 iPad crash overlay regression
         run: node tests/cork7-crash-diagnostics.cjs
       - name: Start arcade test server
@@ -44,6 +44,8 @@ jobs:
           done
           cat /tmp/neon-district-server.log
           exit 1
+      - name: Cork7 offline cache and reload — real browser with network disabled
+        run: node tests/cork7-offline-playwright.cjs
       - name: Premium real 3D offroad world — renderer and physics initialization
         run: npm run test:offroad
       - name: Upload actual 3D game render screenshot

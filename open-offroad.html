@@ -2946,7 +2946,7 @@ addEventListener('resize', () => {
  const emit=(type,code)=>dispatchEvent(new KeyboardEvent(type,{bubbles:true,code,key:code.replace(/^Key/,'')}));
  const release=b=>{const code=active.get(b);if(!code)return;active.delete(b);b.classList.remove('active');emit('keyup',code)};
  document.querySelectorAll('[data-nd3-drive]').forEach(b=>{
-  b.addEventListener('pointerdown',e=>{e.preventDefault();if(active.has(b))return;active.set(b,b.dataset.nd3Drive);b.classList.add('active');b.setPointerCapture(e.pointerId);emit('keydown',b.dataset.nd3Drive)});
+  b.addEventListener('pointerdown',e=>{e.preventDefault();if(active.has(b))return;active.set(b,b.dataset.nd3Drive);b.classList.add('active');try{b.setPointerCapture(e.pointerId)}catch(_){/* Synthetic events and older browsers may not support pointer capture. */}emit('keydown',b.dataset.nd3Drive)});
   ['pointerup','pointercancel','lostpointercapture'].forEach(type=>b.addEventListener(type,()=>release(b)));
  });
  document.querySelectorAll('[data-nd3-tap]').forEach(b=>b.addEventListener('click',()=>{emit('keydown',b.dataset.nd3Tap);emit('keyup',b.dataset.nd3Tap)}));

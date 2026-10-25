@@ -25,7 +25,8 @@ async function inspect(page,name,standard,wide,save){
    canvasCount:document.querySelectorAll('canvas').length,
    gameUI:!!document.querySelector('.nd3-commandbar'),
    cardCount:document.querySelectorAll('.gameCard').length,
-   visualCards:document.querySelectorAll('.gameCard svg').length
+   visualCards:document.querySelectorAll('.gameCard svg').length,
+   textLength:(document.body.innerText||'').trim().length
   };
  });
  if(standard){
@@ -36,6 +37,10 @@ async function inspect(page,name,standard,wide,save){
   if(name!=='idle'&&!summary.gameUI)issues.push('missing ND3 game tools');
   if(!['reaction','tap','idle'].includes(name)&&summary.canvasCount<1)issues.push('missing game canvas');
   if(summary.stageHeight<120)issues.push('missing game screen');
+ }else if(name==='cork7'||name==='neonfreeski'){
+  // These games intentionally use standalone clients, not the shared ND3 shell.
+  if(!summary.headingVisible)issues.push('missing visible standalone game title');
+  if(summary.textLength<20)issues.push('standalone game page has no meaningful visible content');
  }else if(name==='pixelhop'||name==='open2048'||name==='offroad'){
   if(name!=='offroad'&&!summary.headingVisible)issues.push('missing visible imported game title');
   if(name!=='offroad'&&summary.stageHeight<120)issues.push('missing source game play area');
@@ -69,7 +74,7 @@ async function inspect(page,name,standard,wide,save){
      const response=await page.goto(base+'/'+g.page,{waitUntil:'domcontentloaded',timeout:30000});
      assert.equal(response.status(),200);
      await page.waitForTimeout(g.id==='city'||g.id==='bowling'?1300:120);
-     const standard=!['home','city','bowling','pixelhop','open2048','offroad'].includes(g.id);
+     const standard=!['home','city','bowling','pixelhop','open2048','offroad','cork7','neonfreeski'].includes(g.id);
      const r=await inspect(page,g.id,standard,wide,g.id==='home'||selection.has(g.id));
      if(r.issues.length)failures.push((wide?'desktop ':'mobile ')+g.id+': '+r.issues.join('; '));
      else {checks++;console.log('PASS '+(wide?'desktop':'mobile')+' '+g.id+(standard?' · shared ND3 game interface':''))}
