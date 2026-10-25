@@ -84,7 +84,7 @@ self.addEventListener('fetch', (event) => {
     }
 
     const cache = await caches.open(CACHE_NAME);
-    const cached = await cache.match(request);
+    const cached = await cache.match(request, request.mode === 'navigate' ? {ignoreSearch:true} : undefined);
     if (cached) return cached;
 
     try {
