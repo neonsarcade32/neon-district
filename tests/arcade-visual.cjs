@@ -25,7 +25,8 @@ async function inspect(page,name,standard,wide,save){
    canvasCount:document.querySelectorAll('canvas').length,
    gameUI:!!document.querySelector('.nd3-commandbar'),
    cardCount:document.querySelectorAll('.gameCard').length,
-   visualCards:document.querySelectorAll('.gameCard svg').length
+   visualCards:document.querySelectorAll('.gameCard svg').length,
+   textLength:(document.body.innerText||'').trim().length
   };
  });
  if(standard){
