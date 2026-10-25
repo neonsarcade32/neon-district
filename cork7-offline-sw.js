@@ -16,6 +16,7 @@ const SHELL_PATHS = [
   'cork7-assets/_next/static/css/index.DBvX0VVq.css',
   'cork7-assets/_next/static/css/game-client.Dazi9g4y.css',
   'cork7-assets/_next/static/chunks/framework-D_rUT4EX.js',
+  'cork7-assets/_next/static/chunks/rolldown-runtime-C60lm6uB.js',
   'cork7-assets/_next/static/chunks/nd-standalone-vite-preload.js',
   'cork7-assets/_next/static/chunks/game-client-ND-preload-20261022.js',
   'cork7-assets/_next/static/chunks/supabase-BEhtaJUq.js',
