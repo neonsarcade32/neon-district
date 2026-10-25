@@ -58,6 +58,12 @@ async function horizontalOverflow(p){return p.evaluate(()=>document.documentElem
       check(g.name+' imported game skin',g.id==='offroad'?await p.locator('#nd3-offroad-chrome').count()===1:await p.locator('link[href*="'+(g.id==='pixelhop'?'open-platformer-theme':'open-2048-theme')+'.css"]').count()===1);
       check(g.name+' author attribution',await p.locator('a[href*="github.com"]').count()>0);
       check(g.name+' actual playfield',g.id==='offroad'?await p.locator('#settings-toggle').count()===1:await p.locator(g.id==='pixelhop'?'#gameCanvas':'.game-container .tile-container').count()===1);
+    }else if(g.id==='cork7'||g.id==='neonfreeski'){
+      // Cork7 and Neon Freeski are intentionally standalone skiing clients,
+      // not games using the shared ND3 game-shell stylesheet.
+      check(g.name+' standalone game root loads',g.id==='cork7'
+        ?await p.locator('#cork7-root').count()===1
+        :await p.locator('#viewport').count()===1);
     }else {
       check(g.name+' unified 3.0 presentation',await p.locator('html.nd3-game-ui').count()===1);
       check(g.name+' new visual CSS variables',await p.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--nd3-accent').trim().length>0));
