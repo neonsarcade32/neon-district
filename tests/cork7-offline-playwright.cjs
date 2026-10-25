@@ -12,15 +12,16 @@ const base = process.env.ARCADE_TEST_URL || 'http://127.0.0.1:8080';
   let page = await context.newPage();
   const errors = [];
   const offlineFailures = [];
+  let offlineMode = false;
   const attachDiagnostics = target => {
     target.on('pageerror', error => errors.push(error.message));
     target.on('requestfailed', request => {
-      if (context.pages().some(p => p.url().startsWith(base)) && request.url().startsWith(base)) {
+      if (offlineMode && request.url().startsWith(base)) {
         offlineFailures.push({ url: request.url(), failure: request.failure()?.errorText || 'request failed' });
       }
     });
     target.on('response', response => {
-      if (response.url().startsWith(base) && response.status() >= 400) {
+      if (offlineMode && response.url().startsWith(base) && response.status() >= 400) {
         offlineFailures.push({ url: response.url(), failure: 'HTTP ' + response.status() });
       }
     });
@@ -78,6 +79,7 @@ const base = process.env.ARCADE_TEST_URL || 'http://127.0.0.1:8080';
         paths.some(p => p.endsWith('/game-client-ND-standalone.js'));
     }, { timeout: 30000 });
     await page.waitForTimeout(1200);
+    offlineMode = true;
     await context.setOffline(true);
     const offlineResponse = await page.goto(base + '/cork7.html', { waitUntil: 'domcontentloaded', timeout: 15000 });
     assert.equal(offlineResponse.status(), 200, 'Cork7 navigation must work offline after warm load');
