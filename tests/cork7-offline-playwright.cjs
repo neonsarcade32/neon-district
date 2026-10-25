@@ -16,13 +16,23 @@ const base = process.env.ARCADE_TEST_URL || 'http://127.0.0.1:8080';
     const response = await page.goto(base + '/cork7.html', { waitUntil: 'domcontentloaded', timeout: 30000 });
     assert.equal(response.status(), 200, 'Cork7 page must load online');
     // First visit installs the worker; a reload lets the newly installed worker control this page.
+    await page.waitForFunction(() => {
+      return !!(window.__ndCork7Offline && window.__ndCork7Offline.registered);
+    }, null, { timeout: 30000 }).catch(async error => {
+      const state = await page.evaluate(() => ({
+        secure: window.isSecureContext,
+        swSupported: 'serviceWorker' in navigator,
+        registration: window.__ndCork7Offline || null,
+        workerUrl: new URL('cork7-offline-sw.js', location.href).href
+      }));
+      throw new Error('Cork7 service worker did not register: ' + JSON.stringify(state) + '; ' + error.message);
+    });
     await page.waitForFunction(async () => {
-      if (!('serviceWorker' in navigator)) return false;
-      const reg = await navigator.serviceWorker.getRegistration('/');
+      const reg = await navigator.serviceWorker.getRegistration(location.href);
       return !!reg && !!reg.active;
-    }, { timeout: 30000 });
+    }, null, { timeout: 30000 });
     await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 });
-    await page.waitForFunction(() => navigator.serviceWorker && navigator.serviceWorker.controller, { timeout: 20000 });
+    await page.waitForFunction(() => navigator.serviceWorker && navigator.serviceWorker.controller, null, { timeout: 20000 });
     await page.waitForFunction(async () => {
       const names = (await caches.keys()).filter(n => n.startsWith('nd-cork7-static-'));
       if (!names.length) return false;
