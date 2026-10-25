@@ -32,7 +32,22 @@ const base = process.env.ARCADE_TEST_URL || 'http://127.0.0.1:8080';
       return !!reg && !!reg.active;
     }, null, { timeout: 30000 });
     await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 });
-    await page.waitForFunction(() => navigator.serviceWorker && navigator.serviceWorker.controller, null, { timeout: 20000 });
+    await page.waitForFunction(() => navigator.serviceWorker && navigator.serviceWorker.controller, null, { timeout: 20000 }).catch(async error => {
+      const state = await page.evaluate(async () => {
+        const reg = await navigator.serviceWorker.getRegistration('/');
+        return {
+          controller: navigator.serviceWorker.controller ? navigator.serviceWorker.controller.scriptURL : null,
+          ready: (await navigator.serviceWorker.ready).active?.state || null,
+          registration: reg ? {
+            scope: reg.scope,
+            active: reg.active ? {scriptURL: reg.active.scriptURL, state: reg.active.state} : null,
+            installing: reg.installing ? reg.installing.state : null,
+            waiting: reg.waiting ? reg.waiting.state : null
+          } : null
+        };
+      });
+      throw new Error('Service worker active but not controlling after reload: ' + JSON.stringify(state) + '; ' + error.message);
+    });
     await page.waitForFunction(async () => {
       const names = (await caches.keys()).filter(n => n.startsWith('nd-cork7-static-'));
       if (!names.length) return false;
