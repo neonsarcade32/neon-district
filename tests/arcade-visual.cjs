@@ -37,6 +37,10 @@ async function inspect(page,name,standard,wide,save){
   if(name!=='idle'&&!summary.gameUI)issues.push('missing ND3 game tools');
   if(!['reaction','tap','idle'].includes(name)&&summary.canvasCount<1)issues.push('missing game canvas');
   if(summary.stageHeight<120)issues.push('missing game screen');
+ }else if(name==='cork7'||name==='neonfreeski'){
+  // These games intentionally use standalone clients, not the shared ND3 shell.
+  if(!summary.headingVisible)issues.push('missing visible standalone game title');
+  if(summary.textLength<20)issues.push('standalone game page has no meaningful visible content');
  }else if(name==='pixelhop'||name==='open2048'||name==='offroad'){
   if(name!=='offroad'&&!summary.headingVisible)issues.push('missing visible imported game title');
   if(name!=='offroad'&&summary.stageHeight<120)issues.push('missing source game play area');
