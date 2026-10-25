@@ -9,7 +9,7 @@ const base = process.env.ARCADE_TEST_URL || 'http://127.0.0.1:8080';
 (async () => {
   const browser = await chromium.launch({ headless: true, args: ['--disable-gpu', '--use-gl=swiftshader'] });
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'allow' });
-  const page = await context.newPage();
+  let page = await context.newPage();
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   try {
@@ -31,7 +31,12 @@ const base = process.env.ARCADE_TEST_URL || 'http://127.0.0.1:8080';
       const reg = await navigator.serviceWorker.getRegistration(location.href);
       return !!reg && !!reg.active;
     }, null, { timeout: 30000 });
-    await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 });
+    // A fresh document is the most reliable way to test a newly activated worker:
+    // the initial document can remain uncontrolled even after registration.activate().
+    await page.close();
+    page = await context.newPage();
+    page.on('pageerror', error => errors.push(error.message));
+    await page.goto(base + '/cork7.html', { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForFunction(() => navigator.serviceWorker && navigator.serviceWorker.controller, null, { timeout: 20000 }).catch(async error => {
       const state = await page.evaluate(async () => {
         const reg = await navigator.serviceWorker.getRegistration('/');
