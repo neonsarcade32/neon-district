@@ -116,6 +116,22 @@ html,body{margin:0;width:100%;min-height:100%;background:#081b25;color:#effcff}
 #nd-cork7-startup-status{position:fixed;inset:0;display:grid;place-content:center;text-align:center;font:700 18px/1.5 system-ui,sans-serif;color:#9cecf2;background:#071824;z-index:40}
 #nd-cork7-startup-status span{font-size:12px;font-weight:400;color:#bbd1dc}
 </style>
+<script id="nd-cork7-offline-registration">
+(function(){
+  if (!('serviceWorker' in navigator) || location.protocol === 'file:') return;
+  var workerUrl = new URL('cork7-offline-sw.js', location.href);
+  var scopeUrl = new URL('./', location.href);
+  navigator.serviceWorker.register(workerUrl.href, {scope: scopeUrl.pathname})
+    .then(function(reg){
+      window.__ndCork7Offline = {registered:true, scope:reg.scope};
+      if (window.__ndCork7Log) window.__ndCork7Log.push('Offline asset cache registered; assets are saved as they load online.');
+    })
+    .catch(function(error){
+      window.__ndCork7Offline = {registered:false, error:String(error)};
+      if (window.__ndCork7Log) window.__ndCork7Log.push('Offline cache registration failed: '+String(error));
+    });
+})();
+</script>
 </head>
 <body>
 <div id="cork7-root"></div>
