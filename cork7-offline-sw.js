@@ -17,6 +17,7 @@ const SHELL_PATHS = [
   'cork7-assets/_next/static/chunks/framework-D_rUT4EX.js',
   'cork7-assets/_next/static/chunks/nd-standalone-vite-preload.js',
   'cork7-assets/_next/static/chunks/game-client-ND-preload-20261022.js',
+  'cork7-assets/_next/static/chunks/supabase-BEhtaJUq.js',
   'cork7-assets/_next/static/chunks/game-client-ND-standalone.js',
   'cork7-assets/models/rider-v20.glb',
   'cork7-assets/models/venue-v1.glb',
@@ -99,14 +100,10 @@ self.addEventListener('fetch', (event) => {
     const cache = await caches.open(CACHE_NAME);
     const cached = await cache.match(request, { ignoreSearch: true });
     if (cached) {
-      // Refresh static resources in the background while online; cached copy
-      // remains available if the request fails or the device is offline.
-      event.waitUntil((async () => {
-        try {
-          const fresh = await fetch(request);
-          await putIfCacheable(cache, request, fresh);
-        } catch (_) {}
-      })());
+      // Return the complete cached response immediately. Versioned game assets
+      // are immutable; shell updates are refreshed during worker installation.
+      // Avoid late waitUntil() calls after asynchronous work, which can be
+      // rejected by some service-worker implementations.
       return cached;
     }
 
