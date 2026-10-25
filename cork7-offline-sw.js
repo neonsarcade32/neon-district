@@ -27,15 +27,6 @@ const SHELL_PATHS = [
   'cork7-assets/models/forest-line/rails-v1.glb',
   'cork7-assets/models/shirakumo-tram-v1.glb',
   'cork7-assets/textures/rail-painted-steel-v1.webp',
-  'cork7-assets/music/a-journey-through-the-universe.mp4',
-  'cork7-assets/music/ambivert.mp4',
-  'cork7-assets/music/bittersweet.mp4',
-  'cork7-assets/music/dawn.mp4',
-  'cork7-assets/music/hello-night.mp4',
-  'cork7-assets/music/if-we-could-meet-again.mp4',
-  'cork7-assets/music/kinetics.mp4',
-  'cork7-assets/music/quasarise.mp4',
-  'cork7-assets/music/synthetic.mp4'
 ];
 
 const SHELL_SET = new Set(SHELL_PATHS.map((path) => new URL(path, self.registration.scope).pathname));
