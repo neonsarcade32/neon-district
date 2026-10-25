@@ -15,6 +15,13 @@ const base = process.env.ARCADE_TEST_URL || 'http://127.0.0.1:8080';
   try {
     const response = await page.goto(base + '/cork7.html', { waitUntil: 'domcontentloaded', timeout: 30000 });
     assert.equal(response.status(), 200, 'Cork7 page must load online');
+    // First visit installs the worker; a reload lets the newly installed worker control this page.
+    await page.waitForFunction(async () => {
+      if (!('serviceWorker' in navigator)) return false;
+      const reg = await navigator.serviceWorker.getRegistration('/');
+      return !!reg && !!reg.active;
+    }, { timeout: 30000 });
+    await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForFunction(() => navigator.serviceWorker && navigator.serviceWorker.controller, { timeout: 20000 });
     await page.waitForFunction(async () => {
       const names = (await caches.keys()).filter(n => n.startsWith('nd-cork7-static-'));
