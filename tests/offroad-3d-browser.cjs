@@ -39,11 +39,13 @@ const base=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8080';
     // The headless mobile emulator cannot guarantee software WebGPU startup,
     // so exclude the loading curtain from input-adapter verification only.
     await mobile.locator('#loader').evaluate(el=>{el.style.pointerEvents='none'});
-    // Use the button's DOM click path rather than Playwright's synthesized tap:
-    // the software-GPU canvas can stall mobile gesture dispatch in headless CI.
-    // This still exercises the real button click handler and verifies its emitted key events.
-    await drive.evaluate(button=>button.click());
-    // Verify the upgrade button's real DOM click handler independently of the renderer.
+    // Dispatch the actual pointer events handled by the touch adapter. A click alone
+    // does not exercise the throttle, which intentionally responds to pointerdown/up.
+    await drive.evaluate(button=>{
+      button.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,cancelable:true,pointerId:7,pointerType:'touch',isPrimary:true}));
+      button.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,cancelable:true,pointerId:7,pointerType:'touch',isPrimary:true}));
+    });
+    // Upgrade uses a click-to-key adapter, so verify its real click path separately.
     await mobile.locator('.nd3-upgrades').evaluate(button=>button.click());
     const received=await mobile.evaluate(()=>window.__testDrive);
     assert.ok(received.includes('down:KeyW')&&received.includes('up:KeyW'),'touch drive must generate real keyboard input');
