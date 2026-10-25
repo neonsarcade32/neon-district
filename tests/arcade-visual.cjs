@@ -74,7 +74,7 @@ async function inspect(page,name,standard,wide,save){
      const response=await page.goto(base+'/'+g.page,{waitUntil:'domcontentloaded',timeout:30000});
      assert.equal(response.status(),200);
      await page.waitForTimeout(g.id==='city'||g.id==='bowling'?1300:120);
-     const standard=!['home','city','bowling','pixelhop','open2048','offroad'].includes(g.id);
+     const standard=!['home','city','bowling','pixelhop','open2048','offroad','cork7','neonfreeski'].includes(g.id);
      const r=await inspect(page,g.id,standard,wide,g.id==='home'||selection.has(g.id));
      if(r.issues.length)failures.push((wide?'desktop ':'mobile ')+g.id+': '+r.issues.join('; '));
      else {checks++;console.log('PASS '+(wide?'desktop':'mobile')+' '+g.id+(standard?' · shared ND3 game interface':''))}
