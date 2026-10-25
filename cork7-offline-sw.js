@@ -39,7 +39,19 @@ async function cacheResponse(cache, request, response) {
 }
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(self.skipWaiting());
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    // Pre-cache the two local entry pages. Other game assets are learned
+    // during a successful online play session.
+    for (const path of ['cork7.html', 'cork7-start.html']) {
+      try {
+        const url = new URL(path, self.registration.scope);
+        const response = await fetch(url);
+        if (response.ok) await cache.put(url, response);
+      } catch (_) {}
+    }
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', (event) => {
@@ -62,24 +74,18 @@ self.addEventListener('fetch', (event) => {
     // This worker's scope covers the site directory, but it must only act for
     // Cork7 pages so the rest of Neon District keeps its existing cache rules.
     const client = event.clientId ? await self.clients.get(event.clientId) : null;
-    if (!client) return fetch(request);
-    const clientPath = new URL(client.url).pathname;
-    if (!clientPath.endsWith('/cork7.html') && !clientPath.endsWith('/cork7-start.html')) {
+    const clientPath = client ? new URL(client.url).pathname : '';
+    const isCork7Navigation = request.mode === 'navigate' &&
+      url.origin === self.location.origin &&
+      (url.pathname.endsWith('/cork7.html') || url.pathname.endsWith('/cork7-start.html'));
+    if (!isCork7Navigation && (!client ||
+        (!clientPath.endsWith('/cork7.html') && !clientPath.endsWith('/cork7-start.html')))) {
       return fetch(request);
     }
+
     const cache = await caches.open(CACHE_NAME);
     const cached = await cache.match(request);
-    if (cached) {
-      // Cache-first keeps already-downloaded game assets available offline.
-      // Update in the background only when online; never block the game.
-      event.waitUntil((async () => {
-        try {
-          const fresh = await fetch(request);
-          await cacheResponse(cache, request, fresh);
-        } catch (_) {}
-      })());
-      return cached;
-    }
+    if (cached) return cached;
 
     try {
       const response = await fetch(request);
