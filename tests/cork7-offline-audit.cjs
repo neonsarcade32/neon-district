@@ -26,7 +26,7 @@ for (const item of roots) walk(path.join(root, item));
 
 const external = new Map();
 const missingLocal = [];
-const extPattern = /https?:\\/\\/[^\\s"'<>\\`)]*/g;
+const extPattern = /https?:\/\/[^\s"'<>)]*/g;
 const localPattern = /(?:src|href)=["']([^"']+)["']/g;
 
 for (const file of files) {
@@ -47,7 +47,7 @@ for (const file of files) {
   if (relative === 'cork7.html') {
     for (const match of source.matchAll(localPattern)) {
       const value = match[1];
-      if (/^(?:data:|https?:|#|\\/\\/)/i.test(value)) continue;
+      if (/^(?:data:|https?:|#|\/\/)/i.test(value)) continue;
       const pathname = value.split(/[?#]/)[0];
       if (!pathname) continue;
       const resolved = path.resolve(root, pathname);
