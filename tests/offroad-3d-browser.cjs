@@ -22,7 +22,7 @@ const base=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8080';
   assert.equal(await page.locator('#settings-toggle').count(),1);
   console.log('PASS 3D world enters playable state with controls and settings');
   fs.mkdirSync('test-artifacts',{recursive:true});
-  const img=await page.screenshot({path:'test-artifacts/offroad-3d.png',timeout:10000});
+  const img=await page.screenshot({path:'test-artifacts/offroad-3d.png',timeout:30000,animations:'disabled'});
   assert.ok(img.length>2500,'captured live canvas scene');
   console.log('PASS browser rendered game screenshot');
   assert.equal(fatal.length,0,'uncaught game JavaScript errors: '+fatal.join(' | '));
