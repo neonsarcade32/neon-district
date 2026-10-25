@@ -59,6 +59,14 @@ self.addEventListener('fetch', (event) => {
   if (!isStaticAsset(url, request)) return;
 
   event.respondWith((async () => {
+    // This worker's scope covers the site directory, but it must only act for
+    // Cork7 pages so the rest of Neon District keeps its existing cache rules.
+    const client = event.clientId ? await self.clients.get(event.clientId) : null;
+    if (!client) return fetch(request);
+    const clientPath = new URL(client.url).pathname;
+    if (!clientPath.endsWith('/cork7.html') && !clientPath.endsWith('/cork7-start.html')) {
+      return fetch(request);
+    }
     const cache = await caches.open(CACHE_NAME);
     const cached = await cache.match(request);
     if (cached) {
