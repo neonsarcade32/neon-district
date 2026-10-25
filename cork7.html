@@ -121,10 +121,16 @@ html,body{margin:0;width:100%;min-height:100%;background:#081b25;color:#effcff}
   if (!('serviceWorker' in navigator) || location.protocol === 'file:') return;
   var workerUrl = new URL('cork7-offline-sw.js', location.href);
   var scopeUrl = new URL('./', location.href);
-  navigator.serviceWorker.register(workerUrl.href, {scope: scopeUrl.pathname})
+  navigator.serviceWorker.register(workerUrl.href, {scope: scopeUrl.pathname, updateViaCache: 'none'})
     .then(function(reg){
       window.__ndCork7Offline = {registered:true, scope:reg.scope};
-      if (window.__ndCork7Log) window.__ndCork7Log.push('Offline asset cache registered; assets are saved as they load online.');
+      if (window.__ndCork7Log) window.__ndCork7Log.push('Offline worker registered; checking for latest cache version.');
+      // Force a network update check so existing iOS installs can discover v2.
+      reg.update().catch(function(){});
+      if (reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
+      navigator.serviceWorker.addEventListener('controllerchange', function(){
+        if (window.__ndCork7Log) window.__ndCork7Log.push('Offline worker now controls Cork7.');
+      });
     })
     .catch(function(error){
       window.__ndCork7Offline = {registered:false, error:String(error)};
