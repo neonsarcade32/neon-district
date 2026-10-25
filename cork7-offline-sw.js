@@ -6,6 +6,7 @@
 const CACHE_NAME = 'nd-cork7-static-v3';
 const SHELL_PATHS = [
   'cork7.html',
+  'cork7-standalone.html',
   'cork7-start.html',
   'cork7-bridge.js',
   'cork7-standalone.js',
@@ -34,7 +35,7 @@ const SHELL_SET = new Set(SHELL_PATHS.map((path) => new URL(path, self.registrat
 const STATIC_EXT = /\.(?:js|mjs|css|png|jpe?g|webp|avif|gif|svg|ico|woff2?|ttf|otf|mp3|ogg|wav|mp4|webm|glb|gltf|bin|ktx2?|hdr|basis|wasm)$/i;
 
 function isCork7Client(clientPath) {
-  return clientPath.endsWith('/cork7.html') || clientPath.endsWith('/cork7-start.html');
+  return clientPath.endsWith('/cork7.html') || clientPath.endsWith('/cork7-standalone.html') || clientPath.endsWith('/cork7-start.html');
 }
 
 function isCacheableStatic(url, request) {
@@ -45,7 +46,7 @@ function isCacheableStatic(url, request) {
     if (/(?:token|auth|session|signature|secret|api.?key|credential)/i.test(key)) return false;
   }
   if (request.mode === 'navigate') {
-    return url.pathname.endsWith('/cork7.html') || url.pathname.endsWith('/cork7-start.html');
+    return url.pathname.endsWith('/cork7.html') || url.pathname.endsWith('/cork7-standalone.html') || url.pathname.endsWith('/cork7-start.html');
   }
   return url.pathname.includes('/cork7-assets/') ||
     SHELL_SET.has(url.pathname) ||
@@ -93,7 +94,7 @@ self.addEventListener('fetch', (event) => {
     const clientPath = client ? new URL(client.url).pathname : '';
     const isGameNavigation = request.mode === 'navigate' &&
       url.origin === self.location.origin &&
-      (url.pathname.endsWith('/cork7.html') || url.pathname.endsWith('/cork7-start.html'));
+      (url.pathname.endsWith('/cork7.html') || url.pathname.endsWith('/cork7-standalone.html') || url.pathname.endsWith('/cork7-start.html'));
     // Do not alter requests made by other pages under the same site scope.
     if (!isGameNavigation && !isCork7Client(clientPath)) return fetch(request);
 
