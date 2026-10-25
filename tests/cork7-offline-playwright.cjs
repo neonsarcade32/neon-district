@@ -11,7 +11,21 @@ const base = process.env.ARCADE_TEST_URL || 'http://127.0.0.1:8080';
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'allow' });
   let page = await context.newPage();
   const errors = [];
-  page.on('pageerror', error => errors.push(error.message));
+  const offlineFailures = [];
+  const attachDiagnostics = target => {
+    target.on('pageerror', error => errors.push(error.message));
+    target.on('requestfailed', request => {
+      if (context.pages().some(p => p.url().startsWith(base)) && request.url().startsWith(base)) {
+        offlineFailures.push({ url: request.url(), failure: request.failure()?.errorText || 'request failed' });
+      }
+    });
+    target.on('response', response => {
+      if (response.url().startsWith(base) && response.status() >= 400) {
+        offlineFailures.push({ url: response.url(), failure: 'HTTP ' + response.status() });
+      }
+    });
+  };
+  attachDiagnostics(page);
   try {
     const response = await page.goto(base + '/cork7.html', { waitUntil: 'domcontentloaded', timeout: 30000 });
     assert.equal(response.status(), 200, 'Cork7 page must load online');
@@ -35,7 +49,7 @@ const base = process.env.ARCADE_TEST_URL || 'http://127.0.0.1:8080';
     // the initial document can remain uncontrolled even after registration.activate().
     await page.close();
     page = await context.newPage();
-    page.on('pageerror', error => errors.push(error.message));
+    attachDiagnostics(page);
     await page.goto(base + '/cork7.html', { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForFunction(() => navigator.serviceWorker && navigator.serviceWorker.controller, null, { timeout: 20000 }).catch(async error => {
       const state = await page.evaluate(async () => {
@@ -76,7 +90,19 @@ const base = process.env.ARCADE_TEST_URL || 'http://127.0.0.1:8080';
     assert.equal(engine.status, 200, 'local game engine must be served offline');
     assert.ok(engine.bytes > 10000, 'local game engine must contain the game bundle');
     assert.deepEqual(errors, [], 'no uncaught page errors during offline reload');
-    console.log('PASS Cork7 browser offline smoke: cached page and engine served with network disabled.');
+    // Do not equate a cached shell/engine with an offline-ready game: every
+    // same-origin request made by the offline boot must succeed from cache.
+    const failedOfflineRequests = [...new Map(offlineFailures.map(item => [item.url + '|' + item.failure, item])).values()];
+    assert.deepEqual(failedOfflineRequests, [], 'all same-origin requests during offline boot must succeed: ' + JSON.stringify(failedOfflineRequests, null, 2));
+    const runtime = await page.evaluate(() => ({
+      rootText: document.querySelector('#cork7-root')?.innerText?.slice(0, 300) || '',
+      errorBanner: document.querySelector('#__next_error__')?.innerText || null,
+      startupStatus: document.querySelector('#nd-cork7-startup-status')?.innerText || null,
+      serviceWorker: navigator.serviceWorker.controller?.scriptURL || null
+    }));
+    assert.equal(runtime.errorBanner, null, 'game must not show the Cork7 startup error banner');
+    assert.ok(!/could not start|failed to initialize|loading interrupted/i.test(runtime.rootText), 'game root must not display startup failure: ' + JSON.stringify(runtime));
+    console.log('PASS Cork7 offline boot: page, engine and same-origin runtime requests succeeded with network disabled.');
   } finally {
     await context.setOffline(false).catch(() => {});
     await browser.close();
