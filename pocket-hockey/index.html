@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#071b2c">
+<meta name="description" content="Pocket Hockey — a touchscreen-friendly, offline-capable local air-hockey game.">
+<title>Pocket Hockey — Neon District</title>
+<style>
+:root{color-scheme:dark;--bg:#061421;--panel:#0b2335;--line:#20465d;--ice:#c8f0f4;--cyan:#5ce1e6;--red:#ff687a;--text:#eafaff;--muted:#8baebf}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at top,#12364a 0,#061421 60%);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overscroll-behavior:none}
+body{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:12px;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+.app{width:min(100%,560px);display:grid;gap:10px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:clamp(20px,5vw,28px);font-weight:900;letter-spacing:.08em}.brand span{color:var(--cyan)}.sub{font-size:11px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}.scores{display:flex;align-items:center;gap:10px}.score{min-width:65px;text-align:center;padding:7px 10px;border:1px solid var(--line);border-radius:12px;background:#0a2030}.score strong{display:block;font-size:26px;line-height:1}.score small{font-size:10px;letter-spacing:.1em;color:var(--muted)}.score.red strong{color:var(--red)}.score.cyan strong{color:var(--cyan)}.vs{font-size:10px;color:var(--muted)}
+.board-wrap{position:relative;width:100%;max-height:calc(100dvh - 170px);aspect-ratio:5/8;display:flex;justify-content:center;min-height:300px}.board{width:100%;height:100%;display:block;border:1px solid #32647b;border-radius:20px;box-shadow:0 20px 55px #0008;touch-action:none;background:#0a2536}.toast{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}.toast-card{display:none;text-align:center;background:#061421eF;border:1px solid #4a7c91;border-radius:18px;padding:20px 24px;box-shadow:0 15px 40px #0009}.toast-card.show{display:block}.toast-card h2{margin:0 0 7px;font-size:clamp(24px,7vw,38px)}.toast-card p{margin:0;color:#b8d7e2}.controls{display:flex;gap:8px;flex-wrap:wrap}.btn{flex:1;min-width:90px;border:1px solid #2b5267;background:#102d40;color:var(--text);border-radius:12px;padding:11px 12px;font-weight:750;font-size:13px;cursor:pointer;touch-action:manipulation}.btn.primary{background:var(--cyan);border-color:var(--cyan);color:#06202a}.btn:active{transform:scale(.98)}.hint{font-size:11px;line-height:1.5;color:var(--muted);text-align:center}.status{position:fixed;right:10px;bottom:calc(9px + env(safe-area-inset-bottom));z-index:5;border:1px solid #315b6d;background:#061421ed;color:#c6e8ef;padding:6px 9px;border-radius:999px;font-size:10px;letter-spacing:.04em;box-shadow:0 4px 15px #0005}.status:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#f5bf62;margin-right:6px}.status.ready:before{background:#65e6b1}.status.offline:before{background:#ffbf69}.status small{opacity:.75;margin-left:5px}
+@media(min-width:700px){.app{width:min(100%,480px)}.board-wrap{max-height:calc(100dvh - 190px)}}@media(max-height:620px) and (orientation:landscape){body{padding:6px}.app{width:min(92vw,360px);gap:5px}.board-wrap{max-height:calc(100dvh - 130px);min-height:200px}.hint{display:none}.btn{padding:7px}}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="top">
+  <div><div class="brand">POCKET <span>HOCKEY</span></div><div class="sub">Neon District · local two-player</div></div>
+  <div class="scores" aria-label="Scoreboard"><div class="score red"><strong id="scoreTop">0</strong><small>TOP</small></div><div class="vs">FIRST TO 5</div><div class="score cyan"><strong id="scoreBottom">0</strong><small>BOTTOM</small></div></div>
+</header>
+<div class="board-wrap">
+  <canvas id="board" class="board" aria-label="Hockey rink. Drag your mallet on your half of the rink to play."></canvas>
+  <div class="toast"><div id="toast" class="toast-card"><h2 id="toastTitle">GOAL!</h2><p id="toastText">Tap continue to serve again.</p></div></div>
+</div>
+<div class="controls"><button id="pauseBtn" class="btn">Ⅱ Pause</button><button id="resetBtn" class="btn">↻ Restart</button><button id="soundBtn" class="btn">♫ Sound: On</button><button id="serveBtn" class="btn primary">Start / Serve</button></div>
+<div class="hint">Touch: drag the mallet on your half · Keyboard: bottom = ← ↑ → ↓, top = W A S D · First to 5 wins</div>
+</main>
+<div id="status" class="status">Checking offline cache…</div>
+<script>
+(() => {
+'use strict';
+const canvas=document.getElementById('board'),ctx=canvas.getContext('2d');
+const topScoreEl=document.getElementById('scoreTop'),bottomScoreEl=document.getElementById('scoreBottom');
+const toast=document.getElementById('toast'),toastTitle=document.getElementById('toastTitle'),toastText=document.getElementById('toastText');
+const statusEl=document.getElementById('status');
+const W=500,H=800,GOAL_W=112,GOAL_D=14,PUCK_R=10,MALLET_R=23;
+let dpr=1,scale=1,paused=false,gameOver=false,serveWait=true,soundOn=true,lastTime=0,scoreTop=0,scoreBottom=0;
+const puck={x:W/2,y:H/2,vx:2.5,vy:4.1};
+const top={x:W/2,y:150,px:W/2,py:150,color:'#ff687a'};
+const bottom={x:W/2,y:H-150,px:W/2,py:H-150,color:'#5ce1e6'};
+const keys=new Set();
+let audioCtx=null;
+function resize(){const r=canvas.getBoundingClientRect();dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.round(r.width*dpr);canvas.height=Math.round(r.height*dpr);scale=Math.min(canvas.width/W,canvas.height/H);ctx.setTransform(scale,0,0,scale,(canvas.width-W*scale)/2,(canvas.height-H*scale)/2);draw();}
+function tone(freq=220,duration=.07,type='sine',gain=.035){if(!soundOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(gain,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+duration);}catch{}}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function resetPositions(){top.x=top.px=W/2;top.y=top.py=150;bottom.x=bottom.px=W/2;bottom.y=bottom.py=H-150;puck.x=W/2;puck.y=H/2;puck.vx=(Math.random()>.5?1:-1)*2.3;puck.vy=(Math.random()>.5?1:-1)*3.6;serveWait=true;toast.classList.remove('show');}
+function updateScore(){topScoreEl.textContent=scoreTop;bottomScoreEl.textContent=scoreBottom;}
+function goal(who){if(serveWait||gameOver)return; if(who==='top')scoreTop++;else scoreBottom++;updateScore();tone(520,.22,'triangle',.07);paused=true;serveWait=true;
+ if(scoreTop>=5||scoreBottom>=5){gameOver=true;toastTitle.textContent=scoreTop>=5?'TOP WINS':'BOTTOM WINS';toastText.textContent='Game complete. Restart for a new match.';document.getElementById('serveBtn').textContent='New match';}
+ else {toastTitle.textContent='GOAL!';toastText.textContent=(who==='top'?'Top':'Bottom')+' scores · tap Start / Serve';}
+ toast.classList.add('show');}
+function serve(){if(gameOver){scoreTop=scoreBottom=0;updateScore();gameOver=false;}if(!serveWait&&!paused)return;paused=false;serveWait=false;toast.classList.remove('show');if(Math.abs(puck.vy)<1.2)puck.vy=(Math.random()>.5?1:-1)*3.6;document.getElementById('pauseBtn').textContent='Ⅱ Pause';}
+function movePlayer(p,dx,dy,topHalf){p.px=p.x;p.py=p.y;p.x=clamp(p.x+dx,MALLET_R+8,W-MALLET_R-8);p.y=topHalf?clamp(p.y+dy,MALLET_R+8,H/2-MALLET_R-5):clamp(p.y+dy,H/2+MALLET_R+5,H-MALLET_R-8);}
+function resolveMallet(p){let dx=puck.x-p.x,dy=puck.y-p.y,d=Math.hypot(dx,dy),min=PUCK_R+MALLET_R;if(d<min&&d>0){const nx=dx/d,ny=dy/d;const overlap=min-d;puck.x+=nx*overlap;puck.y+=ny*overlap;const relx=(p.x-p.px)*.22,rely=(p.y-p.py)*.22;const dot=puck.vx*nx+puck.vy*ny;if(dot<0){puck.vx-=2*dot*nx;puck.vy-=2*dot*ny;}puck.vx+=nx*relx*1.3;puck.vy+=ny*rely*1.3;const sp=Math.hypot(puck.vx,puck.vy),max=9;if(sp>max){puck.vx=puck.vx/sp*max;puck.vy=puck.vy/sp*max;}tone(170,.035,'square',.018);}}
+function update(dt){if(paused||serveWait||gameOver)return;const step=Math.min(dt/16.67,2);
+ if(keys.has('ArrowLeft'))movePlayer(bottom,-5*step,0,false);if(keys.has('ArrowRight'))movePlayer(bottom,5*step,0,false);if(keys.has('ArrowUp'))movePlayer(bottom,0,-5*step,false);if(keys.has('ArrowDown'))movePlayer(bottom,0,5*step,false);
+ if(keys.has('a'))movePlayer(top,-5*step,0,true);if(keys.has('d'))movePlayer(top,5*step,0,true);if(keys.has('w'))movePlayer(top,0,5*step,true);if(keys.has('s'))movePlayer(top,0,-5*step,true);
+ puck.x+=puck.vx*step;puck.y+=puck.vy*step;
+ const left=(W-GOAL_W)/2,right=(W+GOAL_W)/2;
+ if(puck.x<PUCK_R+8){puck.x=PUCK_R+8;puck.vx=Math.abs(puck.vx)*.96;tone(130,.025,'sine',.012);}
+ if(puck.x>W-PUCK_R-8){puck.x=W-PUCK_R-8;puck.vx=-Math.abs(puck.vx)*.96;tone(130,.025,'sine',.012);}
+ if(puck.y<PUCK_R+8){if(puck.x>left&&puck.x<right){goal('bottom');return;}puck.y=PUCK_R+8;puck.vy=Math.abs(puck.vy)*.96;}
+ if(puck.y>H-PUCK_R-8){if(puck.x>left&&puck.x<right){goal('top');return;}puck.y=H-PUCK_R-8;puck.vy=-Math.abs(puck.vy)*.96;}
+ resolveMallet(top);resolveMallet(bottom);
+ // Light drag keeps the puck moving naturally without letting it stop mid-rally.
+ puck.vx*=Math.pow(.9995,step);puck.vy*=Math.pow(.9995,step);
+}
+function draw(){if(!ctx)return;ctx.save();ctx.setTransform(scale,0,0,scale,(canvas.width-W*scale)/2,(canvas.height-H*scale)/2);
+ ctx.clearRect(0,0,W,H);
+ const grd=ctx.createLinearGradient(0,0,W,H);grd.addColorStop(0,'#d7f6f6');grd.addColorStop(1,'#9fd6e4');ctx.fillStyle=grd;ctx.fillRect(0,0,W,H);
+ ctx.fillStyle='#b7e9ef';ctx.fillRect(8,8,W-16,H-16);
+ ctx.strokeStyle='#f8ffff';ctx.lineWidth=3;ctx.strokeRect(18,18,W-36,H-36);
+ ctx.strokeStyle='#4ba9c0';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(18,H/2);ctx.lineTo(W-18,H/2);ctx.stroke();
+ ctx.beginPath();ctx.arc(W/2,H/2,58,0,Math.PI*2);ctx.stroke();
+ ctx.fillStyle='#ff687a';ctx.fillRect((W-GOAL_W)/2,0,GOAL_W,GOAL_D);ctx.fillRect((W-GOAL_W)/2,H-GOAL_D,GOAL_W,GOAL_D);
+ ctx.strokeStyle='#e66b7b';ctx.lineWidth=2;ctx.strokeRect((W-GOAL_W)/2,18,GOAL_W,90);ctx.strokeRect((W-GOAL_W)/2,H-108,GOAL_W,90);
+ ctx.fillStyle='#eafcff';ctx.fillRect(W/2-3, H/2-3,6,6);
+ drawMallet(top);drawMallet(bottom);
+ ctx.shadowColor='#143849';ctx.shadowBlur=10;ctx.fillStyle='#092033';ctx.beginPath();ctx.arc(puck.x,puck.y,PUCK_R,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#f4ffff';ctx.lineWidth=1.4;ctx.stroke();
+ ctx.restore();}
+function drawMallet(p){ctx.save();ctx.shadowColor=p.color;ctx.shadowBlur=13;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,MALLET_R,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#0a2435';ctx.beginPath();ctx.arc(p.x,p.y,8,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#ffffffbb';ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,MALLET_R-5,0,Math.PI*2);ctx.stroke();ctx.restore();}
+function loop(now){if(!lastTime)lastTime=now;const dt=now-lastTime;lastTime=now;update(dt);draw();requestAnimationFrame(loop);}
+function pointerPos(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*W,y:(e.clientY-r.top)/r.height*H};}
+let activePointers=new Map();
+canvas.addEventListener('pointerdown',e=>{e.preventDefault();canvas.setPointerCapture(e.pointerId);const q=pointerPos(e);const p=q.y<H/2?top:bottom;activePointers.set(e.pointerId,p);p.x=clamp(q.x,MALLET_R+8,W-MALLET_R-8);p.y=p===top?clamp(q.y,MALLET_R+8,H/2-MALLET_R-5):clamp(q.y,H/2+MALLET_R+5,H-MALLET_R-8);if(serveWait&&!gameOver)serve();});
+canvas.addEventListener('pointermove',e=>{const p=activePointers.get(e.pointerId);if(!p)return;e.preventDefault();const q=pointerPos(e);p.px=p.x;p.py=p.y;p.x=clamp(q.x,MALLET_R+8,W-MALLET_R-8);p.y=p===top?clamp(q.y,MALLET_R+8,H/2-MALLET_R-5):clamp(q.y,H/2+MALLET_R+5,H-MALLET_R-8);});
+function endPointer(e){activePointers.delete(e.pointerId)}canvas.addEventListener('pointerup',endPointer);canvas.addEventListener('pointercancel',endPointer);
+window.addEventListener('keydown',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(k))e.preventDefault();keys.add(k);if(k===' '&&serveWait)serve();});window.addEventListener('keyup',e=>keys.delete(e.key.length===1?e.key.toLowerCase():e.key));
+document.getElementById('pauseBtn').addEventListener('click',()=>{if(gameOver)return;paused=!paused;document.getElementById('pauseBtn').textContent=paused?'▶ Resume':'Ⅱ Pause';if(paused){toastTitle.textContent='PAUSED';toastText.textContent='Tap Resume when ready.';toast.classList.add('show')}else toast.classList.remove('show');});
+document.getElementById('resetBtn').addEventListener('click',()=>{scoreTop=scoreBottom=0;updateScore();gameOver=false;paused=false;resetPositions();document.getElementById('pauseBtn').textContent='Ⅱ Pause';document.getElementById('serveBtn').textContent='Start / Serve';});
+document.getElementById('serveBtn').addEventListener('click',serve);
+document.getElementById('soundBtn').addEventListener('click',()=>{soundOn=!soundOn;document.getElementById('soundBtn').textContent='♫ Sound: '+(soundOn?'On':'Off');if(soundOn)tone(440,.06);});
+function netStatus(){const online=navigator.onLine;statusEl.className='status '+(online?'':'offline');statusEl.textContent=online?'Online':'Offline';statusEl.title='Network status only; offline gameplay must be tested by disconnecting the network.';}
+window.addEventListener('online',netStatus);window.addEventListener('offline',netStatus);
+if('serviceWorker' in navigator && location.protocol!=='file:'){navigator.serviceWorker.register('./sw.js').then(()=>{statusEl.classList.add('ready');statusEl.innerHTML=(navigator.onLine?'Online':'Offline')+' <small>· cache installed</small>';}).catch(()=>{statusEl.textContent=(navigator.onLine?'Online':'Offline')+' · cache unavailable';});}
+resize();window.addEventListener('resize',resize);resetPositions();requestAnimationFrame(loop);netStatus();
+})();
+</script>
+</body>
+</html>
