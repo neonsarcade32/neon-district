@@ -26,7 +26,7 @@
 (() => {
 const canvas=document.getElementById('rink'),ctx=canvas.getContext('2d');
 const card=document.getElementById('card'),cardTitle=document.getElementById('cardTitle'),cardText=document.getElementById('cardText'),state=document.getElementById('state');
-const W=1100,H=1200, rink={x:300,y:150,w:500,h:900}, goal={x:500,w:100,h:25};
+const W=1100,H=1200, rink={x:300,y:0,w:500,h:900}, goal={x:500,w:100,h:25};
 const R=15, PADDLE=30, keys=new Set();let mode='title',winner=0,last=0,raf=0,acc=0;
 const puck={x:550,y:600,vx:125,vy:160};
 const players=[{id:1,x:550,y:675,homeX:550,homeY:675,color:'#2464bf'},{id:2,x:550,y:225,homeX:550,homeY:225,color:'#2464bf'}];
@@ -35,7 +35,7 @@ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function showCard(title,message,button){cardTitle.textContent=title;cardText.textContent=message;document.getElementById('start').textContent=button;card.classList.add('show');}
 function hideCard(){card.classList.remove('show');}
 function tone(f=220,d=.06){try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();const o=audio.createOscillator(),g=audio.createGain();o.frequency.value=f;o.type='sine';g.gain.value=.035;g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+d);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+d)}catch{}}
-function resetPositions(){puck.x=550;puck.y=600;const angle=(Math.random()*.8+.2)*(Math.random()<.5?-1:1);puck.vx=155*angle;puck.vy=(Math.random()<.5?-1:1)*220;players[0].x=550;players[0].y=675;players[1].x=550;players[1].y=225;}
+function resetPositions(){puck.x=550;puck.y=450;const angle=(Math.random()*.8+.2)*(Math.random()<.5?-1:1);puck.vx=155*angle;puck.vy=(Math.random()<.5?-1:1)*220;players[0].x=550;players[0].y=675;players[1].x=550;players[1].y=225;}
 function startGame(){winner=0;resetPositions();mode='playing';hideCard();state.textContent='Match in progress';last=0;}
 function pauseGame(){if(mode!=='playing')return;mode='paused';state.textContent='Paused';showCard('PAUSED','Press Resume to continue the match.','Resume');}
 function resumeGame(){if(mode==='paused'){mode='playing';hideCard();state.textContent='Match in progress';last=0;}}
