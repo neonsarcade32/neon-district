@@ -33,7 +33,7 @@ expect(browserLab.includes('bash browser-lab/start.sh'),'Browser Lab guide missi
 expect(browserLab.includes('Keep visibility <strong>Private</strong>'),'Browser Lab guide must keep proxy port private');
 expect(browserLab.includes('docker stop nd-personal-browser'),'Browser Lab guide must include stop command');
 expect(browserLab.includes('each person starts their own cloud browser'),'Browser Lab must accurately describe session separation');
-expect(entries.length===40,'Expected 40 games in catalog; found '+entries.length);
+expect(entries.length===41,'Expected 41 games in catalog; found '+entries.length);
 expect(index.includes("id:'cork7',name:'Cork7',file:'cork7.html'"),'Cork7 must appear in game catalog');
 const cork7Start=read('cork7-start.html');
 for(const park of ['nordryggen','apex','shirakumo','bigair','forestline','halfpipe']){
