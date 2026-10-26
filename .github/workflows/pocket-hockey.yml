@@ -1,0 +1,38 @@
+name: Pocket Hockey checks
+
+on:
+  pull_request:
+    paths:
+      - 'pocket-hockey/**'
+      - '.github/workflows/pocket-hockey.yml'
+  push:
+    branches:
+      - main
+      - feature/pocket-hockey-source-port
+    paths:
+      - 'pocket-hockey/**'
+      - '.github/workflows/pocket-hockey.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  browser-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright
+        run: npm install --no-save @playwright/test
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run source-port static checks
+        working-directory: pocket-hockey
+        run: node verify.mjs
+      - name: Run browser tests
+        working-directory: pocket-hockey
+        run: npx playwright test
