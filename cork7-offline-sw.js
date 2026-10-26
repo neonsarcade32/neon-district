@@ -3,7 +3,7 @@
 // Cork7-only offline cache. Cache only this game's HTML and static files.
 // Multiplayer/API traffic is deliberately network-only so online play keeps
 // working when a connection exists and never receives stale cached responses.
-const CACHE_NAME = 'nd-cork7-static-v4';
+const CACHE_NAME = 'nd-cork7-static-v5';
 const SHELL_PATHS = [
   'cork7.html',
   'cork7-start.html',
