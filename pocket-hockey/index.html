@@ -52,12 +52,12 @@ function goal(who){if(serveWait||gameOver)return; if(who==='top')scoreTop++;else
  if(scoreTop>=5||scoreBottom>=5){gameOver=true;toastTitle.textContent=scoreTop>=5?'TOP WINS':'BOTTOM WINS';toastText.textContent='Game complete. Restart for a new match.';document.getElementById('serveBtn').textContent='New match';}
  else {toastTitle.textContent='GOAL!';toastText.textContent=(who==='top'?'Top':'Bottom')+' scores · tap Start / Serve';}
  toast.classList.add('show');}
-function serve(){if(gameOver){scoreTop=scoreBottom=0;updateScore();gameOver=false;}if(!serveWait&&!paused)return;paused=false;serveWait=false;toast.classList.remove('show');if(Math.abs(puck.vy)<1.2)puck.vy=(Math.random()>.5?1:-1)*3.6;document.getElementById('pauseBtn').textContent='Ⅱ Pause';}
+function serve(){if(gameOver){scoreTop=scoreBottom=0;updateScore();gameOver=false;resetPositions();}if(!serveWait&&!paused)return;paused=false;serveWait=false;toast.classList.remove('show');if(Math.abs(puck.vy)<1.2)puck.vy=(Math.random()>.5?1:-1)*3.6;document.getElementById('pauseBtn').textContent='Ⅱ Pause';}
 function movePlayer(p,dx,dy,topHalf){p.px=p.x;p.py=p.y;p.x=clamp(p.x+dx,MALLET_R+8,W-MALLET_R-8);p.y=topHalf?clamp(p.y+dy,MALLET_R+8,H/2-MALLET_R-5):clamp(p.y+dy,H/2+MALLET_R+5,H-MALLET_R-8);}
 function resolveMallet(p){let dx=puck.x-p.x,dy=puck.y-p.y,d=Math.hypot(dx,dy),min=PUCK_R+MALLET_R;if(d<min&&d>0){const nx=dx/d,ny=dy/d;const overlap=min-d;puck.x+=nx*overlap;puck.y+=ny*overlap;const relx=(p.x-p.px)*.22,rely=(p.y-p.py)*.22;const dot=puck.vx*nx+puck.vy*ny;if(dot<0){puck.vx-=2*dot*nx;puck.vy-=2*dot*ny;}puck.vx+=nx*relx*1.3;puck.vy+=ny*rely*1.3;const sp=Math.hypot(puck.vx,puck.vy),max=9;if(sp>max){puck.vx=puck.vx/sp*max;puck.vy=puck.vy/sp*max;}tone(170,.035,'square',.018);}}
 function update(dt){if(paused||serveWait||gameOver)return;const step=Math.min(dt/16.67,2);
  if(keys.has('ArrowLeft'))movePlayer(bottom,-5*step,0,false);if(keys.has('ArrowRight'))movePlayer(bottom,5*step,0,false);if(keys.has('ArrowUp'))movePlayer(bottom,0,-5*step,false);if(keys.has('ArrowDown'))movePlayer(bottom,0,5*step,false);
- if(keys.has('a'))movePlayer(top,-5*step,0,true);if(keys.has('d'))movePlayer(top,5*step,0,true);if(keys.has('w'))movePlayer(top,0,5*step,true);if(keys.has('s'))movePlayer(top,0,-5*step,true);
+ if(keys.has('a'))movePlayer(top,-5*step,0,true);if(keys.has('d'))movePlayer(top,5*step,0,true);if(keys.has('w'))movePlayer(top,0,-5*step,true);if(keys.has('s'))movePlayer(top,0,5*step,true);
  puck.x+=puck.vx*step;puck.y+=puck.vy*step;
  const left=(W-GOAL_W)/2,right=(W+GOAL_W)/2;
  if(puck.x<PUCK_R+8){puck.x=PUCK_R+8;puck.vx=Math.abs(puck.vx)*.96;tone(130,.025,'sine',.012);}
