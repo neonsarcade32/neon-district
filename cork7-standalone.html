@@ -36,6 +36,23 @@ window.__ndCork7Crash=function(reason){
   "https://neonsarcade32.github.io/neon-district/cork7-assets/_next/static/chunks/index-CYh2aJIu.js":"https://neonsarcade32.github.io/neon-district/cork7-assets/_next/static/chunks/nd-standalone-vite-preload.js"
 }}
 </script>
+<script id="nd-cork7-offline-registration">
+(function(){
+  if (!('serviceWorker' in navigator) || location.protocol === 'file:') return;
+  var workerUrl = new URL('cork7-offline-sw.js', location.href);
+  var scopeUrl = new URL('./', location.href);
+  navigator.serviceWorker.register(workerUrl.href, {scope: scopeUrl.pathname, updateViaCache: 'none'})
+    .then(function(reg){
+      window.__ndCork7Offline = {registered:true, scope:reg.scope};
+      reg.update().catch(function(){});
+      if (reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
+    })
+    .catch(function(error){
+      window.__ndCork7Offline = {registered:false, error:String(error)};
+      console.error('[Cork7 offline] Service worker registration failed', error);
+    });
+})();
+</script>
 <script type="module">
 try {
  const [f,g] = await Promise.all([
