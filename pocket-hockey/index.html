@@ -55,7 +55,7 @@ if(puck.y+R>=bottomY){if(puck.x+R>left&&puck.x-R<right){finishGoal(2);return;}pu
 collidePaddle(p1);collidePaddle(p2);
 puck.vx*=Math.pow(.999,t*60);puck.vy*=Math.pow(.999,t*60);
 }
-function text(str,x,y,size=22,color='#15202a',align='left'){ctx.save();ctx.scale(1,-1);ctx.fillStyle=color;ctx.font='bold '+size+'px system-ui, sans-serif';ctx.textAlign=align;ctx.fillText(str,x,-y);ctx.restore();}
+function text(str,x,y,size=22,color='#15202a',align='left'){ctx.save();ctx.fillStyle=color;ctx.font='bold '+size+'px system-ui, sans-serif';ctx.textAlign=align;ctx.fillText(str,x,y);ctx.restore();}
 function draw(){ctx.clearRect(0,0,W,H);ctx.fillStyle='#f2d6a6';ctx.fillRect(rink.x,rink.y,rink.w,rink.h);ctx.strokeStyle='#fff5df';ctx.lineWidth=5;ctx.strokeRect(rink.x+10,rink.y+10,rink.w-20,rink.h-20);ctx.strokeStyle='#235ba8';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(rink.x,rink.y+rink.h/2);ctx.lineTo(rink.x+rink.w,rink.y+rink.h/2);ctx.stroke();ctx.beginPath();ctx.arc(550,600,100,0,Math.PI*2);ctx.stroke();ctx.strokeRect(rink.x+100,rink.y+rink.h-200,300,200);ctx.strokeRect(rink.x+100,rink.y,300,200);
 ctx.fillStyle='#d94a45';ctx.fillRect(goal.x,rink.y-8,goal.w,goal.h);ctx.fillRect(goal.x,rink.y+rink.h-goal.h+8,goal.w,goal.h);
 ctx.fillStyle='#fff';ctx.fillRect(900,310,170,45);ctx.fillRect(900,365,170,45);ctx.fillRect(900,420,170,45);text('EXIT / TITLE',985,325,17,'#111820','center');text('RESUME',985,380,17,'#111820','center');text('PAUSE',985,435,17,'#111820','center');
@@ -63,7 +63,7 @@ for(const p of players){ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,PA
 ctx.fillStyle='#12191f';ctx.beginPath();ctx.arc(puck.x,puck.y,R,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
 if(mode==='playing')text('PLAYER 2',550,1135,20,'#4b3022','center');}
 function frame(now){if(!last)last=now;const dt=(now-last)/1000;last=now;update(dt);draw();raf=requestAnimationFrame(frame);}
-function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*W,y:H-(e.clientY-r.top)/r.height*H};}
+function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*W,y:(e.clientY-r.top)/r.height*H};}
 canvas.addEventListener('pointerdown',e=>{e.preventDefault();canvas.setPointerCapture(e.pointerId);const q=point(e),p=q.y>H/2?players[0]:players[1];active.set(e.pointerId,p);setPlayer(p,q.x,q.y);if(mode==='title'||mode==='over')startGame();});
 canvas.addEventListener('pointermove',e=>{const p=active.get(e.pointerId);if(!p)return;e.preventDefault();const q=point(e);setPlayer(p,q.x,q.y);});
 for(const ev of ['pointerup','pointercancel'])canvas.addEventListener(ev,e=>active.delete(e.pointerId));
@@ -73,7 +73,7 @@ document.getElementById('start').addEventListener('click',()=>{if(mode==='paused
 document.getElementById('pause').addEventListener('click',pauseGame);document.getElementById('resume').addEventListener('click',resumeGame);
 document.getElementById('restart').addEventListener('click',startGame);
 document.getElementById('exit').addEventListener('click',()=>{mode='title';state.textContent='Title screen';showCard('POCKET HOCKEY','Two players. One goal wins. Player 1 uses the arrow keys; Player 2 uses W, A, S, D.','Press P / Start');});
-canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=H-(e.clientY-r.top)/r.height*H;if(x>=900&&x<=1070){if(y>=310&&y<=355){mode='title';state.textContent='Title screen';showCard('POCKET HOCKEY','Two players. One goal wins.','Press P / Start');}else if(y>=365&&y<=410)resumeGame();else if(y>=420&&y<=465)pauseGame();}});
+canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*H;if(x>=900&&x<=1070){if(y>=310&&y<=355){mode='title';state.textContent='Title screen';showCard('POCKET HOCKEY','Two players. One goal wins.','Press P / Start');}else if(y>=365&&y<=410)resumeGame();else if(y>=420&&y<=465)pauseGame();}});
 resetPositions();draw();raf=requestAnimationFrame(frame);
 })();
 </script>
