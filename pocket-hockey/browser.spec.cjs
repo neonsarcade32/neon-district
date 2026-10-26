@@ -16,7 +16,7 @@ test('pause and resume work from the toolbar', async ({ page }) => {
   await page.getByRole('button', { name: /Pause/i }).click();
   await expect(page.locator('#state')).toHaveText('Paused');
   await expect(page.locator('#cardTitle')).toHaveText('PAUSED');
-  await page.getByRole('button', { name: /Resume/i }).click();
+  await page.locator('#resume').click();
   await expect(page.locator('#state')).toHaveText('Match in progress');
   await expect(page.locator('#card')).not.toHaveClass(/show/);
 });
