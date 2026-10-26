@@ -42,6 +42,9 @@ The repository does not contain an obvious LICENSE file. Treat its original sour
 - [x] Repository tree and key source files inspected.
 - [x] Original controls, board geometry, state flow, and physics approach mapped.
 - [ ] Original Windows executable run side-by-side for behavior capture.
-- [ ] Browser port tested in a real browser.
-- [ ] Touch and keyboard controls verified.
-- [ ] Physics and goal edge cases tested.
+- [x] Corrected the browser rink to use the original 1100×1200 coordinate transform: rink x=300, top-origin y=0, width=500, height=900; puck center (550,450); paddles at (550,675) and (550,225).
+- [x] Inline JavaScript syntax parsed and 13 source-level checks passed for geometry, initial positions, both control schemes, P key, both goal directions, touch input, toolbar handlers, and absence of a service worker.
+- [x] Added `verify.mjs` for repeatable local static checks (`node pocket-hockey/verify.mjs`). The Node test file itself has not been run in a real repository runtime here.
+- [ ] Browser port tested in a real browser/device.
+- [ ] Touch and keyboard gameplay verified in a real browser.
+- [ ] Physics and goal edge cases tested interactively.
