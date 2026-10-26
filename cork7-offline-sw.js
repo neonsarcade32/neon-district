@@ -3,7 +3,7 @@
 // Cork7-only offline cache. Cache only this game's HTML and static files.
 // Multiplayer/API traffic is deliberately network-only so online play keeps
 // working when a connection exists and never receives stale cached responses.
-const CACHE_NAME = 'nd-cork7-static-v7';
+const CACHE_NAME = 'nd-cork7-static-v8';
 const SHELL_PATHS = [
   'cork7.html',
   'cork7-start.html',
@@ -19,6 +19,7 @@ const SHELL_PATHS = [
   'cork7-assets/_next/static/chunks/game-client-ND-preload-20261022.js',
   'cork7-assets/_next/static/chunks/supabase-BEhtaJUq.js',
   'cork7-assets/_next/static/chunks/game-client-ND-standalone.js',
+  'cork7-assets/_next/static/chunks/active-course-neonpeak-fix-20261026-v3.js',
   'cork7-assets/models/rider-v20.glb',
   'cork7-assets/models/venue-v1.glb',
   'cork7-assets/models/powder-finish-v1.glb',
