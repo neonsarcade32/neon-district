@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Pocket Hockey — Neon District</title>
+<style>
+:root{color-scheme:dark;--bg:#101820;--panel:#1b2933;--line:#42535d;--ink:#f5f1e8;--muted:#b6c0c5;--red:#d94a45;--blue:#2464bf}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#263945,#101820 65%);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;justify-content:center;padding:12px}
+.shell{width:min(100%,720px);display:grid;gap:10px;align-content:start}.head{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:clamp(20px,5vw,30px);font-weight:900;letter-spacing:.08em}.brand span{color:#f0c17d}.meta{font-size:11px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}.state{font-size:12px;color:#f0c17d;text-align:right}.stage{width:100%;height:min(69vh,780px);min-height:340px;display:flex;justify-content:center;position:relative}.board{height:100%;width:auto;max-width:100%;aspect-ratio:11/12;display:block;border:1px solid #7d7c6c;border-radius:10px;box-shadow:0 16px 40px #0008;touch-action:none;background:#f2d6a6}.overlay{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}.card{display:none;width:min(86%,390px);padding:22px;text-align:center;border:1px solid #8d8a7c;border-radius:16px;background:#16232cf2;box-shadow:0 15px 40px #0008}.card.show{display:block}.card h1{font-size:clamp(24px,6vw,38px);margin:0 0 8px}.card p{color:#d1dadd;margin:0 0 16px;line-height:1.5}.actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}.btn{border:1px solid #52616a;border-radius:10px;background:#293943;color:#fff;padding:11px 15px;min-height:44px;font-weight:750;cursor:pointer}.btn.primary{background:#f0c17d;color:#20190f;border-color:#f0c17d}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar .btn{flex:1;min-width:95px}.help{font-size:11px;line-height:1.5;color:var(--muted);text-align:center}.tag{position:fixed;right:10px;bottom:10px;border:1px solid #42535d;background:#101820ed;border-radius:999px;padding:6px 9px;color:#c9d1d5;font-size:10px}
+@media(max-width:480px){body{padding:8px}.stage{height:min(67vh,700px);min-height:320px}.toolbar .btn{font-size:12px;padding:9px 10px}.help{max-width:100%}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header class="head"><div><div class="brand">POCKET <span>HOCKEY</span></div><div class="meta">Two-player arcade hockey · source-inspired recreation</div></div><div class="state" id="state">Title screen</div></header>
+<section class="stage">
+<canvas id="rink" class="board" width="1100" height="1200" aria-label="Pocket Hockey rink. Drag a paddle on your half, or use the keyboard."></canvas>
+<div class="overlay"><div id="card" class="card show"><h1 id="cardTitle">POCKET HOCKEY</h1><p id="cardText">Two players. One goal wins. Player 1 uses the arrow keys; Player 2 uses W, A, S, D.</p><div class="actions"><button class="btn primary" id="start">Press P / Start</button></div></div></div>
+</section>
+<div class="toolbar"><button class="btn" id="pause">Ⅱ Pause</button><button class="btn" id="resume">▶ Resume</button><button class="btn" id="restart">↻ Restart</button><button class="btn" id="exit">⌂ Title</button></div>
+<div class="help">Player 1 (lower half): arrow keys · Player 2 (upper half): W/A/S/D · P starts or replays · Touch: drag your paddle on your side of the rink.</div>
+</main>
+<div class="tag">Recreated from public source behavior · new browser implementation</div>
+<script>
+(() => {
+const canvas=document.getElementById('rink'),ctx=canvas.getContext('2d');
+const card=document.getElementById('card'),cardTitle=document.getElementById('cardTitle'),cardText=document.getElementById('cardText'),state=document.getElementById('state');
+const W=1100,H=1200, rink={x:300,y:0,w:500,h:900}, goal={x:500,w:100,h:25};
+const R=15, PADDLE=30, keys=new Set();let mode='title',winner=0,last=0,raf=0,acc=0;
+const puck={x:550,y:450,vx:125,vy:160};
+const players=[{id:1,x:550,y:675,homeX:550,homeY:675,color:'#2464bf'},{id:2,x:550,y:225,homeX:550,homeY:225,color:'#2464bf'}];
+let active=new Map(),audio=null;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function showCard(title,message,button){cardTitle.textContent=title;cardText.textContent=message;document.getElementById('start').textContent=button;card.classList.add('show');}
+function hideCard(){card.classList.remove('show');}
+function tone(f=220,d=.06){try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();const o=audio.createOscillator(),g=audio.createGain();o.frequency.value=f;o.type='sine';g.gain.value=.035;g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+d);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+d)}catch{}}
+function resetPositions(){puck.x=550;puck.y=450;const angle=(Math.random()*.8+.2)*(Math.random()<.5?-1:1);puck.vx=155*angle;puck.vy=(Math.random()<.5?-1:1)*220;players[0].x=550;players[0].y=675;players[1].x=550;players[1].y=225;}
+function startGame(){winner=0;resetPositions();mode='playing';hideCard();state.textContent='Match in progress';last=0;}
+function pauseGame(){if(mode!=='playing')return;mode='paused';state.textContent='Paused';showCard('PAUSED','Press Resume to continue the match.','Resume');}
+function resumeGame(){if(mode==='paused'){mode='playing';hideCard();state.textContent='Match in progress';last=0;}}
+function finishGoal(scoringPlayer){winner=scoringPlayer;mode='over';state.textContent='Game over';showCard('GAME OVER', 'PLAYER '+scoringPlayer+' WINS! Press P or Replay to play again.','Replay / P');tone(520,.25);}
+function setPlayer(p,x,y){const minX=rink.x+PADDLE+2,maxX=rink.x+rink.w-PADDLE-2;const topHalf=p.id===2;p.x=clamp(x,minX,maxX);p.y=topHalf?clamp(y,rink.y+PADDLE+2,H/2-PADDLE-3):clamp(y,H/2+PADDLE+3,rink.y+rink.h-PADDLE-2);}
+function collidePaddle(p){let dx=puck.x-p.x,dy=puck.y-p.y,d=Math.hypot(dx,dy),min=R+PADDLE;if(d>=min)return;if(d<.001){dx=1;dy=0;d=1;}const nx=dx/d,ny=dy/d;puck.x=p.x+nx*(min+.2);puck.y=p.y+ny*(min+.2);const dot=puck.vx*nx+puck.vy*ny;if(dot<0){puck.vx-=2*dot*nx;puck.vy-=2*dot*ny;}const speed=Math.hypot(puck.vx,puck.vy);if(speed<170){puck.vx+=nx*65;puck.vy+=ny*65;}const newSpeed=Math.hypot(puck.vx,puck.vy),cap=570;if(newSpeed>cap){puck.vx=puck.vx/newSpeed*cap;puck.vy=puck.vy/newSpeed*cap;}tone(150,.04);}
+function update(dt){if(mode!=='playing')return;const t=Math.min(dt,.03);const speed=290*t;
+const p1=players[0],p2=players[1];
+if(keys.has('ArrowLeft'))setPlayer(p1,p1.x-speed,p1.y);if(keys.has('ArrowRight'))setPlayer(p1,p1.x+speed,p1.y);if(keys.has('ArrowUp'))setPlayer(p1,p1.x,p1.y-speed);if(keys.has('ArrowDown'))setPlayer(p1,p1.x,p1.y+speed);
+if(keys.has('a'))setPlayer(p2,p2.x-speed,p2.y);if(keys.has('d'))setPlayer(p2,p2.x+speed,p2.y);if(keys.has('w'))setPlayer(p2,p2.x,p2.y-speed);if(keys.has('s'))setPlayer(p2,p2.x,p2.y+speed);
+puck.x+=puck.vx*t;puck.y+=puck.vy*t;
+const left=goal.x,right=goal.x+goal.w,topY=rink.y,bottomY=rink.y+rink.h;
+if(puck.x-rink.x<R){puck.x=rink.x+R;puck.vx=Math.abs(puck.vx)*.98;tone(100,.025);}
+if(puck.x>rink.x+rink.w-R){puck.x=rink.x+rink.w-R;puck.vx=-Math.abs(puck.vx)*.98;tone(100,.025);}
+if(puck.y-R<=topY){if(puck.x+R>left&&puck.x-R<right){finishGoal(1);return;}puck.y=topY+R;puck.vy=Math.abs(puck.vy)*.98;tone(100,.025);}
+if(puck.y+R>=bottomY){if(puck.x+R>left&&puck.x-R<right){finishGoal(2);return;}puck.y=bottomY-R;puck.vy=-Math.abs(puck.vy)*.98;tone(100,.025);}
+collidePaddle(p1);collidePaddle(p2);
+puck.vx*=Math.pow(.999,t*60);puck.vy*=Math.pow(.999,t*60);
+}
+function text(str,x,y,size=22,color='#15202a',align='left'){ctx.save();ctx.fillStyle=color;ctx.font='bold '+size+'px system-ui, sans-serif';ctx.textAlign=align;ctx.fillText(str,x,y);ctx.restore();}
+function draw(){ctx.clearRect(0,0,W,H);ctx.fillStyle='#f2d6a6';ctx.fillRect(rink.x,rink.y,rink.w,rink.h);ctx.strokeStyle='#fff5df';ctx.lineWidth=5;ctx.strokeRect(rink.x+10,rink.y+10,rink.w-20,rink.h-20);ctx.strokeStyle='#235ba8';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(rink.x,rink.y+rink.h/2);ctx.lineTo(rink.x+rink.w,rink.y+rink.h/2);ctx.stroke();ctx.beginPath();ctx.arc(550,450,100,0,Math.PI*2);ctx.stroke();ctx.strokeRect(rink.x+100,rink.y+rink.h-200,300,200);ctx.strokeRect(rink.x+100,rink.y,300,200);
+ctx.fillStyle='#d94a45';ctx.fillRect(goal.x,rink.y-8,goal.w,goal.h);ctx.fillRect(goal.x,rink.y+rink.h-goal.h+8,goal.w,goal.h);
+ctx.fillStyle='#fff';ctx.fillRect(900,310,170,45);ctx.fillRect(900,365,170,45);ctx.fillRect(900,420,170,45);text('EXIT / TITLE',985,325,17,'#111820','center');text('RESUME',985,380,17,'#111820','center');text('PAUSE',985,435,17,'#111820','center');
+for(const p of players){ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,PADDLE,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.stroke();text(String(p.id),p.x,p.y-7,20,'#fff','center');}
+ctx.fillStyle='#12191f';ctx.beginPath();ctx.arc(puck.x,puck.y,R,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+if(mode==='playing')text('PLAYER 2',550,1135,20,'#4b3022','center');}
+function frame(now){if(!last)last=now;const dt=(now-last)/1000;last=now;update(dt);draw();raf=requestAnimationFrame(frame);}
+function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*W,y:(e.clientY-r.top)/r.height*H};}
+canvas.addEventListener('pointerdown',e=>{e.preventDefault();canvas.setPointerCapture(e.pointerId);const q=point(e),p=q.y>H/2?players[0]:players[1];active.set(e.pointerId,p);setPlayer(p,q.x,q.y);if(mode==='title'||mode==='over')startGame();});
+canvas.addEventListener('pointermove',e=>{const p=active.get(e.pointerId);if(!p)return;e.preventDefault();const q=point(e);setPlayer(p,q.x,q.y);});
+for(const ev of ['pointerup','pointercancel'])canvas.addEventListener(ev,e=>active.delete(e.pointerId));
+window.addEventListener('keydown',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(k))e.preventDefault();keys.add(k);if(k==='p'){if(mode==='title'||mode==='over')startGame();else if(mode==='paused')resumeGame();else pauseGame();}});
+window.addEventListener('keyup',e=>keys.delete(e.key.length===1?e.key.toLowerCase():e.key));
+document.getElementById('start').addEventListener('click',()=>{if(mode==='paused')resumeGame();else startGame();});
+document.getElementById('pause').addEventListener('click',pauseGame);document.getElementById('resume').addEventListener('click',resumeGame);
+document.getElementById('restart').addEventListener('click',startGame);
+document.getElementById('exit').addEventListener('click',()=>{mode='title';state.textContent='Title screen';showCard('POCKET HOCKEY','Two players. One goal wins. Player 1 uses the arrow keys; Player 2 uses W, A, S, D.','Press P / Start');});
+canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*H;if(x>=900&&x<=1070){if(y>=310&&y<=355){mode='title';state.textContent='Title screen';showCard('POCKET HOCKEY','Two players. One goal wins.','Press P / Start');}else if(y>=365&&y<=410)resumeGame();else if(y>=420&&y<=465)pauseGame();}});
+resetPositions();draw();raf=requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
