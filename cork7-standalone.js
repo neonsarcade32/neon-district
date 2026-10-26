@@ -28,7 +28,7 @@ async function boot(){
   try {
     // Keep the game and its dependency graph intact: only the React mount
     // changes from server-hydration to a local client-rendered application.
-    const {default:Cork7}=await import('./cork7-assets/_next/static/chunks/game-client-ND-standalone.js?nd-neonpeak-fix=20261026-v2');
+    const {default:Cork7}=await import('./cork7-assets/_next/static/chunks/game-client-ND-standalone.js?nd-neonpeak-fix=20261026-v3');
     if(typeof Cork7!=='function')throw new Error('Cork7 gameplay component missing');
     const React=requireReact();
     const ReactDOM=requireReactDOMClient();
