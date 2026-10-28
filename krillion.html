@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07090f">
+<title>Krillion · Neon District</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:#07090f;color:#f7f9ff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden}
+header{height:54px;display:flex;align-items:center;gap:12px;padding:0 14px;background:#0b111b;border-bottom:1px solid #273247}
+a{color:#bcefff;text-decoration:none;font-weight:800;font-size:12px}strong{font-size:13px;letter-spacing:.3px}.status{margin-left:auto;color:#8c98ad;font-size:10px}
+main{height:calc(100dvh - 54px);position:relative}iframe{display:block;width:100%;height:100%;border:0;background:#080b12}
+.notice{position:absolute;left:12px;right:12px;bottom:12px;max-width:560px;margin:auto;padding:10px 12px;border:1px solid #3a4c65;border-radius:12px;background:#0b111beF;color:#aebbd0;font-size:11px;line-height:1.45;pointer-events:none}
+@media(max-width:600px){header{height:48px;padding:0 10px}main{height:calc(100dvh - 48px)}.status{font-size:9px}}
+</style>
+</head>
+<body>
+<header><a href="index.html">← NEON DISTRICT</a><strong>KRILLION</strong><span class="status">OFFICIAL GAME · EMBED TEST</span></header>
+<main>
+<iframe id="krillionFrame" src="https://krillion.io/" title="Official Krillion game" allow="fullscreen; clipboard-read; clipboard-write" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+<div class="notice" id="notice">Loading the official Krillion game inside Neon District. If the game displays a browser refusal message, Krillion's site security settings may block embedding; Neon District will not copy or mirror its proprietary game code.</div>
+</main>
+<script>
+const frame=document.getElementById('krillionFrame');
+const notice=document.getElementById('notice');
+let timer=setTimeout(()=>{notice.textContent='The embedded game has not visibly confirmed that it loaded. Check whether Krillion appears above; if the frame is blank or shows a refusal message, the official site may block embedding.'},12000);
+frame.addEventListener('load',()=>{clearTimeout(timer);notice.textContent='Krillion frame loaded. Confirm the game itself is visible and playable; a frame load event alone cannot verify cross-origin game functionality.';setTimeout(()=>notice.style.display='none',7000)});
+</script>
+</body>
+</html>
