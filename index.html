@@ -47,7 +47,7 @@
 </head>
 <body class="nd3-home">
 <header class="topbar"><nav class="nav"><a class="brand" href="index.html"><span class="brandmark">ND</span><span>NEON DISTRICT<small>VERSION 3.0 · REBUILT</small></span></a><div class="navActions"><a class="navBtn hideMobile" href="neon-browser.html" aria-label="Open Neon Browser Lab">🌐 BROWSER LAB</a><button class="navBtn" id="favoritesJump">★ Favorites</button><a class="navBtn hideMobile" href="#discover">ALL GAMES ↗</a><a class="navBtn hideMobile" href="https://github.com/neonsarcade32/neon-district" target="_blank" rel="noopener">SOURCE</a><div class="nd3-themebar" aria-label="Color theme"><button data-theme="volt" title="Electric theme" aria-label="Electric theme" aria-pressed="true"></button><button data-theme="ember" title="Sunset theme" aria-label="Sunset theme" aria-pressed="false"></button><button data-theme="arctic" title="Arctic theme" aria-label="Arctic theme" aria-pressed="false"></button></div></div></nav></header>
-<main class="wrap"><div class="nd3-ribbon"><span><span class="dot"></span><b>NEON DISTRICT 3.0</b> · THE REBUILT ARCADE · 37 PLAYABLE GAMES</span><span class="right">NEW LOOK / NEW GAME ART / SAME SAVED PROGRESS</span></div>
+<main class="wrap"><div class="nd3-ribbon"><span><span class="dot"></span><b>NEON DISTRICT 3.0</b> · THE REBUILT ARCADE · 41 PLAYABLE GAMES</span><span class="right">NEW LOOK / NEW GAME ART / SAME SAVED PROGRESS</span></div>
 <section class="hero">
 <a class="feature" href="arcade-city.html?v=nd3visual" data-launch="Arcade City 3D">
 <div class="featureScene"><div class="nd3-hero-art" id="nd3HeroArt" aria-hidden="true"></div><span class="nd3-hero-strip">THE FLAGSHIP EXPERIENCE · 01</span></div>
@@ -60,7 +60,7 @@
 </div>
 </section>
 
-<div class="stats"><div class="stat"><span>GAMES</span><strong id="gameCount">38</strong></div><div class="stat"><span>FAVORITES</span><strong id="favCount">0</strong></div><div class="stat"><span>RECENTLY PLAYED</span><strong id="playedCount">0</strong></div><div class="stat"><span>EXPLORATION PASSPORT</span><strong id="passportCount" style="color:#8addff">0/38</strong></div></div>
+<div class="stats"><div class="stat"><span>GAMES</span><strong id="gameCount">41</strong></div><div class="stat"><span>FAVORITES</span><strong id="favCount">0</strong></div><div class="stat"><span>RECENTLY PLAYED</span><strong id="playedCount">0</strong></div><div class="stat"><span>EXPLORATION PASSPORT</span><strong id="passportCount" style="color:#8addff">0/41</strong></div></div>
 
 <section class="browserPromo" aria-label="Neon Browser Lab">
   <div><small>NO IPAD APP · YOUR ACCOUNT · YOUR SESSION</small><h2>NEON BROWSER <span>LAB</span></h2><p>Want your own real cloud browser? Follow our free-quota setup guide — your GitHub account runs it, not a shared Neon District desktop. No extra iPad app needed.</p></div>
@@ -74,13 +74,13 @@
  </div>
  <p class="nd3-community-credit">Original developers credited inside each game. Licenses preserved in this site's GitHub repository.</p>
 </section>
-<div class="nd3-editorial"><small>03 / GAME LIBRARY</small><h2>CHOOSE YOUR GAME.</h2><span class="dash"></span></div><div class="quickbar"><div class="searchBox"><span class="searchIcon">⌕</span><input id="search" type="search" placeholder="Search 38 games, genres, skills..." autocomplete="off"></div><button class="randomBtn" id="randomBtn">↻ SURPRISE ME</button></div>
+<div class="nd3-editorial"><small>03 / GAME LIBRARY</small><h2>CHOOSE YOUR GAME.</h2><span class="dash"></span></div><div class="quickbar"><div class="searchBox"><span class="searchIcon">⌕</span><input id="search" type="search" placeholder="Search 41 games, genres, skills..." autocomplete="off"></div><button class="randomBtn" id="randomBtn">↻ SURPRISE ME</button></div>
 <div class="tabs" id="tabs"><button class="tab active" data-cat="All">ALL GAMES</button><button class="tab" data-cat="Sports">SPORTS</button><button class="tab" data-cat="Racing">RACING</button><button class="tab" data-cat="Arcade">ARCADE</button><button class="tab" data-cat="Chill">CHILL</button><button class="tab" data-cat="Open Source">GITHUB GAMES</button><button class="tab" data-cat="Favorites">★ FAVORITES</button></div>
 
 <section class="section hidden" id="favoriteSection"><div class="sectionHead"><div class="sectionTitle"><h2>★ Favorites</h2><p>Your saved games on this device.</p></div></div><div class="row" id="favoriteRow"></div></section>
 <section class="section hidden" id="recentSection"><div class="sectionHead"><div class="sectionTitle"><h2>Continue playing</h2><p>Jump back into your most recent games.</p></div></div><div class="smallRow" id="recentRow"></div></section>
 
-<section class="section" id="discover"><div class="sectionHead"><div class="sectionTitle"><h2 id="sectionTitle">38 games. Your rules.</h2><p id="sectionSub">38 games across sports, racing, arcade, and chill.</p></div><span class="sectionMeta" id="resultCount">38 GAMES</span></div><div class="gameGrid" id="gameGrid"></div><div class="empty hidden" id="empty">No games match that search or category.</div></section>
+<section class="section" id="discover"><div class="sectionHead"><div class="sectionTitle"><h2 id="sectionTitle">41 games. Your rules.</h2><p id="sectionSub">41 games across sports, racing, arcade, and chill.</p></div><span class="sectionMeta" id="resultCount">41 GAMES</span></div><div class="gameGrid" id="gameGrid"></div><div class="empty hidden" id="empty">No games match that search or category.</div></section>
 
 <footer class="footer"><span>NEON DISTRICT · 03 / THE NEW ERA</span><span>Old saves stay on your device.</span></footer>
 </main>
@@ -104,6 +104,7 @@ const games=[
 {id:'drift',name:'Drift Racer',file:'drift.html',cat:'Racing',tag:'Racing',icon:'🏁',c1:'#4b2512',c2:'#160d09',desc:'Race laps, hit the handbrake, chain huge drifts.',search:'drift racer racing car laps'},
 {id:'ski',name:'Ski Rush',file:'ski.html',cat:'Sports',tag:'Snow',icon:'🎿',c1:'#16384e',c2:'#0b151f',desc:'Carve gates, dodge trees, hit jumps, build combos.',search:'ski rush skiing slalom snow sports'},
 {id:'cork7',name:'Cork7',file:'cork7.html',cat:'Sports',tag:'ACTUAL GAME · IN-SITE',icon:'🎿',c1:'#16445d',c2:'#0a1d30',desc:'Play the original Cork7 3D skiing game directly in Neon District. Hit jumps and rails in its real mountain parks.',search:'cork7 skiing ski snowboard 3d snow tricks flips spins multiplayer parks freeski external'},
+{id:'krillion',name:'Krillion',file:'https://krillion.io/',cat:'Chill',tag:'OFFICIAL SITE',icon:'🧠',c1:'#35245c',c2:'#10152d',desc:'Play the original Krillion daily trivia game on its official website.',search:'krillion trivia daily questions seven prompts rare answers quiz brain puzzle official website'},
 {id:'neonfreeski',name:'Neon Freeski 3D',file:'neon-freeski.html',cat:'Sports',tag:'NEW · PLAY IN-SITE',icon:'⛷️',c1:'#1e7590',c2:'#092841',desc:'Full 3D freeski mountain: carve, launch off kickers, spin, flip, grind rails and chain tricks. Runs right here.',search:'neon freeski 3d skiing cork7 style ski resort mountain physics jumps flips spins rail trick open world park'},
 {id:'basketball',name:'Basketball Shootout',file:'basketball.html',cat:'Sports',tag:'Hoops',icon:'🏀',c1:'#4b2b12',c2:'#160e08',desc:'Hit the green release and build a hot streak.',search:'basketball shootout hoops sports'},
 {id:'qb',name:'QB Challenge',file:'qb.html',cat:'Sports',tag:'Featured',icon:'🏈',c1:'#163d27',c2:'#0a1510',desc:'Move in the pocket, lead receivers, avoid defenders.',search:'qb challenge football quarterback sports'},
