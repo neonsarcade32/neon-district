@@ -25,6 +25,7 @@ main{width:min(1000px,100%);margin:auto;padding:35px 20px 70px}.eyebrow{display:
 <form id="connectForm" class="row" style="margin-top:14px">
 <input id="serverUrl" type="url" inputmode="url" placeholder="https://your-proxy-host.example" aria-label="Your proxy server URL" autocomplete="url" required>
 <button class="btn" type="submit">CHECK SERVER</button>
+<button class="btn secondary" id="disconnectButton" type="button">DISCONNECT</button>
 </form>
 <div id="status" class="status" role="status" aria-live="polite"><span class="dot"></span><span><b>Not connected.</b> No proxy server has been configured for Neon District yet.</span></div>
 <div class="row" style="margin-top:14px"><a class="btn secondary" href="neon-browser.html#own-browser">Open browser setup guide ↗</a><a class="btn secondary" href="https://github.com/achroma-ubg/engine" target="_blank" rel="noopener">Inspect engine source ↗</a></div>
@@ -59,6 +60,11 @@ function setStatus(title,msg,state='unknown'){
  statusBox.replaceChildren(dot,titleEl,msgEl);
 }
 try{input.value=localStorage.getItem(key)||''}catch(e){}
+document.getElementById('disconnectButton').addEventListener('click',()=>{
+ try{localStorage.removeItem(key)}catch(e){}
+ input.value='';
+ setStatus('Disconnected.','The saved server address was removed from this device. No remote session was terminated.','unknown');
+});
 document.getElementById('connectForm').addEventListener('submit',async e=>{
  e.preventDefault();
  let u;
