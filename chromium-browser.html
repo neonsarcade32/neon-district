@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080b14">
+<title>Neon District · Remote Chromium</title>
+<style>
+:root{color-scheme:dark;--bg:#080b14;--panel:#111928;--line:#30415f;--muted:#9aaac4;--text:#edf7ff;--cyan:#5de5fa;--purple:#a78bfa}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,sans-serif;color:var(--text);background:radial-gradient(ellipse at 15% 0,#183967 0,transparent 40%),radial-gradient(ellipse at 90% 5%,#3d205d 0,transparent 34%),var(--bg)}
+header{max-width:1050px;margin:auto;padding:18px;display:flex;justify-content:space-between;align-items:center}a{color:#92efff}main{width:min(950px,100%);margin:auto;padding:24px 16px 60px}h1{font-size:clamp(36px,8vw,64px);line-height:1;letter-spacing:-.05em;margin:14px 0}p{color:#a8b8d0;line-height:1.65}.panel{margin-top:18px;padding:20px;border:1px solid #344765;border-radius:18px;background:linear-gradient(155deg,#19243a,#0d1424)}label{display:block;font-size:12px;color:#b8c9df;margin:12px 0 6px}input{width:100%;height:46px;border:1px solid #3c5070;border-radius:10px;background:#090f1d;color:#fff;padding:0 12px;font:inherit}.row{display:flex;gap:9px;flex-wrap:wrap}.row>*{flex:1;min-width:130px}.btn{border:0;border-radius:10px;padding:12px 15px;background:linear-gradient(110deg,#62eafb,#86f6b4);color:#071425;font-weight:900;cursor:pointer}.btn.alt{background:#17233a;color:#d5f8ff;border:1px solid #47738a}.btn:disabled{opacity:.55}.status{padding:12px;border-radius:10px;background:#292313bd;border:1px solid #5c4f32;color:#f0d8a8;font-size:13px;line-height:1.5;overflow-wrap:anywhere}.small{font-size:12px;color:#91a5c2}.screen{width:100%;min-height:180px;object-fit:contain;background:#080b14;border:1px solid #30415f;border-radius:12px;margin-top:12px}code{overflow-wrap:anywhere}@media(max-width:600px){.panel{padding:14px}.row .btn{width:100%}}
+</style>
+</head>
+<body>
+<header><b>NEON DISTRICT / REMOTE CHROMIUM</b><a href="index.html">← Arcade</a></header>
+<main>
+<p style="letter-spacing:.12em;font-size:11px;color:#9eeefe;font-weight:900">PLAYWRIGHT · CHROMIUM · AUTHORIZED DESTINATIONS</p>
+<h1>Your remote<br><span style="color:#5de5fa">browser session.</span></h1>
+<p>This page controls a real Chromium instance running on a separately hosted Neon District backend. The backend URL and API token are not preconfigured. The token is kept in this page's memory only and is not saved to browser storage.</p>
+<section class="panel">
+<h2>Connect to browser service</h2>
+<label for="api">HTTPS backend URL</label><input id="api" type="url" placeholder="https://your-browser-service.example" autocomplete="url">
+<label for="token">API access token</label><input id="token" type="password" placeholder="Paste your server-issued token" autocomplete="off">
+<div class="row" style="margin-top:12px"><button id="check" class="btn alt">CHECK RUNTIME</button><button id="start" class="btn" disabled>START SESSION</button><button id="stop" class="btn alt" disabled>STOP SESSION</button></div>
+<div id="status" class="status" role="status" aria-live="polite" style="margin-top:14px">Not connected. No remote Chromium service has been configured.</div>
+</section>
+<section class="panel">
+<h2>Navigate approved website</h2>
+<p class="small">Only HTTPS destinations on the server's exact allowlist will load. Credentials in URLs and custom ports are rejected.</p>
+<label for="target">Website URL</label><input id="target" type="url" placeholder="https://example.com" autocomplete="url">
+<div class="row" style="margin-top:12px"><button id="go" class="btn" disabled>NAVIGATE</button><button id="shot" class="btn alt" disabled>REFRESH SCREENSHOT</button></div>
+<img id="screen" class="screen" alt="Remote Chromium screenshot will appear here" hidden>
+<p id="pageinfo" class="small"></p>
+</section>
+<p class="small">Security note: use only a trusted, privately configured backend. Do not enter passwords or sensitive data until you have verified the deployment and its access controls. Disconnecting closes the active remote session.</p>
+</main>
+<script>
+let apiBase='', token='', sessionId='';
+const $=id=>document.getElementById(id);
+const status=$('status');
+function say(message, bad=false){status.textContent=message;status.style.borderColor=bad?'#783d45':'#5c4f32';status.style.background=bad?'#35171ebd':'#292313bd';status.style.color=bad?'#ffc1c7':'#f0d8a8'}
+function controls(){const active=!!sessionId; $('start').disabled=!(apiBase&&token&&!active);$('stop').disabled=!active;$('go').disabled=!active;$('shot').disabled=!active}
+function normalizeApi(){const u=new URL($('api').value.trim());if(u.protocol!=='https:'||u.username||u.password||u.search||u.hash)throw Error('Use an HTTPS backend origin without credentials, query, or fragment.');return u.origin}
+async function call(path,options={}){const headers=new Headers(options.headers||{});headers.set('Authorization','Bearer '+token);if(options.body)headers.set('Content-Type','application/json');const response=await fetch(apiBase+path,{...options,headers,cache:'no-store',signal:AbortSignal.timeout(15000)});if(!response.ok){let msg='HTTP '+response.status;try{msg=(await response.json()).error||msg}catch{}throw Error(msg)}if(response.status===204)return null;return response}
+$('check').addEventListener('click',async()=>{try{apiBase=normalizeApi();token=$('token').value.trim();if(!token)throw Error('Enter the API token issued by the backend host.');say('Checking backend runtime…');const r=await fetch(apiBase+'/healthz',{cache:'no-store',signal:AbortSignal.timeout(8000)});if(!r.ok)throw Error('Health check returned HTTP '+r.status);const data=await r.json();if(data.service!=='authorized-browser'||data.runtime!=='ready')throw Error('API answered, but Chromium runtime is not ready.');say('Runtime ready. Allowlist configured: '+Boolean(data.allowlistConfigured)+'. Active sessions: '+data.sessions+'.');controls()}catch(e){apiBase='';token='';controls();say('Connection check failed: '+e.message,true)}});
+$('start').addEventListener('click',async()=>{try{apiBase=normalizeApi();token=$('token').value.trim();const r=await call('/sessions',{method:'POST'});const data=await r.json();sessionId=data.id;controls();say('Remote Chromium session started. Session expires after inactivity.');$('pageinfo').textContent='Session active. Navigate to an approved HTTPS website.'}catch(e){say('Could not start session: '+e.message,true)}});
+$('go').addEventListener('click',async()=>{try{const url=$('target').value.trim();if(!url)throw Error('Enter a destination URL.');const r=await call('/sessions/'+encodeURIComponent(sessionId)+'/navigate',{method:'POST',body:JSON.stringify({url})});const data=await r.json();$('pageinfo').textContent='HTTP '+data.status+' · '+data.title+' · '+data.url;await screenshot();say('Navigation completed.')}catch(e){say('Navigation failed or destination was rejected: '+e.message,true)}});
+async function screenshot(){const r=await call('/sessions/'+encodeURIComponent(sessionId)+'/screenshot');const blob=await r.blob();const img=$('screen');if(img.dataset.objectUrl)URL.revokeObjectURL(img.dataset.objectUrl);img.dataset.objectUrl=URL.createObjectURL(blob);img.src=img.dataset.objectUrl;img.hidden=false}
+$('shot').addEventListener('click',async()=>{try{await screenshot();say('Screenshot refreshed.')}catch(e){say('Screenshot failed: '+e.message,true)}});
+$('stop').addEventListener('click',async()=>{const old=sessionId;sessionId='';controls();try{if(old)await call('/sessions/'+encodeURIComponent(old),{method:'DELETE'});say('Remote session closed.')}catch(e){say('Session cleared locally, but server closure could not be confirmed: '+e.message,true)}finally{$('screen').hidden=true;$('screen').removeAttribute('src');$('pageinfo').textContent='';}});
+window.addEventListener('pagehide',()=>{if($('screen').dataset.objectUrl)URL.revokeObjectURL($('screen').dataset.objectUrl)});
+</script>
+</body>
+</html>
