@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080b14">
+<title>Neon Proxy · Neon District</title>
+<style>
+:root{color-scheme:dark;--bg:#080b14;--panel:#111928;--line:#30415f;--muted:#9aaac4;--text:#edf7ff;--cyan:#5de5fa;--purple:#a78bfa}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,sans-serif;color:var(--text);background:radial-gradient(ellipse at 15% 0,#183967 0,transparent 40%),radial-gradient(ellipse at 90% 5%,#3d205d 0,transparent 34%),var(--bg)}
+a{color:inherit}button,input{font:inherit}.top{height:70px;display:flex;align-items:center;justify-content:space-between;max-width:1100px;padding:0 20px;margin:auto}.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:950}.mark{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:linear-gradient(125deg,#7771ff,#44eddd);color:#061322}.back{padding:9px 12px;border:1px solid var(--line);border-radius:11px;text-decoration:none;font-size:12px}
+main{width:min(1000px,100%);margin:auto;padding:35px 20px 70px}.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:7px 11px;border:1px solid #41677d;border-radius:50px;color:#9eeefe;background:#12273a;font-size:10px;font-weight:900;letter-spacing:.1em}h1{font-size:clamp(44px,8vw,76px);line-height:.95;letter-spacing:-.06em;margin:20px 0}h1 span{background:linear-gradient(105deg,#61e6fa,#b19aff);background-clip:text;color:transparent}.intro{max-width:680px;color:#a8b8d0;line-height:1.7}
+.panel{margin-top:24px;padding:22px;border:1px solid #344765;border-radius:22px;background:linear-gradient(155deg,#19243a,#0d1424);box-shadow:0 22px 65px #0005}.row{display:flex;gap:9px;flex-wrap:wrap}.row input{flex:1;min-width:200px;height:49px;border:1px solid #3c5070;border-radius:12px;background:#090f1d;color:#fff;padding:0 13px}.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:12px;padding:13px 16px;background:linear-gradient(110deg,#62eafb,#86f6b4);color:#071425;font-size:12px;font-weight:950;text-decoration:none;cursor:pointer}.btn.secondary{background:#17233a;color:#d5f8ff;border:1px solid #47738a}.status{display:flex;gap:10px;align-items:flex-start;margin-top:16px;padding:13px 14px;border:1px solid #5c4f32;background:#292313bd;border-radius:13px;color:#f0d8a8;font-size:12px;line-height:1.6}.dot{width:8px;height:8px;flex:0 0 8px;margin-top:5px;border-radius:50%;background:#f4bd60}.small{font-size:11px;color:#91a5c2;line-height:1.6}.steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}.step{border:1px solid #2d3e59;background:#101826;border-radius:16px;padding:17px}.step b{display:block;margin-bottom:8px}.step p{margin:0;color:#a3b5cd;font-size:12px;line-height:1.65}.step a{color:#92efff}.footer{margin-top:25px;color:#71839e;font-size:11px;line-height:1.6}@media(max-width:650px){main{padding:25px 14px 55px}.panel{padding:16px}.steps{grid-template-columns:1fr}.row .btn{width:100%}}
+</style>
+</head>
+<body>
+<header class="top"><a class="brand" href="index.html"><span class="mark">ND</span> NEON DISTRICT <span style="color:#8a9bb5;font-size:10px">/ PROXY</span></a><a class="back" href="index.html">← Back to arcade</a></header>
+<main>
+<span class="eyebrow">NEON DISTRICT · PERSONAL WEB PROXY</span>
+<h1>YOUR WEB.<br><span>YOUR PORTAL.</span></h1>
+<p class="intro">A dedicated home for your own Scramjet-based browser proxy. The interface is part of Neon District; the proxy engine must run on a separate server because GitHub Pages cannot execute the server-side proxy.</p>
+<section class="panel">
+<h2 style="margin:0 0 8px;font-size:20px">Connect your proxy server</h2>
+<p class="small">If you already deployed a compatible Scramjet frontend/server, enter its HTTPS address below. This saves the address on this device only. It does not create or deploy a server for you.</p>
+<form id="connectForm" class="row" style="margin-top:14px">
+<input id="serverUrl" type="url" inputmode="url" placeholder="https://your-proxy-host.example" aria-label="Your proxy server URL" autocomplete="url" required>
+<button class="btn" type="submit">CHECK SERVER</button>
+</form>
+<div id="status" class="status" role="status" aria-live="polite"><span class="dot"></span><span><b>Not connected.</b> No proxy server has been configured for Neon District yet.</span></div>
+<div class="row" style="margin-top:14px"><a class="btn secondary" href="neon-browser.html#own-browser">Open browser setup guide ↗</a><a class="btn secondary" href="https://github.com/achroma-ubg/engine" target="_blank" rel="noopener">Inspect engine source ↗</a></div>
+</section>
+<h2 style="margin:30px 0 8px">Next steps to make it live</h2>
+<div class="steps">
+<article class="step"><b>01 · Deploy the engine</b><p>Use a server you control and verify its startup instructions, license, dependencies, and security settings. The public Achroma engine repository currently exposes engine source files but not a ready-to-run package manifest at its root.</p></article>
+<article class="step"><b>02 · Configure access</b><p>Use HTTPS and restrict access to your own account or trusted users. Do not publish an unrestricted open proxy; it can be abused and may expose your server.</p></article>
+<article class="step"><b>03 · Connect and test</b><p>Enter the deployed frontend URL above. This page checks basic reachability; a successful check alone does not prove every website or proxy route works.</p></article>
+<article class="step"><b>04 · Test on iPad</b><p>Confirm a site loads, navigation works, and the server does not expose credentials or private browsing data before relying on it.</p></article>
+</div>
+<p class="footer">Honest status: this page is the Neon District interface only. No proxy backend has been deployed or verified yet. Do not enter passwords or sensitive information into an unverified proxy.</p>
+</main>
+<script>
+const key='neon_proxy_server_url';
+const input=document.getElementById('serverUrl');
+const statusBox=document.getElementById('status');
+function setStatus(title,msg,ok=false){statusBox.style.borderColor=ok?'#27634f':'#5c4f32';statusBox.style.background=ok?'#10332bbd':'#292313bd';statusBox.style.color=ok?'#a8f1d8':'#f0d8a8';statusBox.innerHTML='<span class="dot" style="background:'+(ok?'#65e5b5':'#f4bd60')+'"></span><span><b>'+title+'</b> '+msg+'</span>'}
+try{input.value=localStorage.getItem(key)||''}catch(e){}
+document.getElementById('connectForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ let u;try{u=new URL(input.value.trim());if(u.protocol!=='https:'&&u.hostname!=='localhost'&&u.hostname!=='127.0.0.1')throw Error()}catch(e){setStatus('Invalid address.','Enter a full HTTPS server URL.');return}
+ try{localStorage.setItem(key,u.origin)}catch(e){}
+ setStatus('Checking server…','Attempting a short reachability check.');
+ try{
+  const res=await fetch(u.origin,{mode:'cors',cache:'no-store',signal:AbortSignal.timeout(7000)});
+  setStatus(res.ok?'Server responded.':'Server responded with HTTP '+res.status+'.','This confirms only basic reachability—not that Scramjet routes or browsing work.',res.ok);
+ }catch(e){setStatus('Could not verify the server.','It may be offline, block cross-origin checks, or lack a reachable root page. The address is saved on this device; this page does not proxy traffic by itself.');}
+});
+</script>
+</body>
+</html>
