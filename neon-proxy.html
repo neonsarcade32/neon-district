@@ -42,17 +42,49 @@ main{width:min(1000px,100%);margin:auto;padding:35px 20px 70px}.eyebrow{display:
 const key='neon_proxy_server_url';
 const input=document.getElementById('serverUrl');
 const statusBox=document.getElementById('status');
-function setStatus(title,msg,ok=false){statusBox.style.borderColor=ok?'#27634f':'#5c4f32';statusBox.style.background=ok?'#10332bbd':'#292313bd';statusBox.style.color=ok?'#a8f1d8':'#f0d8a8';statusBox.innerHTML='<span class="dot" style="background:'+(ok?'#65e5b5':'#f4bd60')+'"></span><span><b>'+title+'</b> '+msg+'</span>'}
+function setStatus(title,msg,state='unknown'){
+ const styles={
+  ready:{border:'#27634f',background:'#10332bbd',color:'#a8f1d8',dot:'#65e5b5'},
+  reachable:{border:'#5a4a88',background:'#211a38bd',color:'#d8caff',dot:'#b6a0ff'},
+  failed:{border:'#783d45',background:'#35171ebd',color:'#ffc1c7',dot:'#ff7d8a'},
+  unknown:{border:'#5c4f32',background:'#292313bd',color:'#f0d8a8',dot:'#f4bd60'}
+ };
+ const s=styles[state]||styles.unknown;
+ statusBox.style.borderColor=s.border;
+ statusBox.style.background=s.background;
+ statusBox.style.color=s.color;
+ const titleEl=document.createElement('b');titleEl.textContent=title;
+ const msgEl=document.createElement('span');msgEl.textContent=' '+msg;
+ const dot=document.createElement('span');dot.className='dot';dot.style.background=s.dot;
+ statusBox.replaceChildren(dot,titleEl,msgEl);
+}
 try{input.value=localStorage.getItem(key)||''}catch(e){}
 document.getElementById('connectForm').addEventListener('submit',async e=>{
  e.preventDefault();
- let u;try{u=new URL(input.value.trim());if(u.protocol!=='https:'&&u.hostname!=='localhost'&&u.hostname!=='127.0.0.1')throw Error()}catch(e){setStatus('Invalid address.','Enter a full HTTPS server URL.');return}
- try{localStorage.setItem(key,u.origin)}catch(e){}
- setStatus('Checking server…','Attempting a short reachability check.');
+ let u;
  try{
-  const res=await fetch(u.origin,{mode:'cors',cache:'no-store',signal:AbortSignal.timeout(7000)});
-  setStatus(res.ok?'Server responded.':'Server responded with HTTP '+res.status+'.','This confirms only basic reachability—not that Scramjet routes or browsing work.',res.ok);
- }catch(e){setStatus('Could not verify the server.','It may be offline, block cross-origin checks, or lack a reachable root page. The address is saved on this device; this page does not proxy traffic by itself.');}
+  u=new URL(input.value.trim());
+  if(u.protocol!=='https:'&&u.hostname!=='localhost'&&u.hostname!=='127.0.0.1')throw Error();
+  if(u.username||u.password)throw Error();
+ }catch(e){setStatus('Invalid address.','Enter a full HTTPS URL without embedded credentials.','failed');return}
+ try{localStorage.setItem(key,u.origin)}catch(e){}
+ const button=document.querySelector('#connectForm button');
+ button.disabled=true;button.textContent='CHECKING…';
+ setStatus('Checking reachability…','Trying the server root with a short timeout.','unknown');
+ try{
+  const res=await fetch(u.origin,{mode:'cors',cache:'no-store',signal:AbortSignal.timeout(8000),redirect:'follow'});
+  if(res.ok){
+   setStatus('Server reachable; runtime unverified.','The server returned HTTP '+res.status+'. This does not prove browser-runtime readiness or successful browsing.','reachable');
+  }else{
+   setStatus('Server responded, but the check failed.','HTTP '+res.status+' was returned. The host is reachable, but its root endpoint did not return success. Runtime remains unverified.','failed');
+  }
+ }catch(err){
+  if(err && err.name==='TimeoutError'){
+   setStatus('Reachability timed out.','No response arrived within 8 seconds. This may mean the host is offline or slow; browser cross-origin policy can also prevent verification.','failed');
+  }else{
+   setStatus('Connection could not be verified.','The browser could not read a response. The server may be offline, or CORS/TLS/network policy may block this check. This is not proof that the server is down.','unknown');
+  }
+ }finally{button.disabled=false;button.textContent='CHECK SERVER'}
 });
 </script>
 </body>
