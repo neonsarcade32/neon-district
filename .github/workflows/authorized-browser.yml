@@ -1,0 +1,30 @@
+name: Authorized browser backend CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'authorized-browser/**'
+      - '.github/workflows/authorized-browser.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install backend dependencies
+        working-directory: authorized-browser
+        run: npm install
+      - name: Test fail-closed startup
+        working-directory: authorized-browser
+        run: npm test
+      - name: Build isolated browser container
+        run: docker build -t neon-district-authorized-browser:ci authorized-browser
