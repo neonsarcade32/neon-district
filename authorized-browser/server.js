@@ -149,7 +149,7 @@ const cleanup = setInterval(() => {
 cleanup.unref();
 
 try {
-  browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-dev-shm-usage"] });
+  browser = await chromium.launch({ headless: true, args: ["--disable-dev-shm-usage"] });
   const server = app.listen(PORT, "0.0.0.0", () => console.log(`Authorized browser API listening on ${PORT}`));
   async function shutdown() {
     clearInterval(cleanup);
