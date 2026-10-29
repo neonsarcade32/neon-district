@@ -18,7 +18,8 @@
     "test:bowlingGameplay": "node tests/bowling-3-browser.cjs",
     "test:openSource": "node tests/open-source-games.cjs",
     "test:offroad": "node tests/offroad-3d-browser.cjs",
-    "test:freeski": "node tests/neon-freeski-browser.cjs"
+    "test:freeski": "node tests/neon-freeski-browser.cjs",
+    "test:neon-proxy": "node tests/neon-proxy-e2e.cjs"
   },
   "engines": {
     "node": ">=20"
