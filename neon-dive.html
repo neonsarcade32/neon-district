@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Neon Dive · Neon District</title>
+<style>
+:root{--bg:#070a12;--panel:#101825;--cyan:#56dfff;--green:#59e49b;--gold:#ffd15c;--text:#f7fbff;--muted:#91a1b4}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 10%,#1a2a40,#070a12 60%);color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
+.container{max-width:560px;width:100%}
+h1{font-size:2.4rem;margin:0 0 8px;letter-spacing:-1px;background:linear-gradient(90deg,#56dfff,#74e7aa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--muted);margin-bottom:24px}
+.card{background:var(--panel);border:1px solid #2b3a4d;border-radius:16px;padding:20px;margin:16px 0}
+.prompt{font-size:1.2rem;font-weight:700;margin-bottom:16px}
+input{width:100%;padding:12px;border-radius:10px;border:1px solid #3a4b63;background:#0b1320;color:#fff;font-size:1rem;margin-bottom:12px}
+button{background:linear-gradient(90deg,#2b85c6,#2fb979);border:0;border-radius:10px;padding:12px 20px;color:#fff;font-weight:800;cursor:pointer;width:100%}
+.timer{font-size:1.5rem;color:var(--gold);text-align:center;margin:8px 0}
+.depth{height:12px;background:#08101a;border-radius:999px;overflow:hidden;margin:12px 0}
+.depth i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--green));width:0;transition:.3s}
+.score{text-align:center;font-size:1.8rem;font-weight:900;color:var(--cyan)}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;font-size:.75rem;color:var(--muted)}
+.back{display:inline-block;margin-top:20px;color:var(--cyan);text-decoration:none;font-weight:700}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>NEON DIVE</h1>
+<p class="sub">Daily reverse trivia. Rare answers sink you deeper. One in a neon.</p>
+<div class="card" id="game">
+<div class="prompt" id="prompt">Loading daily dive...</div>
+<div class="timer" id="timer">25</div>
+<input id="answer" placeholder="Type one answer..." autofocus>
+<button id="submit">DIVE</button>
+<div class="depth"><i id="bar"></i></div>
+<div class="score" id="score">0m</div>
+<div class="tiers">
+<div>Plankton 10</div><div>Schooler 30</div><div>Rare 60</div>
+<div>Deep Cut 85</div><div>One in a Neon 100</div><div>Max 700</div>
+</div>
+</div>
+<a class="back" href="index.html">← Back to Arcade</a>
+</div>
+<script>
+const PROMPTS = [
+  {q:"Name a sport where athletes do flips or somersaults", answers:{"gymnastics":10,"diving":30,"trampoline":60,"course landaise":100,"parkour":85}},
+  {q:"Name a city whose name starts with Los, Las, La, Le, El or The", answers:{"los angeles":10,"las vegas":15,"la ciotat":100,"the hague":60,"el paso":30}},
+  {q:"Name something used to grip or pick things up", answers:{"hands":10,"tongs":30,"claw of archimedes":100,"forceps":60,"tweezers":40}},
+  {q:"Name a non-human character from Star Wars, the MCU, or Lord of the Rings", answers:{"chewbacca":10,"groot":30,"jaxxon":100,"gollum":60,"rocket":40}},
+  {q:"Name a nail care product or tool (types, not brands)", answers:{"nail polish":10,"file":30,"tea bag":100,"cuticle oil":60,"clippers":20}},
+  {q:"Name a way to contact someone (methods, not brands/apps)", answers:{"phone call":10,"text":15,"rocket mail":100,"letter":30,"smoke signal":60}},
+  {q:"Name a fast food chain that operates in more than one country", answers:{"mcdonalds":10,"kfc":15,"coffee-bike":100,"burger king":20,"subway":30}}
+];
+let idx=0, score=0, timer=25, interval;
+const el=id=>document.getElementById(id);
+function start(){idx=0;score=0;show();}
+function show(){
+  if(idx>=PROMPTS.length){el('prompt').textContent='Dive complete!';el('timer').textContent='';el('answer').style.display='none';el('submit').textContent='AGAIN';return;}
+  el('prompt').textContent=(idx+1)+'/7 · '+PROMPTS[idx].q;
+  el('answer').value='';el('answer').style.display='block';el('submit').textContent='DIVE';
+  timer=25;el('timer').textContent=timer;
+  clearInterval(interval);interval=setInterval(()=>{timer--;el('timer').textContent=timer;if(timer<=0)next(0);},1000);
+}
+function next(pts){
+  clearInterval(interval);score+=pts;el('score').textContent=score+'m';el('bar').style.width=Math.min(100,score/7)+'%';
+  idx++;setTimeout(show,800);
+}
+function submit(){
+  const a=el('answer').value.trim().toLowerCase();
+  const p=PROMPTS[idx];
+  let pts=0;
+  for(const [k,v] of Object.entries(p.answers)){if(a.includes(k)||k.includes(a)){pts=v;break;}}
+  next(pts||10);
+}
+el('submit').onclick=()=>{if(idx>=PROMPTS.length)start();else submit();};
+el('answer').onkeydown=e=>{if(e.key==='Enter')el('submit').click();};
+start();
+</script>
+</body>
+</html>
