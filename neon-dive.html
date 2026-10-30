@@ -6,10 +6,11 @@
 <title>Neon Dive · the daily dive</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:#061018;color:#e8f4ff;font-family:ui-monospace,Menlo,Consolas,monospace;overflow:hidden}
+html,body{height:100%;background:#020810;color:#e8f4ff;font-family:ui-monospace,Menlo,Consolas,monospace;overflow:hidden}
 body{display:flex;flex-direction:column;align-items:center;justify-content:center}
-.screen{width:100%;max-width:480px;height:100%;max-height:900px;position:relative;display:flex;flex-direction:column}
+.screen{width:100%;max-width:480px;height:100%;max-height:900px;position:relative;display:flex;flex-direction:column;overflow:hidden}
 
+/* Title */
 #title{background:linear-gradient(#7ec8f0 0%,#b8e0f8 28%,#4a90c4 42%,#1a3a6a 52%,#0a1a30 70%,#020810 100%);position:relative;overflow:hidden;flex:1}
 .sky{position:absolute;inset:0 0 48% 0;background:linear-gradient(#9fd4f5,#d0ecff)}
 .sun{position:absolute;right:18%;top:12%;width:60px;height:60px;border-radius:50%;background:#ffe680;box-shadow:0 0 40px #ffe680}
@@ -25,31 +26,39 @@ body{display:flex;flex-direction:column;align-items:center;justify-content:cente
 .krill{position:absolute;bottom:22%;right:18%;font-size:28px;animation:bob 2s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(-6px)}}
 
-#play{display:none;background:linear-gradient(#0a1a30,#020810);padding:20px;flex:1;flex-direction:column}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.prog{font-size:13px;color:#7ee0ff}
-.timer{font-size:28px;font-weight:900;color:#ffd15c}
-.timer.low{color:#ff6878;animation:pulse .4s infinite}
-@keyframes pulse{50%{opacity:.6}}
-.promptBox{background:#0c1828;border:1px solid #2a4a6a;border-radius:8px;padding:18px;margin:16px 0;min-height:90px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;line-height:1.4}
-.inputRow{display:flex;gap:8px;margin:12px 0}
-input{flex:1;background:#061018;border:1px solid #3a5a7a;color:#fff;padding:14px;font-size:16px;border-radius:6px;outline:none}
+/* Dive scene */
+#play{display:none;flex:1;position:relative;overflow:hidden;background:#0a3050}
+.ocean{position:absolute;inset:0;transition:background 1.2s}
+.bubbles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.bubble{position:absolute;width:6px;height:6px;background:#fff4;border-radius:50%;animation:rise linear infinite}
+@keyframes rise{from{transform:translateY(100vh)}to{transform:translateY(-20px)}}
+.sub{position:absolute;left:50%;bottom:38%;transform:translateX(-50%);font-size:42px;transition:bottom 1.4s ease-out;filter:drop-shadow(0 4px 8px #0008);z-index:2}
+.depthScale{position:absolute;right:8px;top:70px;bottom:120px;width:28px;border-left:1px solid #4adfff44;font-size:8px;color:#7ee0ffaa;z-index:3}
+.depthMark{position:absolute;right:4px;white-space:nowrap}
+.hud{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:center;z-index:4}
+.prog{background:#0a1628cc;border:1px solid #4adfff44;padding:6px 10px;border-radius:6px;font-size:12px;color:#7ee0ff}
+.timer{background:#0a1628cc;border:1px solid #ffd15c44;padding:6px 14px;border-radius:6px;font-size:22px;font-weight:900;color:#ffd15c;min-width:56px;text-align:center}
+.timer.low{color:#ff6878;border-color:#ff687844;animation:pulse .4s infinite}
+@keyframes pulse{50%{opacity:.55}}
+.promptBox{position:absolute;top:58px;left:12px;right:12px;background:#0c1828ee;border:1px solid #4adfff55;border-radius:10px;padding:16px;text-align:center;font-size:15px;line-height:1.4;z-index:4;min-height:70px;display:flex;align-items:center;justify-content:center}
+.inputArea{position:absolute;bottom:16px;left:12px;right:12px;z-index:4}
+.inputRow{display:flex;gap:8px}
+input{flex:1;background:#061018ee;border:1px solid #4adfff66;color:#fff;padding:14px;font-size:16px;border-radius:8px;outline:none}
 input:focus{border-color:#4adfff}
-button.dive{background:#1a3a5a;border:1px solid #4adfff;color:#7ee0ff;padding:14px 18px;font-weight:900;border-radius:6px;cursor:pointer}
-.feedback{text-align:center;min-height:48px;margin:8px 0;font-size:14px}
+button.dive{background:#1a3a5a;border:1px solid #4adfff;color:#7ee0ff;padding:14px 16px;font-weight:900;border-radius:8px;cursor:pointer}
+.feedback{text-align:center;margin-top:6px;font-size:13px;min-height:20px}
 .feedback .tier{font-weight:900;color:#59e49b}
-.depthBar{height:8px;background:#0a1420;border:1px solid #2a4a6a;border-radius:999px;overflow:hidden;margin:12px 0}
-.depthBar i{display:block;height:100%;background:linear-gradient(90deg,#4adfff,#59e49b);width:0;transition:.4s}
-.score{text-align:center;font-size:22px;font-weight:900;color:#4adfff}
-.landmarks{font-size:10px;color:#6a8aa8;text-align:center;margin-top:4px}
+.scoreHud{position:absolute;left:12px;bottom:92px;background:#0a1628cc;border:1px solid #4adfff33;padding:6px 10px;border-radius:6px;font-size:13px;color:#4adfff;z-index:4}
+.landHud{position:absolute;left:12px;bottom:122px;font-size:10px;color:#7ee0ffaa;z-index:4}
 
+/* Result */
 #result{display:none;background:#020810;padding:24px;text-align:center;flex:1;flex-direction:column;justify-content:center}
-.resultTitle{font-size:28px;letter-spacing:3px;margin-bottom:8px}
-.resultDepth{font-size:48px;font-weight:900;color:#4adfff;margin:12px 0}
-.resultScore{font-size:18px;color:#7ee0ff;margin-bottom:20px}
-.emoji{font-size:24px;letter-spacing:4px;margin:16px 0}
-.share{background:#1a3a5a;border:1px solid #4adfff;color:#7ee0ff;padding:12px 20px;font-weight:900;border-radius:6px;cursor:pointer;margin:8px}
-.again{background:transparent;border:1px solid #3a5a7a;color:#8aa;padding:12px 20px;border-radius:6px;cursor:pointer;margin:8px}
+.resultTitle{font-size:26px;letter-spacing:3px;margin-bottom:8px}
+.resultDepth{font-size:46px;font-weight:900;color:#4adfff;margin:10px 0}
+.resultScore{font-size:16px;color:#7ee0ff;margin-bottom:16px}
+.emoji{font-size:22px;letter-spacing:3px;margin:14px 0}
+.share{background:#1a3a5a;border:1px solid #4adfff;color:#7ee0ff;padding:12px 18px;font-weight:900;border-radius:6px;cursor:pointer;margin:6px}
+.again{background:transparent;border:1px solid #3a5a7a;color:#8aa;padding:12px 18px;border-radius:6px;cursor:pointer;margin:6px}
 </style>
 </head>
 <body>
@@ -61,69 +70,103 @@ button.dive{background:#1a3a5a;border:1px solid #4adfff;color:#7ee0ff;padding:14
     <div class="cloud" style="width:60px;height:18px;top:22%;right:20%"></div>
     <div class="logo">
       <h1>NEON DIVE</h1>
-      <div class="sub">THE DAILY DIVE</div>
-      <div class="tag">7 prompts · 25 seconds each · rarer answers sink deeper</div>
+      <div class="sub">THE ENDLESS DIVE</div>
+      <div class="tag">dive after dive · rarer answers sink deeper</div>
     </div>
     <div class="boat">🚢</div>
     <div class="krill">🦐</div>
     <button class="begin" id="beginBtn">▼ BEGIN DESCENT ▼</button>
-    <div class="diveNum">DIVE #1</div>
+    <div class="diveNum">ENDLESS</div>
   </div>
 
   <div id="play">
-    <div class="top">
-      <div class="prog" id="prog">1 / 7</div>
+    <div class="ocean" id="ocean"></div>
+    <div class="bubbles" id="bubbles"></div>
+    <div class="sub" id="sub">🚤</div>
+    <div class="depthScale" id="scale"></div>
+    <div class="hud">
+      <div class="prog" id="prog">1 / ∞</div>
       <div class="timer" id="timer">25</div>
     </div>
     <div class="promptBox" id="prompt">Name a sport where athletes do flips</div>
-    <div class="inputRow">
-      <input id="answer" placeholder="type an answer..." autocomplete="off">
-      <button class="dive" id="diveBtn">DIVE</button>
+    <div class="landHud" id="landmarks">surface</div>
+    <div class="scoreHud" id="score">0 m</div>
+    <div class="inputArea">
+      <div class="inputRow">
+        <input id="answer" placeholder="type an answer..." autocomplete="off">
+        <button class="dive" id="diveBtn">DIVE</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
     </div>
-    <div class="feedback" id="feedback"></div>
-    <div class="depthBar"><i id="bar"></i></div>
-    <div class="score" id="score">0 m</div>
-    <div class="landmarks" id="landmarks">surface</div>
   </div>
 
   <div id="result">
-    <div class="resultTitle">DESCENT COMPLETE</div>
+    <div class="resultTitle">SURFACED</div>
     <div class="resultDepth" id="finalDepth">0 m</div>
-    <div class="resultScore" id="finalScore">0 / 700</div>
-    <div class="emoji" id="emoji">🟦🟦🟦🟦🟦🟦🟦</div>
+    <div class="resultScore" id="finalScore">0 points</div>
+    <div class="emoji" id="emoji"></div>
     <button class="share" id="shareBtn">COPY RESULT</button>
-    <button class="again" id="againBtn">PLAY AGAIN</button>
+    <button class="again" id="againBtn">DIVE AGAIN</button>
   </div>
 </div>
 
 <script>
-const PROMPTS = [
+const BANK = [
   {q:"Name a sport where athletes do flips or somersaults", answers:{"gymnastics":10,"diving":30,"trampoline":60,"course landaise":100,"parkour":85,"synchronized swimming":30}},
   {q:"Name a city whose name starts with Los, Las, La, Le, El or The", answers:{"los angeles":10,"las vegas":15,"la ciotat":100,"the hague":60,"el paso":30,"la paz":30}},
   {q:"Name something used to grip or pick things up", answers:{"hands":10,"tongs":30,"claw of archimedes":100,"forceps":60,"tweezers":40,"pliers":30}},
   {q:"Name a non-human character from Star Wars, the MCU, or Lord of the Rings", answers:{"chewbacca":10,"groot":30,"jaxxon":100,"gollum":60,"rocket":40,"yoda":15,"sauron":30}},
   {q:"Name a nail care product or tool (types, not brands)", answers:{"nail polish":10,"file":30,"tea bag":100,"cuticle oil":60,"clippers":20,"buffer":30}},
   {q:"Name a way to contact someone (methods, not brands/apps)", answers:{"phone call":10,"text":15,"rocket mail":100,"letter":30,"smoke signal":60,"email":15,"telegram":40}},
-  {q:"Name a fast food chain that operates in more than one country", answers:{"mcdonalds":10,"kfc":15,"coffee-bike":100,"burger king":20,"subway":30,"wendys":30,"dominoes":30}}
+  {q:"Name a fast food chain that operates in more than one country", answers:{"mcdonalds":10,"kfc":15,"coffee-bike":100,"burger king":20,"subway":30,"wendys":30,"dominoes":30}},
+  {q:"Name a type of cheese", answers:{"cheddar":10,"mozzarella":15,"brie":30,"gorgonzola":60,"cabrales":100,"halloumi":60,"parmesan":15}},
+  {q:"Name a chemical element", answers:{"oxygen":10,"gold":15,"helium":30,"tungsten":60,"einsteinium":100,"carbon":15,"iron":15}},
+  {q:"Name a country in Europe", answers:{"france":10,"germany":15,"spain":15,"estonia":60,"andorra":100,"malta":60,"switzerland":30}},
+  {q:"Name a musical instrument", answers:{"guitar":10,"piano":15,"drums":15,"oboe":60,"didgeridoo":100,"violin":30,"harp":60}},
+  {q:"Name a fruit that is not an apple or banana", answers:{"orange":10,"grape":15,"mango":30,"durian":60,"rambutan":100,"kiwi":30,"papaya":60}},
+  {q:"Name a job that starts with the letter S", answers:{"singer":10,"scientist":15,"surgeon":30,"sommelier":60,"stevedore":100,"sailor":30,"sculptor":60}},
+  {q:"Name an animal that lives in the ocean", answers:{"shark":10,"dolphin":15,"whale":30,"anglerfish":60,"vampire squid":100,"jellyfish":30,"octopus":30}},
+  {q:"Name a programming language", answers:{"python":10,"javascript":15,"java":15,"rust":30,"haskell":60,"fortran":100,"lisp":60}},
+  {q:"Name a planet in our solar system", answers:{"earth":10,"mars":15,"jupiter":15,"neptune":30,"mercury":30,"pluto":60,"ceres":100}},
+  {q:"Name a board game", answers:{"chess":10,"monopoly":15,"scrabble":15,"catan":30,"ticket to ride":60,"go":100,"risk":30}},
+  {q:"Name a type of tree", answers:{"oak":10,"pine":15,"maple":15,"baobab":60,"sequoia":60,"bristlecone":100,"willow":30}},
+  {q:"Name a color that is not red, blue, or green", answers:{"yellow":10,"orange":15,"purple":15,"turquoise":30,"magenta":60,"chartreuse":100,"indigo":60}},
+  {q:"Name a mountain or mountain range", answers:{"everest":10,"alps":15,"rockies":15,"andes":30,"kilimanjaro":60,"denali":60,"k2":100}}
 ];
 const TIERS = {10:"Plankton",15:"Too Clever",30:"Schooler",60:"Rare",85:"Deep Cut",100:"One in a Neon"};
-const LANDMARKS = [[0,"surface"],[100,"twilight zone"],[332,"deepest scuba"],[1000,"midnight zone"],[3800,"Titanic"],[6000,"hadal trench"]];
+const LANDMARKS = [[0,"surface"],[100,"twilight"],[332,"deepest scuba"],[1000,"midnight"],[3800,"Titanic"],[6000,"hadal"],[11000,"challenger deep"]];
 
-let idx=0, score=0, timer=25, interval, answers=[];
+let pool=[], idx=0, score=0, timer=25, interval, answers=[], round=1;
 const $ = id => document.getElementById(id);
 
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function show(id){
   ['title','play','result'].forEach(s => $(s).style.display = s===id ? (s==='play'||s==='result'?'flex':'block') : 'none');
 }
+function makeBubbles(){
+  const b = $('bubbles');
+  b.innerHTML = '';
+  for(let i=0;i<18;i++){
+    const el = document.createElement('div');
+    el.className = 'bubble';
+    el.style.left = Math.random()*100 + '%';
+    el.style.animationDuration = (6+Math.random()*8) + 's';
+    el.style.animationDelay = (Math.random()*6) + 's';
+    el.style.width = el.style.height = (4+Math.random()*8) + 'px';
+    b.appendChild(el);
+  }
+}
 function start(){
-  idx=0; score=0; answers=[];
+  pool = shuffle([...BANK]);
+  idx=0; score=0; answers=[]; round=1;
   show('play');
+  makeBubbles();
   nextPrompt();
 }
 function nextPrompt(){
-  if(idx >= PROMPTS.length) return end();
-  const p = PROMPTS[idx];
-  $('prog').textContent = (idx+1) + ' / 7';
+  if(idx >= pool.length){ pool = shuffle([...BANK]); idx=0; }
+  const p = pool[idx];
+  $('prog').textContent = round + ' / ∞';
   $('prompt').textContent = p.q;
   $('answer').value = '';
   $('answer').focus();
@@ -142,7 +185,7 @@ function nextPrompt(){
 function submit(timeout=false){
   clearInterval(interval);
   const raw = $('answer').value.trim().toLowerCase();
-  const p = PROMPTS[idx];
+  const p = pool[idx];
   let pts = 0;
   if(!timeout && raw){
     for(const [k,v] of Object.entries(p.answers)){
@@ -153,34 +196,56 @@ function submit(timeout=false){
   score += pts;
   const tier = pts ? TIERS[pts] : 'no echo';
   $('feedback').innerHTML = pts ? '<span class="tier">'+tier+'</span> · '+pts+' pts' : (timeout ? 'time' : 'no echo');
-  updateDepth();
-  idx++;
-  setTimeout(nextPrompt, 900);
+  updateDive();
+  idx++; round++;
+  setTimeout(nextPrompt, 1100);
 }
-function updateDepth(){
+function updateDive(){
   const m = score * 10;
-  $('score').textContent = m + ' m';
-  $('bar').style.width = Math.min(100, (score/700)*100) + '%';
+  $('score').textContent = m.toLocaleString() + ' m';
+  // Sub sinks (clamped)
+  const subBottom = Math.max(18, 38 - Math.min(20, m/400));
+  $('sub').style.bottom = subBottom + '%';
+  // Ocean darkens
+  const t = Math.min(1, m/8000);
+  const r = Math.round(10 - t*8);
+  const g = Math.round(48 - t*40);
+  const b = Math.round(80 - t*60);
+  $('ocean').style.background = `rgb(${r},${g},${b})`;
+  // Landmark
   let land = 'surface';
   for(const [d,name] of LANDMARKS) if(m >= d) land = name;
   $('landmarks').textContent = land;
+  // Scale marks
+  const sc = $('scale');
+  sc.innerHTML = '';
+  LANDMARKS.forEach(([d,name])=>{
+    const pct = Math.min(95, (d/11000)*100);
+    const el = document.createElement('div');
+    el.className = 'depthMark';
+    el.style.bottom = pct + '%';
+    el.textContent = d;
+    sc.appendChild(el);
+  });
 }
 function end(){
   show('result');
   const m = score * 10;
   $('finalDepth').textContent = m.toLocaleString() + ' m';
-  $('finalScore').textContent = score + ' / 700';
-  const em = answers.map(p => p>=85?'🟩':p>=60?'🟨':p>=30?'🟧':p>0?'🟦':'⬛').join('');
-  $('emoji').textContent = em;
+  $('finalScore').textContent = score + ' points · ' + (round-1) + ' prompts';
+  const em = answers.slice(-12).map(p => p>=85?'🟩':p>=60?'🟨':p>=30?'🟧':p>0?'🟦':'⬛').join('');
+  $('emoji').textContent = em || '⬛';
 }
 $('beginBtn').onclick = start;
 $('diveBtn').onclick = () => submit();
 $('answer').onkeydown = e => { if(e.key==='Enter') submit(); };
 $('againBtn').onclick = () => show('title');
 $('shareBtn').onclick = () => {
-  const text = 'Neon Dive\n'+score+'/700\n'+$('emoji').textContent+'\nneonsarcade32.github.io/neon-district/neon-dive.html';
+  const text = 'Neon Dive Endless\n'+score+' pts · '+(score*10)+'m\n'+$('emoji').textContent+'\nneonsarcade32.github.io/neon-district/neon-dive.html';
   navigator.clipboard.writeText(text).then(() => $('shareBtn').textContent = 'COPIED');
 };
+// Escape to surface
+document.addEventListener('keydown', e => { if(e.key==='Escape' && $('play').style.display==='flex') end(); });
 </script>
 </body>
 </html>
