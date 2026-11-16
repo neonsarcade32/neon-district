@@ -37,7 +37,7 @@ expect(entries.length===gamePages.length,'Expected '+gamePages.length+' playable
 expect(entries.length>=40,'Catalog unexpectedly lost games: only '+entries.length+' found');
 expect(index.includes("id:'cork7',name:'Cork7',file:'cork7.html'"),'Cork7 must appear in game catalog');
 const cork7Start=read('cork7-start.html');
-for(const park of ['nordryggen','apex','shirakumo','bigair','forestline','halfpipe']){
+for(const park of ['nordryggen','apex','shirakumo','bigair','forestline','halfpipe','bellevue']){
  expect(cork7Start.includes('cork7.html?park='+park+'&amp;mode=solo'),'Cork7 iPad direct park launcher missing '+park);
 }
 expect(read('cork7.html').includes('cork7-standalone.js'),'Cork7 must launch the original client with standalone entry');
