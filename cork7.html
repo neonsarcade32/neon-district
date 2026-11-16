@@ -20,7 +20,7 @@
     try{
       var u=new URL(input,document.baseURI);
       if(u.origin!==location.origin&&u.origin!=='https://cork7.com')return null;
-      if(!/^\/(models|textures)\//.test(u.pathname))return null;
+      if(!/^\/(models|textures|grabs|sfx|items)\//.test(u.pathname))return null;
       return location.origin+projectRoot+u.pathname.slice(1)+u.search;
     }catch(e){return null}
   }
@@ -105,11 +105,11 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',update);
   update();
 })();</script>
-<link rel="stylesheet" href="cork7-assets/_next/static/css/index.DBvX0VVq.css">
-<link rel="stylesheet" href="cork7-assets/_next/static/css/game-client.Dazi9g4y.css">
+<link rel="stylesheet" href="cork7-assets/_next/static/css/index.Brj9LuMv.css">
+<link rel="stylesheet" href="cork7-assets/_next/static/css/game-client.Dtg5MW41.css">
 <link rel="stylesheet" href="cork7-neon-friends.css?v=20261022">
 
-<link rel="modulepreload" href="cork7-assets/_next/static/chunks/game-client-ND-standalone.js?nd-neonpeak-fix=20261026-v3">
+<link rel="modulepreload" href="cork7-assets/_next/static/chunks/game-client-DVXJxJr_.js?nd-c7-20261116">
 <style>
 html,body{margin:0;width:100%;min-height:100%;background:#081b25;color:#effcff}
 #cork7-root{min-height:100dvh;width:100%}
@@ -176,8 +176,8 @@ html,body{margin:0;width:100%;min-height:100%;background:#081b25;color:#effcff}
           ['cork7-start.html','Mountain selection page'],
           ['cork7-bridge.js','Game bridge'],
           ['cork7-standalone.js','Standalone game loader'],
-          ['cork7-assets/_next/static/css/index.DBvX0VVq.css','Main game styles'],
-          ['cork7-assets/_next/static/chunks/game-client-ND-standalone.js','Game engine bundle']
+          ['cork7-assets/_next/static/css/index.Brj9LuMv.css','Main game styles'],
+          ['cork7-assets/_next/static/chunks/game-client-DVXJxJr_.js','Game engine bundle']
         ];
         var missing=required.filter(function(item){return !has(item[0])}).map(function(item){return item[1]});
         var controller=!!(navigator.serviceWorker&&navigator.serviceWorker.controller);
@@ -212,7 +212,7 @@ html,body{margin:0;width:100%;min-height:100%;background:#081b25;color:#effcff}
 <div id="nd-cork7-startup-status" role="status">CORK7 · LOADING ORIGINAL GAME<span>Hosted inside Neon District</span></div>
 <noscript><p>Cork7 requires JavaScript. <a href="cork7-start.html">Choose a mountain</a>.</p></noscript>
 <script src="cork7-bridge.js" defer></script>
-<script type="module" src="cork7-standalone.js?v=neonpeak-fix-20261026-v3"></script>
+<script type="module" src="cork7-standalone.js?v=cork7-live-20261116"></script>
 <script type="module" src="cork7-neon-friends.js?v=20261022"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 // Cork7-only offline cache. Cache only this game's HTML and static files.
 // Multiplayer/API traffic is deliberately network-only so online play keeps
 // working when a connection exists and never receives stale cached responses.
-const CACHE_NAME = 'nd-cork7-static-v8';
+const CACHE_NAME = 'nd-cork7-static-v9';
 const SHELL_PATHS = [
   'cork7.html',
   'cork7-start.html',
@@ -12,14 +12,17 @@ const SHELL_PATHS = [
   'cork7-neon-friends.js',
   'cork7-neon-friends.css',
   'cork7-assets/brand/favicon-96.png',
-  'cork7-assets/_next/static/css/index.DBvX0VVq.css',
-  'cork7-assets/_next/static/css/game-client.Dazi9g4y.css',
+  'cork7-assets/_next/static/css/index.Brj9LuMv.css',
+  'cork7-assets/_next/static/css/game-client.Dtg5MW41.css',
   'cork7-assets/_next/static/chunks/framework-D_rUT4EX.js',
+  'cork7-assets/_next/static/chunks/rolldown-runtime-C60lm6uB.js',
+  'cork7-assets/_next/static/chunks/engine-DSsJCQCD.js',
+  'cork7-assets/grabs/tail-style-v1.json',
   'cork7-assets/_next/static/chunks/nd-standalone-vite-preload.js',
-  'cork7-assets/_next/static/chunks/game-client-ND-preload-20261022.js',
-  'cork7-assets/_next/static/chunks/supabase-BEhtaJUq.js',
-  'cork7-assets/_next/static/chunks/game-client-ND-standalone.js',
-  'cork7-assets/_next/static/chunks/active-course-neonpeak-fix-20261026-v3.js',
+  'cork7-assets/_next/static/chunks/index-DDTcHn_b.js',
+  'cork7-assets/_next/static/chunks/supabase-DUDiAKuD.js',
+  'cork7-assets/_next/static/chunks/game-client-DVXJxJr_.js',
+  'cork7-assets/_next/static/chunks/active-course-BafOXpaU.js',
   'cork7-assets/models/rider-v20.glb',
   'cork7-assets/models/venue-v1.glb',
   'cork7-assets/models/powder-finish-v1.glb',

@@ -39,3 +39,22 @@ The mirrored client now includes the complete transitive JavaScript chunk depend
 #### iPad Web Audio crash fix
 
 An iPad/WebKit test reproduced the game's own **This page couldn’t load** error after the mountain loading screen. Its original audio engine used an unconditional `new AudioContext`, but that constructor is not available in every browser environment. The local Cork7 client now uses standard `AudioContext` or legacy `webkitAudioContext` and skips optional sound initialization if neither exists, allowing the skiing simulation to continue. This does not modify Cork7's upstream backend or bypass browser media permissions.
+
+## Cork7 snapshot refresh — 16 November 2026
+
+Neon District's in-site Cork7 client was refreshed from the official public build
+served by https://cork7.com/ on 16 November 2026. The game uses the current
+game-client-DVXJxJr_.js and updated CSS/chunks, new grab animations,
+cosmetic models and sound effects. cork7-assets/SNAPSHOT.json
+records the observed upstream bundle and verification scope.
+
+Local Chromium/Edge tests confirmed the November "Tail Style by Robin" lobby
+and a functional APEX solo run on desktop and emulated iPad. The static
+catalog integrity tests verify the recorded bundle and assets.
+
+This is a dated first-party-hosted snapshot, not automatic synchronization.
+Cork7's music tracks and proprietary fonts were not redistributed. Those
+optional resources may not load from the mirror. Account sign-in, parties,
+ranked and official multiplayer depend on Cork7's upstream service and may
+only work fully at https://cork7.com/. Preserve the developer's permission
+and original credits when performing any future refresh.
