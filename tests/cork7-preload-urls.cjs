@@ -39,5 +39,13 @@ assert(html.includes(live.game_client),'Cork7 HTML must preload the current clie
 assert(fs.existsSync(path.join(root,'cork7-assets/_next/static/chunks',live.game_client)),'Latest Cork7 client bundle is missing');
 const currentIndex=fs.readFileSync(path.join(root,'cork7-assets/_next/static/chunks/index-DDTcHn_b.js'),'utf8');
 assert(currentIndex.includes('new URL('),'Current Cork7 preload resolver must preserve the first-party repository path');
+assert(currentIndex.includes('if(window.__ND_CORK7_STANDALONE__)'),'The static game must bypass upstream Vinext RSC reloads');
+const liveClient=fs.readFileSync(path.join(root,'cork7-assets/_next/static/chunks',live.game_client),'utf8');
+assert(liveClient.includes('https://cork7.com/images/mountain-map/v2-desktop-1672.webp'),'Cork7 park map image must resolve against the official static assets');
+assert(!liveClient.includes('src:`/images/mountain-map/v2-desktop-1672.webp`'),'Cork7 park image must not point to the GitHub Pages root');
+const offline=fs.readFileSync(path.join(root,'cork7-offline-sw.js'),'utf8');
+assert(offline.includes("nd-cork7-static-v10"),'Cork7 offline cache must be invalidated after runtime update');
+assert(nativeBoot.includes('nd-c7-20261116-v2'),'Cork7 runtime URL must force latest corrected JS');
+
 assert(!html.includes('index-CYh2aJIu.js?v=neon-preload-fix-1022'),'Old Vite preload cache URL must not remain in the launch HTML');
 console.log('PASS Cork7 mirrors '+resources.length+' CSS/JS dependencies on '+roots.length+' origins, and uses its verified current standalone game bundle.');
