@@ -42,6 +42,17 @@ for(const park of ['nordryggen','apex','shirakumo','bigair','forestline','halfpi
 }
 expect(read('cork7.html').includes('cork7-standalone.js'),'Cork7 must launch the original client with standalone entry');
 const cork7=read('cork7.html');
+const c7Snapshot=JSON.parse(read('cork7-assets/SNAPSHOT.json'));
+expect(cork7.includes(c7Snapshot.game_client),'Current Cork7 client must be preloaded');
+expect(read('cork7-standalone.js').includes(c7Snapshot.game_client),'Cork7 standalone must use current upstream client');
+expect(read('cork7-offline-sw.js').includes(c7Snapshot.game_client),'Offline worker must track current client');
+for(const f of ['tail-style-v1.json','bak-hodet-v1.json']){
+  expect(fs.existsSync(path.join(root,'cork7-assets/grabs',f)),'Latest Cork7 grab animation missing: '+f);
+}
+for(const f of ['rail-loop.ogg','glide-medium-loop.ogg']){
+  expect(fs.existsSync(path.join(root,'cork7-assets/sfx',f)),'Cork7 game sound effect missing: '+f);
+}
+
 expect(!cork7.includes('<base href="https://cork7.com/">') && cork7.includes('id="nd-cork7-model-paths"'),'Cork7 must route game assets to its first-party Neon District mirror');
 expect(cork7.includes('src="cork7-bridge.js"'),'Cork7 must load same-origin navigation bridge');
 expect(cork7.includes('id="nd-cork7-diag"'),'Cork7 must capture browser crash diagnostics');

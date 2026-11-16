@@ -1,0 +1,20 @@
+{
+  "snapshot_date": "2026-11-16",
+  "upstream": "https://cork7.com/",
+  "release_notes": "https://cork7.com/updates",
+  "game_client": "game-client-DVXJxJr_.js",
+  "style_files": [
+    "index.Brj9LuMv.css",
+    "game-client.Dtg5MW41.css"
+  ],
+  "verified": [
+    "Latest lobby shows Tail Style by Robin",
+    "APEX solo skiing reaches gameplay on desktop Chromium/Edge",
+    "APEX solo skiing reaches gameplay on emulated iPad Chromium/Edge"
+  ],
+  "limits": [
+    "Cork7 music tracks and proprietary font files are not mirrored",
+    "Official account, party and multiplayer features depend on Cork7 servers and may require cork7.com",
+    "This is a dated snapshot, not a live automatic upstream mirror"
+  ]
+}
