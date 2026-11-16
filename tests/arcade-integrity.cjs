@@ -8,7 +8,7 @@ const root=path.resolve(__dirname,'..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const files=fs.readdirSync(root);
 const pages=files.filter(x=>x.endsWith('.html'));
-const gamePages=pages.filter(x=>!['index.html','search.html','mp-bridge.html','neon-browser.html','cork7-start.html','cork7-standalone.html'].includes(x));
+const gamePages=pages.filter(x=>!['index.html','search.html','mp-bridge.html','neon-browser.html','cork7-start.html','cork7-standalone.html','chromium-browser.html','game-portal.html','neon-proxy.html'].includes(x));
 const index=read('index.html');
 const entries=[...index.matchAll(/\bid:'([^']+)',name:'([^']+)',file:'([^']+)'/g)].map(m=>({id:m[1],name:m[2],file:m[3].split('?')[0]}));
 let checked=0;
@@ -33,7 +33,8 @@ expect(browserLab.includes('bash browser-lab/start.sh'),'Browser Lab guide missi
 expect(browserLab.includes('Keep visibility <strong>Private</strong>'),'Browser Lab guide must keep proxy port private');
 expect(browserLab.includes('docker stop nd-personal-browser'),'Browser Lab guide must include stop command');
 expect(browserLab.includes('each person starts their own cloud browser'),'Browser Lab must accurately describe session separation');
-expect(entries.length===40,'Expected 40 games in catalog; found '+entries.length);
+expect(entries.length===gamePages.length,'Expected '+gamePages.length+' playable games in catalog; found '+entries.length);
+expect(entries.length>=40,'Catalog unexpectedly lost games: only '+entries.length+' found');
 expect(index.includes("id:'cork7',name:'Cork7',file:'cork7.html'"),'Cork7 must appear in game catalog');
 const cork7Start=read('cork7-start.html');
 for(const park of ['nordryggen','apex','shirakumo','bigair','forestline','halfpipe']){
