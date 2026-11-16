@@ -15,9 +15,11 @@ const base=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8080';
   assert.equal(await page.locator('a.nd3-back-link').count(),1);
   assert.ok(await page.locator('a[href*="rsamwilson2323-cloud/rpg-car-game"]').count()>=1,'Original author source and license links must be displayed');
   console.log('PASS original author credit and correct game HTML');
-  await page.waitForFunction(()=>window.__ndOffroadReady===true,{timeout:45000});
+  await page.waitForFunction(()=>window.__ndOffroadReady===true,null,{timeout:45000});
   assert.ok(await page.locator('canvas').count()>=1,'WebGPU/WebGL canvas must render a 3D scene');
   console.log('PASS actual 3D engine and Rapier initialization');
+  // The game marks itself ready before its 900ms loader fade-out completes.
+  await page.locator('#loader').waitFor({state:'detached',timeout:10000});
   assert.equal(await page.locator('#loader').count(),0,'loading screen should close');
   assert.equal(await page.locator('#settings-toggle').count(),1);
   console.log('PASS 3D world enters playable state with controls and settings');

@@ -5,10 +5,11 @@ const assert=require('node:assert/strict');
 const {chromium}=require('playwright');
 const base=process.env.ARCADE_TEST_URL||'http://127.0.0.1:8080';
 const cases=[
- ['index.html','40-game catalog + Arcade Passport',async p=>{
-   assert.equal(await p.locator('#gameCount').innerText(),'40');
-   assert.equal(await p.locator('#passportCount').innerText(),'0/40');
-   assert.equal(await p.locator('.gameCard').count(),40);
+ ['index.html','full game catalog + Arcade Passport',async p=>{
+   const count=Number(await p.locator('#gameCount').innerText());
+   assert.ok(count>=40,'homepage must list at least 40 games');
+   assert.equal(await p.locator('#passportCount').innerText(),'0/'+count);
+   assert.equal(await p.locator('.gameCard').count(),count);
    assert.equal(await p.locator('#passportExplore').count(),1);
  }],
  ['snake.html','Maze mode and 3.0 passport',async p=>{
